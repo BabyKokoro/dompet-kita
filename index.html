@@ -444,6 +444,20 @@ html[data-tema=gelap] .lengkung-garis path{stroke:#6B4E3A}
 .pv-item input{width:20px;height:20px;accent-color:var(--primary);margin-top:2px;flex:0 0 20px}
 .pv-item > span{display:flex;flex-direction:column;font-size:15px}
 .pv-item .muted{font-size:13px;font-weight:600}
+.awan-status{display:flex;align-items:center;gap:8px;border:none;background:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;padding:2px 6px;text-align:left}
+.awan-status:hover{color:var(--text)}
+.awan-titik{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9A8B80;flex:0 0 9px}
+.awan-ok .awan-titik{background:#5FA36A}.awan-sinkron .awan-titik{background:#E3A857;animation:kedip 1s infinite}
+.awan-galat .awan-titik{background:#C8614A}.awan-offline .awan-titik{background:#9A8B80}
+@keyframes kedip{50%{opacity:.3}}
+.qr-wadah{display:flex;justify-content:center;padding:12px;background:#FFFFFF;border-radius:20px;align-self:center}
+.qr-wadah.kedaluwarsa{opacity:.15}
+.qr-hitung{text-align:center;font-weight:800}
+.scan-wadah{position:relative;border-radius:20px;overflow:hidden;background:#000;aspect-ratio:1;max-width:320px;width:100%;align-self:center}
+.scan-wadah video{width:100%;height:100%;object-fit:cover;display:block}
+.scan-bingkai{position:absolute;inset:18%;border:3px solid #FFFFFF;border-radius:18px;box-shadow:0 0 0 999px rgba(0,0,0,.35)}
+.g-logo{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FFFFFF;color:#4285F4;font-weight:800;font-size:14px;margin-right:4px;font-family:Arial,sans-serif}
+.sambut-awan{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:6px;border-top:2px dashed var(--line);width:100%}
 /* ---- langkah 8 ---- */
 [hidden]{display:none!important}
 .dua > .field{justify-content:flex-end}
@@ -700,7 +714,10 @@ const K_META = PFX + "meta", K_BERSAMA = PFX + "brankas.bersama";
 const kBrankas = id => PFX + "brankas." + id;
 const kBlokir = id => PFX + "blokir." + id;
 function bacaJson(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e) { return null; } }
-function tulisJson(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+function tulisJson(k, v){
+  localStorage.setItem(k, JSON.stringify(v));
+  if (k === K_META || k === K_BERSAMA || k.indexOf(PFX + "brankas.") === 0) awanTandai();
+}
 
 function dataPribadiAwal(){
   return migrasi8(migrasi7b(migrasiKategori7(migrasiData5(migrasiData({
@@ -878,7 +895,11 @@ function bukaModal(html, kelas){
   const f = bd.querySelector("input, .key, .btn"); if (f) f.focus();
   return bd.querySelector(".modal");
 }
-function tutupModal(){ document.querySelectorAll(".backdrop").forEach(b => b.remove()); }
+function tutupModal(){
+  document.querySelectorAll(".backdrop").forEach(b => b.remove());
+  if (typeof hentikanKamera === "function") hentikanKamera();
+  if (S.perluRenderAwan && S.layar === "app" && S.sesi){ S.perluRenderAwan = false; setTimeout(() => { if (!document.querySelector(".backdrop")) render(); }, 0); }
+}
 
 /* ============ Layar: sambutan ============ */
 function layarSambutan(){
@@ -888,8 +909,10 @@ function layarSambutan(){
     '<h1>Selamat datang di Dompet Kita</h1>'+
     '<p class="muted" style="font-size:17px;max-width:460px">Catat bareng, hemat bareng. Pemasukan, pengeluaran, anggaran, dan tabungan kalian berdua, rapi dalam satu tempat.</p>'+
     '<ol class="steps"><li>Isi nama panggilan dan pilih avatar</li><li>Buat PIN 6 angka</li><li>Daftarkan pasangan (bisa juga nanti)</li></ol>'+
-    '<p class="note">Semua data tersimpan di laptop ini saja dan dikunci dengan PIN masing-masing.</p>'+
+    '<p class="note">Data dikunci dengan PIN masing-masing. Bisa disinkronkan ke HP dan perangkat pasangan dalam keadaan terenkripsi.</p>'+
     '<button class="btn btn-primary btn-lg" data-aksi="mulai">Mulai</button>'+
+    (DI_WEB ? '<div class="sambut-awan"><span class="muted">Sudah pakai Dompet Kita di perangkat lain?</span><div class="row-btn" style="justify-content:center">'+
+      tombolAksi("masuk-google", '<span class="g-logo">G</span>Masuk dengan Google', "btn-ghost")+tombolAksi("scan-qr", "Scan QR", "btn-ghost")+'</div></div>' : '')+
     '<button type="button" class="link" data-aksi="pulihkan">Sudah punya file backup? Pulihkan di sini</button>'+
     tombolTema()+
   '</div></main>';
@@ -1138,6 +1161,7 @@ function layarApp(){
       '<div class="brand">'+maskot("piggy", 40)+'Dompet Kita</div>'+
       '<div class="jam-sidebar">'+maskot("owi", 38)+jamHTML()+'</div>'+
       tombolSembunyi(false)+
+      (DI_WEB || awanCfg() ? tombolStatusAwan() : '')+
       '<div class="userchip">'+maskot(u.avatar, 44)+'<div><strong>'+esc(u.nama)+'</strong><span class="lv-kecil">Lv '+lvInfo.lv+' · '+lvInfo.gelar+'</span><button type="button" class="link" style="padding:0;font-size:13px" data-aksi="ganti-pengguna">Ganti pengguna</button></div></div>'+
       '<nav class="nav">'+nav+'</nav>'+
       tombolTema()+
@@ -1207,7 +1231,7 @@ function halPengaturan(){
         '<select id="in-awal" style="height:48px;border-radius:14px;border:2px solid var(--line);padding:0 12px;font-weight:700;background:var(--input)">'+Array.from({length:28}, (_, i) => '<option value="'+(i + 1)+'"'+(i + 1 === awalPeriode() ? " selected" : "")+'>Tanggal '+(i + 1)+'</option>').join("")+'</select></div>'+
 
     '</section>'+
-    seksiPrivasi()+seksiInstall()+seksiPengingat()+seksiTampilan()+seksiBackup()+
+    seksiAwan()+seksiPrivasi()+seksiInstall()+seksiPengingat()+seksiTampilan()+seksiBackup()+
     '<section class="card set-sec" aria-labelledby="set-aman"><div class="card-head" style="margin:0">'+maskot("niko", 48)+'<h2 id="set-aman">Keamanan</h2></div>'+
       '<div><div class="set-row"><div><strong>PIN</strong><p class="muted" style="font-size:14px">Ganti PIN 6 angka untuk membuka brankasmu.</p></div><button type="button" class="btn btn-ghost" data-aksi="ganti-pin">Ganti PIN</button></div>'+
       '<div class="set-row"><label for="in-menit"><strong>Kunci otomatis</strong><p class="muted" style="font-size:14px">Aplikasi terkunci kalau tidak disentuh selama ini.</p></label>'+
@@ -5577,7 +5601,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.2.0";
+const VERSI_APP = "1.3.0";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -5679,6 +5703,595 @@ function cekVersiApp(){
   if (lama && lama !== VERSI_APP) setTimeout(() => toast("Dompet Kita sudah diperbarui ke versi " + VERSI_APP + ". Datamu tetap aman."), 1200);
 }
 
+/* ============ Pembuat QR code (byte mode, koreksi galat M) ============ */
+const QR = (() => {
+  const ECC_M = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28];
+  const BLOK_M = [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49];
+  const modulMentah = v => { let r = (16 * v + 128) * v + 64; if (v >= 2){ const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  const dataCw = v => Math.floor(modulMentah(v) / 8) - ECC_M[v] * BLOK_M[v];
+  function kali(x, y){ let z = 0; for (let i = 7; i >= 0; i--){ z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z & 255; }
+  function pembagi(d){ const r = new Array(d).fill(0); r[d - 1] = 1; let akar = 1; for (let i = 0; i < d; i++){ for (let j = 0; j < d; j++){ r[j] = kali(r[j], akar); if (j + 1 < d) r[j] ^= r[j + 1]; } akar = kali(akar, 2); } return r; }
+  function sisa(data, div){ const r = new Array(div.length).fill(0); data.forEach(b => { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => { r[i] ^= kali(c, f); }); }); return r; }
+  function posisiAlign(v, n){ if (v === 1) return []; const k = Math.floor(v / 7) + 2, step = v === 32 ? 26 : Math.ceil((v * 4 + 4) / (k * 2 - 2)) * 2, r = [6]; for (let p = n - 7; r.length < k; p -= step) r.splice(1, 0, p); return r; }
+  function buat(teks){
+    const bytes = Array.from(new TextEncoder().encode(teks));
+    let v = 1;
+    for (; v <= 40; v++){ const cc = v <= 9 ? 8 : 16; if (4 + cc + bytes.length * 8 <= dataCw(v) * 8) break; }
+    if (v > 40) throw new Error("Teks terlalu panjang untuk QR");
+    const bits = [], tambah = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    tambah(4, 4); tambah(bytes.length, v <= 9 ? 8 : 16); bytes.forEach(b => tambah(b, 8));
+    const kap = dataCw(v) * 8;
+    tambah(0, Math.min(4, kap - bits.length)); tambah(0, (8 - bits.length % 8) % 8);
+    for (let pad = 0xEC; bits.length < kap; pad ^= 0xEC ^ 0x11) tambah(pad, 8);
+    const data = []; for (let i = 0; i < bits.length; i += 8){ let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; data.push(b); }
+    /* blok + ECC + selang-seling */
+    const nb = BLOK_M[v], el = ECC_M[v], mentah = Math.floor(modulMentah(v) / 8), pendek = nb - mentah % nb, lenP = Math.floor(mentah / nb), div = pembagi(el);
+    const blok = []; let k = 0;
+    for (let i = 0; i < nb; i++){ const d = data.slice(k, k + lenP - el + (i < pendek ? 0 : 1)); k += d.length; const e = sisa(d, div); if (i < pendek) d.push(0); blok.push(d.concat(e)); }
+    const akhir = [];
+    for (let i = 0; i < blok[0].length; i++) blok.forEach((b, j) => { if (i !== lenP - el || j >= pendek) akhir.push(b[i]); });
+    /* matriks */
+    const n = v * 4 + 17, m = [], f = [];
+    for (let y = 0; y < n; y++){ m.push(new Array(n).fill(false)); f.push(new Array(n).fill(false)); }
+    const set = (x, y, d) => { m[y][x] = d; f[y][x] = true; };
+    for (let i = 0; i < n; i++){ set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    [[3, 3], [n - 4, 3], [3, n - 4]].forEach(([cx, cy]) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++){ const x = cx + dx, y = cy + dy, dist = Math.max(Math.abs(dx), Math.abs(dy)); if (x >= 0 && x < n && y >= 0 && y < n) set(x, y, dist !== 2 && dist !== 4); } });
+    const al = posisiAlign(v, n);
+    al.forEach((ax, i) => al.forEach((ay, j) => { if ((i === 0 && j === 0) || (i === 0 && j === al.length - 1) || (i === al.length - 1 && j === 0)) return;
+      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(ax + dx, ay + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }));
+    const format = mask => {
+      const d = (0 << 3) | mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      const b = ((d << 10) | r) ^ 0x5412, bit = i => ((b >>> i) & 1) === 1;
+      for (let i = 0; i <= 5; i++) set(8, i, bit(i));
+      set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8));
+      for (let i = 9; i < 15; i++) set(14 - i, 8, bit(i));
+      for (let i = 0; i < 8; i++) set(n - 1 - i, 8, bit(i));
+      for (let i = 8; i < 15; i++) set(8, n - 15 + i, bit(i));
+      set(8, n - 8, true);
+    };
+    format(0);
+    if (v >= 7){ let r = v; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (v << 12) | r;
+      for (let i = 0; i < 18; i++){ const d = ((b >>> i) & 1) === 1, a = n - 11 + i % 3, c = Math.floor(i / 3); set(a, c, d); set(c, a, d); } }
+    let i = 0;
+    for (let kanan = n - 1; kanan >= 1; kanan -= 2){
+      if (kanan === 6) kanan = 5;
+      for (let vert = 0; vert < n; vert++) for (let j = 0; j < 2; j++){
+        const x = kanan - j, naik = ((kanan + 1) & 2) === 0, y = naik ? n - 1 - vert : vert;
+        if (!f[y][x] && i < akhir.length * 8){ m[y][x] = ((akhir[i >>> 3] >>> (7 - (i & 7))) & 1) === 1; i++; }
+      }
+    }
+    const SYARAT = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, x => x % 3 === 0, (x, y) => (x + y) % 3 === 0,
+      (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => x * y % 2 + x * y % 3 === 0,
+      (x, y) => (x * y % 2 + x * y % 3) % 2 === 0, (x, y) => ((x + y) % 2 + x * y % 3) % 2 === 0];
+    const topeng = s => { for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (!f[y][x] && SYARAT[s](x, y)) m[y][x] = !m[y][x]; };
+    /* pilih topeng dengan penalti paling kecil (aturan beruntun, kotak 2x2, keseimbangan) */
+    const penalti = () => {
+      let p = 0, gelap = 0;
+      for (let y = 0; y < n; y++){ let run = 1; for (let x = 1; x < n; x++){ if (m[y][x] === m[y][x - 1]){ run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+      for (let x = 0; x < n; x++){ let run = 1; for (let y = 1; y < n; y++){ if (m[y][x] === m[y - 1][x]){ run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+      for (let y = 0; y < n - 1; y++) for (let x = 0; x < n - 1; x++){ const c = m[y][x]; if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1]) p += 3; }
+      for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (m[y][x]) gelap++;
+      return p + Math.floor(Math.abs(gelap * 20 - n * n * 10) / (n * n)) * 10;
+    };
+    let terbaik = 0, min = Infinity;
+    for (let s = 0; s < 8; s++){ topeng(s); format(s); const p = penalti(); if (p < min){ min = p; terbaik = s; } topeng(s); }
+    topeng(terbaik); format(terbaik);
+    return m;
+  }
+  function svg(teks, ukuran, warna, latar){
+    const m = buat(teks), n = m.length, q = 4, t = n + q * 2;
+    let d = "";
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (m[y][x]) d += "M" + (x + q) + " " + (y + q) + "h1v1h-1z";
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+t+' '+t+'" width="'+ukuran+'" height="'+ukuran+'" shape-rendering="crispEdges" role="img" aria-label="Kode QR">'+
+      '<rect width="'+t+'" height="'+t+'" fill="'+(latar || "#FFFFFF")+'"/><path d="'+d+'" fill="'+(warna || "#000000")+'"/></svg>';
+  }
+  return {buat, svg};
+})();
+
+/* ============ Sinkron antarperangkat (Zee) lewat Supabase ============
+   Yang dikirim ke server hanya isi localStorage yang SUDAH terenkripsi (meta berisi kunci
+   terbungkus PIN, brankas pribadi, brankas bersama). Server tidak pernah melihat PIN. */
+const AWAN = {url:"https://xieegzgahzbuavgkpnkl.supabase.co", key:"sb_publishable_5q1UjEyBYoNutSKTbN11Qg_g74L8xJ8"};
+const K_AWAN = PFX + "awan", K_DASAR = PFX + "awan.dasar", K_NIAT = PFX + "awan.niat";
+const awanCfg = () => bacaJson(K_AWAN);
+function simpanAwanCfg(c){ if (c) localStorage.setItem(K_AWAN, JSON.stringify(c)); else localStorage.removeItem(K_AWAN); }
+const dasarAwan = () => bacaJson(K_DASAR) || {};
+function setDasar(k, versi, isi){ const d = dasarAwan(); d[k] = {versi, isi:kanon(isi)}; localStorage.setItem(K_DASAR, JSON.stringify(d)); }
+const awanTersambung = () => { const c = awanCfg(); return !!(c && c.sesi && c.rumah); };
+/* bentuk JSON baku (urutan kunci tetap) supaya bisa dibandingkan dengan jsonb dari server */
+function kanon(v){
+  if (Array.isArray(v)) return "[" + v.map(x => x === undefined ? "null" : kanon(x)).join(",") + "]";
+  if (v && typeof v === "object") return "{" + Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => JSON.stringify(k) + ":" + kanon(v[k])).join(",") + "}";
+  return v === undefined ? "null" : JSON.stringify(v);
+}
+function kunciLokal(k){ return k === "meta" ? K_META : k === "bersama" ? K_BERSAMA : k.indexOf("pribadi.") === 0 ? kBrankas(k.slice(8)) : null; }
+function daftarKunciLokal(){
+  const out = [], m = bacaJson(K_META);
+  if (!m || !m.pengguna || !m.pengguna.length) return out;
+  out.push("meta");
+  if (localStorage.getItem(K_BERSAMA)) out.push("bersama");
+  m.pengguna.forEach(u => { if (localStorage.getItem(kBrankas(u.id))) out.push("pribadi." + u.id); });
+  return out;
+}
+const adaDataLokal = () => { const m = bacaJson(K_META); return !!(m && m.pengguna && m.pengguna.length); };
+function labelPerangkat(cara){
+  const ua = navigator.userAgent;
+  const jenis = /Android/i.test(ua) ? "HP Android" : /iPhone|iPad|iPod/i.test(ua) ? "iPhone/iPad" : /Windows/i.test(ua) ? "Laptop Windows" : /Macintosh/i.test(ua) ? "Mac" : "Perangkat";
+  return jenis + " · " + cara + " · " + new Date().toLocaleDateString("id-ID", {day:"numeric", month:"short", year:"numeric"});
+}
+
+/* ---- jaringan ---- */
+let janjiSegar = null;
+function rapikanSesi(s){
+  const u = s.user || {};
+  return {access_token:s.access_token, refresh_token:s.refresh_token,
+    expires_at:s.expires_at || Math.floor(Date.now() / 1000) + (s.expires_in || 3600),
+    user:{id:u.id, email:u.email || "", anonim:!!u.is_anonymous}};
+}
+async function awanFetch(path, opsi, pakaiSesi){
+  opsi = opsi || {};
+  const h = Object.assign({apikey:AWAN.key, "Content-Type":"application/json"}, opsi.headers || {});
+  if (pakaiSesi !== false){
+    const s = await sesiAwanValid();
+    if (!s){ const e = new Error("Perlu masuk lagi ke awan"); e.status = 401; throw e; }
+    h.Authorization = "Bearer " + s.access_token;
+  }
+  let r;
+  try { r = await fetch(AWAN.url + path, Object.assign({}, opsi, {headers:h})); }
+  catch(e){ const x = new Error("Tidak ada koneksi internet"); x.offline = true; throw x; }
+  const teks = await r.text();
+  let isi = null; try { isi = teks ? JSON.parse(teks) : null; } catch(e){ isi = teks; }
+  if (!r.ok){
+    const e = new Error((isi && (isi.message || isi.msg || isi.error_description || isi.error)) || ("HTTP " + r.status));
+    e.status = r.status; throw e;
+  }
+  return isi;
+}
+async function sesiAwanValid(){
+  const c = awanCfg();
+  if (!c || !c.sesi) return null;
+  if (c.sesi.expires_at * 1000 > Date.now() + 60000) return c.sesi;
+  if (!janjiSegar) janjiSegar = (async () => {
+    try {
+      const s = await awanFetch("/auth/v1/token?grant_type=refresh_token", {method:"POST", body:JSON.stringify({refresh_token:c.sesi.refresh_token})}, false);
+      const c2 = awanCfg(); c2.sesi = rapikanSesi(s); simpanAwanCfg(c2); return c2.sesi;
+    } catch(e){
+      if (e.status === 400 || e.status === 401 || e.status === 403){
+        const c2 = awanCfg(); if (c2){ c2.sesi = null; c2.putus = "Sesi sinkron berakhir. Masuk lagi supaya data tetap tersinkron."; simpanAwanCfg(c2); }
+      }
+      return null;
+    } finally { setTimeout(() => { janjiSegar = null; }, 0); }
+  })();
+  return janjiSegar;
+}
+const rpc = (fungsi, args) => awanFetch("/rest/v1/rpc/" + fungsi, {method:"POST", body:JSON.stringify(args || {})});
+async function rumahSaya(){
+  const c = awanCfg();
+  const r = await awanFetch("/rest/v1/anggota?select=rumah_id&user_id=eq." + encodeURIComponent(c.sesi.user.id));
+  return r && r[0] ? r[0].rumah_id : null;
+}
+const daftarRemote = rumah => awanFetch("/rest/v1/brankas?select=kunci,versi&rumah_id=eq." + encodeURIComponent(rumah));
+function ambilRemote(rumah, kunci){
+  const daftar = kunci.map(k => '"' + k.replace(/"/g, "") + '"').join(",");
+  return awanFetch("/rest/v1/brankas?select=kunci,isi,versi&rumah_id=eq." + encodeURIComponent(rumah) + "&kunci=in." + encodeURIComponent("(" + daftar + ")"));
+}
+
+/* ---- status ---- */
+S.awan = {kode:"mati", teks:"", waktu:0};
+function setStatusAwan(kode, teks){
+  S.awan = {kode, teks:teks || "", waktu:kode === "ok" ? Date.now() : (S.awan.waktu || 0)};
+  if (kode === "ok"){ const c = awanCfg(); if (c){ c.terakhir = Date.now(); simpanAwanCfg(c); } }
+  perbaruiStatusAwan();
+}
+function teksStatusAwan(){
+  const c = awanCfg();
+  if (!c || (!c.sesi && !c.putus)) return {kode:"mati", teks:"Belum tersinkron"};
+  if (!c.sesi) return {kode:"galat", teks:"Perlu masuk lagi"};
+  if (!c.rumah) return {kode:"sinkron", teks:"Menyiapkan..."};
+  if (!navigator.onLine) return {kode:"offline", teks:"Offline, disimpan di perangkat"};
+  if (S.awan.kode === "sinkron") return {kode:"sinkron", teks:"Menyinkronkan..."};
+  if (S.awan.kode === "galat") return {kode:"galat", teks:S.awan.teks || "Gagal sinkron"};
+  if (S.awan.kode === "offline") return {kode:"offline", teks:"Offline, disimpan di perangkat"};
+  const t = c.terakhir || S.awan.waktu;
+  if (!t) return {kode:"ok", teks:"Tersambung"};
+  const menit = Math.floor((Date.now() - t) / 60000);
+  return {kode:"ok", teks:"Tersinkron " + (menit < 1 ? "baru saja" : menit < 60 ? menit + " menit lalu" : Math.floor(menit / 60) + " jam lalu")};
+}
+function tombolStatusAwan(){
+  const s = teksStatusAwan();
+  return '<button type="button" class="awan-status awan-'+s.kode+'" id="awan-status" data-aksi="buka-awan" title="Sinkron antarperangkat">'+
+    '<span class="awan-titik"></span><span class="awan-teks">Zee · '+esc(s.teks)+'</span></button>';
+}
+function perbaruiStatusAwan(){
+  document.querySelectorAll("#awan-status").forEach(el => {
+    const s = teksStatusAwan();
+    el.className = "awan-status awan-" + s.kode;
+    const t = el.querySelector(".awan-teks"); if (t) t.textContent = "Zee · " + s.teks;
+  });
+  const box = document.getElementById("awan-box");
+  if (box && S.halaman === "pengaturan" && !document.querySelector(".backdrop")) box.outerHTML = seksiAwan();
+}
+setInterval(perbaruiStatusAwan, 30000);
+
+/* ---- gabung tiga arah: dasar (terakhir sinkron), lokal, server ---- */
+function gabung3(b, l, r){
+  const sama = (x, y) => kanon(x) === kanon(y);
+  if (sama(l, r)) return l;
+  if (b !== undefined && sama(l, b)) return r;
+  if (b !== undefined && sama(r, b)) return l;
+  if (l === undefined) return b !== undefined && sama(r, b) ? undefined : r;
+  if (r === undefined) return b !== undefined && sama(l, b) ? undefined : l;
+  const objek = v => v && typeof v === "object" && !Array.isArray(v);
+  const larikId = v => Array.isArray(v) && v.every(x => objek(x) && x.id != null);
+  if (larikId(l) && larikId(r) && (b == null || larikId(b))){
+    const mb = new Map((b || []).map(x => [x.id, x])), ml = new Map(l.map(x => [x.id, x])), mr = new Map(r.map(x => [x.id, x]));
+    const ids = r.map(x => x.id).concat(l.filter(x => !mr.has(x.id)).map(x => x.id)), out = [];
+    ids.forEach(id => {
+      const xb = mb.get(id), xl = ml.get(id), xr = mr.get(id);
+      if (xl && xr) out.push(gabung3(xb, xl, xr));
+      else if (xl){ if (!xb || !sama(xl, xb)) out.push(xl); }   /* tidak ada di server: baru di sini, atau dihapus di sana */
+      else if (xr){ if (!xb || !sama(xr, xb)) out.push(xr); }   /* tidak ada di sini: baru di sana, atau dihapus di sini */
+    });
+    return out;
+  }
+  if (objek(l) && objek(r)){
+    const bo = objek(b) ? b : {}, out = {};
+    new Set(Object.keys(r).concat(Object.keys(l))).forEach(k => { const v = gabung3(bo[k], l[k], r[k]); if (v !== undefined) out[k] = v; });
+    return out;
+  }
+  if (Array.isArray(l) && Array.isArray(r) && l.concat(r).every(x => x === null || typeof x !== "object")){
+    const hapus = new Set(Array.isArray(b) ? b.filter(x => !l.includes(x) || !r.includes(x)).map(kanon) : []);
+    const out = []; r.concat(l).forEach(x => { const k = kanon(x); if (!hapus.has(k) && !out.some(y => kanon(y) === k)) out.push(x); });
+    return out;
+  }
+  return l;   /* sama-sama berubah: perubahan di perangkat ini yang dipakai */
+}
+async function kunciEnkripsiUntuk(k){
+  if (!S.sesi) return null;
+  if (k === "bersama") return S.sesi.kunciBersama;
+  if (k === "pribadi." + S.sesi.user.id) return S.sesi.dek;
+  return null;
+}
+/* hasil: objek gabungan, atau null kalau belum bisa digabung (kunci PIN belum tersedia) */
+async function gabungIsi(k, dasarIsi, lokal, remote){
+  if (k === "meta") return gabung3(dasarIsi == null ? undefined : dasarIsi, lokal, remote);
+  const kunci = await kunciEnkripsiUntuk(k);
+  if (!kunci) return null;
+  let b; try { b = dasarIsi ? await dekripsiJson(kunci, dasarIsi) : undefined; } catch(e){ b = undefined; }
+  const l = await dekripsiJson(kunci, lokal), r = await dekripsiJson(kunci, remote);
+  return enkripsiJson(kunci, gabung3(b, l, r));
+}
+function tulisLokalAwan(k, isi){ localStorage.setItem(kunciLokal(k), JSON.stringify(isi)); }
+/* hasil: "sama" | "ambil" | "gabung" | "tunda" */
+async function terapkanRemote(row){
+  const lk = kunciLokal(row.kunci);
+  if (!lk) return "sama";
+  const d = dasarAwan()[row.kunci], s = localStorage.getItem(lk), lokal = s ? JSON.parse(s) : null;
+  if (lokal && kanon(lokal) === kanon(row.isi)){ setDasar(row.kunci, row.versi, row.isi); return "sama"; }
+  if (!lokal || (d && kanon(lokal) === d.isi)){
+    tulisLokalAwan(row.kunci, row.isi); setDasar(row.kunci, row.versi, row.isi);
+    await segarkanDari(row.kunci); return "ambil";
+  }
+  const g = await gabungIsi(row.kunci, d ? JSON.parse(d.isi) : null, lokal, row.isi);
+  if (g == null) return "tunda";
+  tulisLokalAwan(row.kunci, g); setDasar(row.kunci, row.versi, row.isi);
+  await segarkanDari(row.kunci); return "gabung";
+}
+async function dorongKunci(rumah, k){
+  for (let coba = 0; coba < 4; coba++){
+    const s = localStorage.getItem(kunciLokal(k));
+    if (!s) return;
+    const lokal = JSON.parse(s), d = dasarAwan()[k];
+    if (d && d.isi === kanon(lokal)) return;
+    const v = await rpc("simpan_brankas", {p_rumah:rumah, p_kunci:k, p_isi:lokal, p_versi_lama:d ? d.versi : 0});
+    if (v > 0){ setDasar(k, v, lokal); return; }
+    const rows = await ambilRemote(rumah, [k]);
+    if (!rows.length){ const dd = dasarAwan(); delete dd[k]; localStorage.setItem(K_DASAR, JSON.stringify(dd)); continue; }
+    if (await terapkanRemote(rows[0]) === "tunda") return;
+  }
+}
+/* perbarui tampilan & sesi setelah data dari perangkat lain masuk */
+async function segarkanDari(k){
+  if (k === "meta"){
+    S.meta = bacaJson(K_META);
+    if (S.sesi){
+      const u = S.meta.pengguna.find(p => p.id === S.sesi.user.id);
+      if (!u){ kunciAplikasi("Profil ini dihapus di perangkat lain."); return; }
+      S.sesi.user = u;
+    }
+    if (!S.sesi && S.meta && S.meta.pengguna.length && ["sambutan", "login"].includes(S.layar)){
+      if (!S.meta.pengguna.some(p => p.id === S.loginId)) S.loginId = S.meta.pengguna[0].id;
+      if (S.layar === "sambutan"){ S.layar = "login"; S.pesanLogin = "Data dari perangkat lain sudah masuk. Buka dengan PIN-mu."; }
+      if (!document.querySelector(".backdrop")) render();
+    } else jadwalRenderAwan();
+    return;
+  }
+  if (!S.sesi) return;
+  try {
+    if (k === "bersama") S.sesi.bersama = migrasiBersama(await dekripsiJson(S.sesi.kunciBersama, bacaJson(K_BERSAMA)));
+    else if (k === "pribadi." + S.sesi.user.id)
+      S.sesi.data = migrasi8(migrasi7b(migrasiKategori7(migrasiData5(migrasiData(await dekripsiJson(S.sesi.dek, bacaJson(kBrankas(S.sesi.user.id))))))));
+    else return;
+  } catch(e){ console.warn("Gagal membuka data sinkron", e); return; }
+  jadwalRenderAwan();
+}
+function jadwalRenderAwan(){
+  if (S.layar !== "app" || !S.sesi) return;
+  if (document.querySelector(".backdrop")){ S.perluRenderAwan = true; return; }
+  const y = window.scrollY; render(); window.scrollTo(0, y);
+}
+
+/* ---- mesin sinkron ---- */
+let awanSibuk = false, awanLagi = false, timerAwan = null;
+function awanTandai(){
+  if (!awanCfg()) return;
+  clearTimeout(timerAwan);
+  timerAwan = setTimeout(() => sinkron("lokal"), 1200);
+}
+async function sinkron(alasan){
+  const c = awanCfg();
+  if (!c || !c.sesi){ perbaruiStatusAwan(); return false; }
+  if (awanSibuk){ awanLagi = true; return false; }
+  awanSibuk = true; setStatusAwan("sinkron");
+  let ok = false;
+  try {
+    if (!c.rumah){
+      if (c.sesi.user.anonim || !adaDataLokal()){ setStatusAwan("mati"); return false; }
+      c.rumah = await rpc("buat_rumah", {p_label:labelPerangkat("Google")}); simpanAwanCfg(c);
+    }
+    const remote = await daftarRemote(c.rumah), dasar = dasarAwan();
+    const perlu = remote.filter(x => !dasar[x.kunci] || dasar[x.kunci].versi !== x.versi).map(x => x.kunci);
+    /* meta dulu, supaya profil baru dikenal sebelum brankasnya */
+    perlu.sort((a, b) => (a === "meta" ? -1 : 0) - (b === "meta" ? -1 : 0));
+    if (perlu.length){
+      const rows = await ambilRemote(c.rumah, perlu);
+      rows.sort((a, b) => (a.kunci === "meta" ? -1 : 0) - (b.kunci === "meta" ? -1 : 0));
+      for (const row of rows) await terapkanRemote(row);
+    }
+    for (const k of daftarKunciLokal()) await dorongKunci(c.rumah, k);
+    ok = true; setStatusAwan("ok");
+  } catch(e){
+    console.warn("Sinkron gagal:", e);
+    setStatusAwan(e.offline ? "offline" : "galat", e.offline ? "Offline" : (e.status === 401 ? "Perlu masuk lagi" : "Gagal sinkron, dicoba lagi nanti"));
+  } finally {
+    awanSibuk = false;
+    if (awanLagi){ awanLagi = false; setTimeout(() => sinkron("ulang"), 300); }
+  }
+  return ok;
+}
+setInterval(() => { if (document.visibilityState === "visible" && awanTersambung()) sinkron("berkala"); }, 60000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && awanTersambung()) sinkron("kembali"); });
+addEventListener("online", () => { if (awanCfg()) sinkron("online"); });
+addEventListener("offline", perbaruiStatusAwan);
+
+/* ---- masuk & bergabung ---- */
+function masukGoogle(niat){
+  if (!DI_WEB){ toast("Login Google hanya bisa dari alamat online: babykokoro.github.io/dompet-kita"); return; }
+  localStorage.setItem(K_NIAT, niat || "sambung");
+  location.href = AWAN.url + "/auth/v1/authorize?provider=google&redirect_to=" + encodeURIComponent(location.origin + location.pathname);
+}
+async function tanganiKembaliAwan(){
+  const h = location.hash || "";
+  const bersihkan = () => history.replaceState(null, "", location.pathname + location.search);
+  if (/(^#|&)access_token=/.test(h)){
+    const p = new URLSearchParams(h.slice(1)); bersihkan();
+    const s = {access_token:p.get("access_token"), refresh_token:p.get("refresh_token"), expires_in:Number(p.get("expires_in")) || 3600, expires_at:Number(p.get("expires_at")) || 0};
+    s.user = await awanFetch("/auth/v1/user", {headers:{Authorization:"Bearer " + s.access_token}}, false);
+    const c = awanCfg() || {}; c.sesi = rapikanSesi(s); delete c.putus; simpanAwanCfg(c);
+    return {jenis:"google"};
+  }
+  if (/error_description=/.test(h)){
+    const p = new URLSearchParams(h.slice(1)); bersihkan();
+    toast("Zee: login Google gagal. " + (p.get("error_description") || "").replace(/\+/g, " "));
+    return null;
+  }
+  const m = h.match(/pasang=([0-9a-f]{32,})/i);
+  if (m){ bersihkan(); return {jenis:"pasang", kode:m[1].toLowerCase()}; }
+  return null;
+}
+async function awanMulai(){
+  let k = null;
+  try { k = await tanganiKembaliAwan(); }
+  catch(e){ toast("Zee: gagal masuk. " + e.message); }
+  if (k && k.jenis === "pasang") return gabungPakaiKode(k.kode);
+  if (!awanCfg() || !awanCfg().sesi){ perbaruiStatusAwan(); return; }
+  if (k && k.jenis === "google") return setelahMasukGoogle();
+  sinkron("mulai");
+}
+async function setelahMasukGoogle(){
+  localStorage.removeItem(K_NIAT);
+  try {
+    const c = awanCfg(), rumah = await rumahSaya();
+    if (rumah){ c.rumah = rumah; simpanAwanCfg(c); return mulaiSinkronPertama(); }
+    if (adaDataLokal()){
+      toast("Zee: tersambung! Mengunggah data terenkripsi ke awan...");
+      localStorage.removeItem(K_DASAR);
+      const ok = await sinkron("unggah-pertama");
+      if (ok) toast("Zee: semua data sudah aman di awan. Sekarang perangkat lain bisa bergabung.");
+      return;
+    }
+    modalAkunBaru();
+  } catch(e){ toast("Zee: " + e.message); perbaruiStatusAwan(); }
+}
+async function gabungPakaiKode(kode){
+  try {
+    let c = awanCfg() || {};
+    if (!c.sesi){
+      const s = await awanFetch("/auth/v1/signup", {method:"POST", body:JSON.stringify({data:{}})}, false);
+      c.sesi = rapikanSesi(s); delete c.putus; simpanAwanCfg(c);
+    }
+    const rumah = await rpc("pakai_kode_pasang", {p_kode:kode, p_label:labelPerangkat(c.sesi.user.anonim ? "scan QR" : "Google")});
+    c = awanCfg(); c.rumah = rumah; simpanAwanCfg(c);
+    toast("Zee: perangkat ini sudah bergabung! Mengambil data...");
+    await mulaiSinkronPertama();
+  } catch(e){ toast("Zee: " + e.message); perbaruiStatusAwan(); }
+}
+async function mulaiSinkronPertama(){
+  localStorage.removeItem(K_DASAR);
+  const c = awanCfg(), remote = await daftarRemote(c.rumah);
+  if (remote.some(x => x.kunci === "meta") && adaDataLokal()) return modalPilihData();
+  const ok = await sinkron("pertama");
+  if (ok && !S.sesi) toast("Zee: data sudah tersinkron. Masuk dengan PIN-mu.");
+}
+function modalAkunBaru(){
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 64)+'<h2 id="judul-modal">Akun ini belum punya Dompet Kita</h2></div>'+
+    '<ul class="panduan"><li><strong>Kalau kamu pasangan</strong> dari pengguna yang sudah ada: minta dia membuka <em>Pengaturan → Sinkron → Tampilkan QR</em>, lalu scan QR-nya.</li>'+
+    '<li><strong>Kalau ini pertama kali</strong>: tekan <em>Mulai baru</em>, daftar seperti biasa. Data otomatis tersimpan di awan.</li></ul>'+
+    '<div class="row-btn">'+tombolAksi("scan-qr", "Scan QR", "btn-ghost")+tombolAksi("tutup-modal", "Mulai baru", "btn-primary")+'</div>', "center");
+}
+function modalPilihData(){
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 64)+'<h2 id="judul-modal">Perangkat ini sudah punya data</h2></div>'+
+    '<p>Di awan juga sudah ada Dompet Kita. Dua kumpulan data yang berbeda tidak bisa digabung otomatis.</p>'+
+    '<ul class="panduan"><li><strong>Pakai data dari awan</strong> (disarankan): data di perangkat ini diganti. Backup data lama diunduh otomatis dulu, jadi tidak hilang.</li>'+
+    '<li><strong>Batal</strong>: perangkat ini diputus dari awan dan datanya tetap seperti sekarang.</li></ul>'+
+    '<div class="row-btn">'+tombolAksi("awan-batal-gabung", "Batal")+tombolAksi("awan-pakai-remote", "Pakai data dari awan", "btn-primary")+'</div>', "center");
+}
+async function pakaiDataAwan(){
+  try { const f = await buatBackup(true); unduh(f, "sebelum-sinkron-" + f.name); } catch(e){}
+  const m = bacaJson(K_META);
+  (m && m.pengguna || []).forEach(u => { localStorage.removeItem(kBrankas(u.id)); localStorage.removeItem(kBlokir(u.id)); });
+  localStorage.removeItem(K_META); localStorage.removeItem(K_BERSAMA); localStorage.removeItem(K_DASAR);
+  S.sesi = null; S.meta = null; S.layar = "sambutan";
+  tutupModal(); render();
+  const ok = await sinkron("pakai-awan");
+  if (ok) toast("Zee: data dari awan sudah masuk. Masuk dengan PIN-mu.");
+}
+async function putuskanAwan(pesan){
+  const c = awanCfg();
+  if (c && c.sesi){ try { await awanFetch("/auth/v1/logout?scope=local", {method:"POST"}); } catch(e){} }
+  simpanAwanCfg(null); localStorage.removeItem(K_DASAR);
+  S.awan = {kode:"mati", teks:"", waktu:0};
+  tutupModal(); if (S.layar === "app") render();
+  toast(pesan || "Perangkat ini sudah diputus dari sinkron. Datanya tetap ada di sini.");
+}
+
+/* ---- QR (Zee) ---- */
+let timerQR = null;
+async function modalTampilQR(){
+  const c = awanCfg();
+  if (!awanTersambung()){ toast("Sambungkan dulu perangkat ini ke awan."); return; }
+  let kode;
+  try { kode = await rpc("buat_kode_pasang", {p_rumah:c.rumah}); }
+  catch(e){ toast("Zee: " + e.message); return; }
+  const tautan = location.origin + location.pathname + "#pasang=" + kode;
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 64)+'<h2 id="judul-modal">Scan untuk bergabung</h2></div>'+
+    '<div class="qr-wadah" data-kode="'+kode+'">'+QR.svg(tautan, 260)+'</div>'+
+    '<p class="qr-hitung" id="qr-hitung">Berlaku 5:00</p>'+
+    '<ol class="panduan"><li>Di HP: buka aplikasi <strong>Kamera</strong> (atau menu <em>Scan QR</em> di Dompet Kita) lalu arahkan ke kode ini.</li>'+
+    '<li>Setelah data masuk, buka dengan <strong>PIN masing-masing</strong>. Tanpa PIN, data tetap terkunci.</li>'+
+    '<li>Kode hanya bisa dipakai <strong>sekali</strong>. Jangan dikirim ke orang lain.</li></ol>'+
+    '<div class="row-btn">'+tombolAksi("salin-tautan-qr", "Salin tautan", "btn-ghost", ' data-t="'+esc(tautan)+'"')+tombolAksi("tampil-qr", "Kode baru", "btn-ghost")+tombolAksi("tutup-modal", "Selesai", "btn-primary")+'</div>', "center");
+  const batas = Date.now() + 5 * 60000;
+  clearInterval(timerQR);
+  timerQR = setInterval(() => {
+    const el = document.getElementById("qr-hitung");
+    if (!el){ clearInterval(timerQR); return; }
+    const sisa = Math.max(0, Math.round((batas - Date.now()) / 1000));
+    el.textContent = sisa ? "Berlaku " + Math.floor(sisa / 60) + ":" + String(sisa % 60).padStart(2, "0") : "Kode sudah kedaluwarsa. Tekan Kode baru.";
+    if (!sisa){ clearInterval(timerQR); document.querySelector(".qr-wadah").classList.add("kedaluwarsa"); }
+  }, 1000);
+}
+let aliranKamera = null;
+function hentikanKamera(){ if (aliranKamera){ aliranKamera.getTracks().forEach(t => t.stop()); aliranKamera = null; } }
+function kodeDariTeks(t){ const m = String(t || "").match(/pasang=([0-9a-f]{32,})/i) || String(t || "").trim().match(/^([0-9a-f]{64})$/i); return m ? m[1].toLowerCase() : null; }
+async function modalScanQR(){
+  if (!DI_WEB){ toast("Scan QR hanya bisa dari alamat online: babykokoro.github.io/dompet-kita"); return; }
+  const bisaScan = "BarcodeDetector" in window && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 64)+'<h2 id="judul-modal">Scan QR dari perangkat lain</h2></div>'+
+    '<p class="muted" style="font-size:14px">Di perangkat yang sudah tersambung, buka <em>Pengaturan → Sinkron → Tampilkan QR</em>.</p>'+
+    (bisaScan ? '<div class="scan-wadah"><video id="scan-video" playsinline muted></video><span class="scan-bingkai"></span></div><p class="muted" id="scan-pesan" style="font-size:14px;text-align:center">Mengaktifkan kamera...</p>'
+      : '<p class="note" style="font-size:14px">Browser ini belum bisa scan langsung dari aplikasi. Buka aplikasi <strong>Kamera</strong> HP, arahkan ke QR-nya, lalu ketuk tautan yang muncul.</p>')+
+    '<label class="field">Atau tempel tautan dari "Salin tautan"<input id="in-tautan-qr" autocomplete="off" placeholder="https://.../#pasang=..."></label>'+
+    '<p class="err" id="err-scan" role="alert"></p>'+
+    '<div class="row-btn">'+tombolAksi("tutup-scan", "Batal")+tombolAksi("pakai-tautan-qr", "Gabung", "btn-primary")+'</div>', "center");
+  if (!bisaScan) return;
+  try {
+    aliranKamera = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}, audio:false});
+    const v = document.getElementById("scan-video");
+    if (!v){ hentikanKamera(); return; }
+    v.srcObject = aliranKamera; await v.play();
+    document.getElementById("scan-pesan").textContent = "Arahkan kamera ke kode QR";
+    const det = new BarcodeDetector({formats:["qr_code"]});
+    const cari = async () => {
+      if (!aliranKamera || !document.body.contains(v)){ hentikanKamera(); return; }
+      try {
+        const hasil = await det.detect(v), kode = hasil.length ? kodeDariTeks(hasil[0].rawValue) : null;
+        if (kode){ hentikanKamera(); tutupModal(); return gabungPakaiKode(kode); }
+      } catch(e){}
+      setTimeout(cari, 300);
+    };
+    cari();
+  } catch(e){
+    const p = document.getElementById("scan-pesan");
+    if (p) p.textContent = "Kamera tidak bisa dibuka. Izinkan akses kamera, atau pakai aplikasi Kamera HP.";
+  }
+}
+
+/* ---- daftar perangkat ---- */
+async function modalPerangkat(){
+  const c = awanCfg();
+  let list;
+  try { list = await awanFetch("/rest/v1/anggota?select=user_id,label,dibuat&rumah_id=eq." + encodeURIComponent(c.rumah) + "&order=dibuat.asc"); }
+  catch(e){ toast("Zee: " + e.message); return; }
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 56)+'<h2 id="judul-modal">Perangkat & akun tersambung</h2></div>'+
+    '<p class="muted" style="font-size:14px">Semua yang ada di sini bisa mengunduh brankas terenkripsi kalian. Isinya tetap hanya bisa dibuka dengan PIN.</p>'+
+    '<ul class="fav-atur">'+list.map(a => '<li><span class="fav-atur-nama"><strong>'+esc(a.label || "Perangkat")+'</strong><span class="muted" style="font-size:13px">'+
+      (a.user_id === c.sesi.user.id ? "Perangkat ini" : "Bergabung " + new Date(a.dibuat).toLocaleDateString("id-ID", {day:"numeric", month:"short", year:"numeric"}))+'</span></span>'+
+      (a.user_id === c.sesi.user.id ? '' : '<button type="button" class="btn-ikon" data-aksi="hapus-perangkat" data-u="'+a.user_id+'" aria-label="Keluarkan perangkat">&times;</button>')+'</li>').join("")+'</ul>'+
+    '<p class="err" id="err-perangkat" role="alert"></p>'+
+    '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup", "btn-primary")+'</div>');
+}
+async function hapusPerangkat(t){
+  if (t.dataset.yakin !== "1"){ t.dataset.yakin = "1"; t.textContent = "?"; document.getElementById("err-perangkat").textContent = "Klik sekali lagi untuk mengeluarkan perangkat itu. Data yang sudah ada di perangkat itu tidak ikut terhapus."; return; }
+  const c = awanCfg();
+  try { await awanFetch("/rest/v1/anggota?rumah_id=eq." + encodeURIComponent(c.rumah) + "&user_id=eq." + encodeURIComponent(t.dataset.u), {method:"DELETE"}); }
+  catch(e){ toast("Zee: " + e.message); return; }
+  toast("Perangkat dikeluarkan dari sinkron.");
+  modalPerangkat();
+}
+
+/* ---- tampilan ---- */
+function seksiAwan(){
+  const c = awanCfg(), st = teksStatusAwan();
+  let isi;
+  if (!c || (!c.sesi && !c.putus)){
+    isi = '<p class="muted" style="font-size:14px">Simpan brankas terenkripsi di awan supaya Dompet Kita bisa dibuka di laptop, HP, dan HP pasangan dengan data yang sama. Server hanya menerima data yang sudah dikunci PIN, jadi isinya tidak bisa dibaca siapa pun.</p>'+
+      (DI_WEB ? '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("masuk-google", '<span class="g-logo">G</span>Masuk dengan Google', "btn-primary")+tombolAksi("scan-qr", "Scan QR dari perangkat lain", "btn-ghost")+'</div>'
+        : '<p class="note" style="font-size:14px">Sinkron hanya bisa dari alamat online <strong>babykokoro.github.io/dompet-kita</strong>, bukan dari file di laptop.</p>');
+  } else if (!c.sesi){
+    isi = '<p class="note" style="font-size:14px">'+esc(c.putus)+'</p><div class="row-btn" style="justify-content:flex-start">'+tombolAksi("masuk-google", '<span class="g-logo">G</span>Masuk lagi dengan Google', "btn-primary")+tombolAksi("putus-awan", "Putuskan perangkat ini", "btn-ghost")+'</div>';
+  } else {
+    isi = '<div class="set-row"><div><strong class="awan-'+st.kode+'"><span class="awan-titik"></span> '+esc(st.teks)+'</strong>'+
+        '<p class="muted" style="font-size:14px">'+(c.sesi.user.anonim ? "Bergabung lewat scan QR" : "Akun Google " + esc(c.sesi.user.email))+'. Foto struk tetap tersimpan di perangkat tempat difoto.</p></div>'+
+        tombolAksi("sinkron-sekarang", "Sinkron sekarang", "btn-ghost")+'</div>'+
+      '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("tampil-qr", "Tampilkan QR untuk perangkat baru", "btn-primary")+
+        tombolAksi("daftar-perangkat", "Perangkat tersambung", "btn-ghost")+tombolAksi("putus-awan", "Putuskan perangkat ini", "btn-ghost")+'</div>';
+  }
+  return '<section class="card set-sec" id="awan-box" aria-labelledby="set-awan"><div class="card-head" style="margin:0">'+maskot("zee", 48)+'<h2 id="set-awan">Sinkron antarperangkat</h2></div>'+isi+'</section>';
+}
+Object.assign(AKSI, {
+  "masuk-google": () => masukGoogle("sambung"),
+  "scan-qr": () => modalScanQR(),
+  "tutup-scan": () => { hentikanKamera(); tutupModal(); },
+  "pakai-tautan-qr": () => {
+    const kode = kodeDariTeks(document.getElementById("in-tautan-qr").value);
+    if (!kode){ document.getElementById("err-scan").textContent = "Tautan atau kode belum benar."; return; }
+    hentikanKamera(); tutupModal(); gabungPakaiKode(kode);
+  },
+  "tampil-qr": () => modalTampilQR(),
+  "salin-tautan-qr": async t => { try { await navigator.clipboard.writeText(t.dataset.t); toast("Tautan disalin. Berlaku 5 menit dan hanya sekali pakai."); } catch(e){ toast("Tidak bisa menyalin otomatis."); } },
+  "sinkron-sekarang": async () => { const ok = await sinkron("manual"); toast(ok ? "Zee: semua sudah tersinkron." : "Zee: sinkron belum berhasil. " + teksStatusAwan().teks); },
+  "daftar-perangkat": () => modalPerangkat(),
+  "hapus-perangkat": t => hapusPerangkat(t),
+  "putus-awan": t => {
+    if (t.dataset.yakin !== "1"){ t.dataset.yakin = "1"; t.textContent = "Yakin? Klik lagi"; return; }
+    putuskanAwan();
+  },
+  "awan-pakai-remote": () => pakaiDataAwan(),
+  "awan-batal-gabung": () => putuskanAwan("Dibatalkan. Perangkat ini tidak disinkronkan."),
+  "buka-awan": () => { tutupModal(); S.halaman = "pengaturan"; render(); const el = document.getElementById("awan-box"); if (el) el.scrollIntoView({block:"start"}); }
+});
+
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-aksi]");
   if (!t) return;
@@ -5721,6 +6334,7 @@ function mulai(){
   render();
 }
 mulai();
+awanMulai();
 </script>
 </body>
 </html>
