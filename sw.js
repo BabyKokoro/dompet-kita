@@ -1,12 +1,27 @@
 /* Service worker Dompet Kita: aplikasi tetap bisa dibuka tanpa internet */
-const VERSI = "dompet-kita-95c46093b7";
+const VERSI = "dompet-kita-24612a0308";
 const INTI = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSI).then(c => c.addAll(INTI))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSI).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSI && k !== "dompet-kita-bagikan").map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener("fetch", e => {
   const r = e.request;
+  /* gambar yang dibagikan dari aplikasi lain (Android) disimpan sebentar, lalu aplikasi dibuka */
+  if (r.method === "POST" && new URL(r.url).pathname.endsWith("/bagikan")){
+    e.respondWith((async () => {
+      try {
+        const fd = await r.formData(), c = await caches.open("dompet-kita-bagikan");
+        await c.delete("foto"); await c.delete("teks");
+        const f = fd.getAll("foto").find(x => x && x.size);
+        if (f) await c.put("foto", new Response(f, {headers:{"content-type":f.type || "image/jpeg"}}));
+        const teks = ["title", "text", "url"].map(k => fd.get(k) || "").filter(Boolean).join("\n");
+        if (teks) await c.put("teks", new Response(teks));
+      } catch(err){}
+      return Response.redirect("./?aksi=bagikan", 303);
+    })());
+    return;
+  }
   if (r.method !== "GET") return;
   const url = new URL(r.url);
   const font = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);

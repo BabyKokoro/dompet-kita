@@ -724,6 +724,38 @@ html[data-tema=gelap] .valas-hasil{color:var(--gold)}
   body.mode-cetak-kode .cetak-kode{display:block!important}
   body.mode-cetak-kode .cetak-kode img{width:100%;max-width:700px}
 }
+/* langkah 13 */
+.acara-kartu{gap:8px}
+.acara-mini{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-top:1px solid var(--line)}
+.acara-mini:first-of-type{border-top:0}
+.acara-mini .ang-head{gap:8px;align-items:center}
+.acara-lewat summary{cursor:pointer;font-weight:800}
+.seg-radio{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;font-weight:800;cursor:pointer}
+.seg-radio:has(input:checked){background:var(--primary);color:var(--on-primary)}
+.seg-radio input{accent-color:var(--primary)}
+.rinci-baris{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-top:8px}
+.modal .bar{width:100%;align-self:stretch;flex:0 0 auto}
+.modal .rinci-baris,.modal .rinci-tx{width:100%;align-self:stretch}
+.rinci-tx{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rinci-tx li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.rinci-tx li > span:first-child{display:flex;flex-direction:column;min-width:0}
+.tx-cek{flex:0 0 26px;width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--on-primary);margin-right:2px}
+.tx.dipilih{background:var(--tint)}
+.tx.dipilih .tx-cek{background:var(--primary);border-color:var(--primary)}
+.tx-cek.kunci{border-style:dashed;color:var(--muted)}
+.tx-cek.kunci .ico{width:14px;height:14px}
+.tx.tx-kunci{opacity:.6}
+.bar-pilih{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:39;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;width:min(720px,calc(100% - 32px));padding:10px 14px;border-radius:18px;background:var(--surface);border:2px solid var(--primary);box-shadow:0 10px 28px rgba(60,40,28,.28)}
+.bar-pilih-teks{display:flex;flex-direction:column;font-size:14px}
+.shell:has(.bar-pilih) .fab-bantu{display:none}
+.shell:has(.bar-pilih) .content{padding-bottom:110px}
+.snack{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:61;display:flex;align-items:center;gap:14px;padding:10px 12px 10px 18px;border-radius:16px;background:var(--primary-dark);color:#fff;font-weight:800;box-shadow:0 10px 28px rgba(0,0,0,.3);max-width:calc(100% - 32px)}
+html[data-tema=gelap] .snack{background:#F3E6D8;color:#24170F}
+.snack-btn{border:0;border-radius:12px;padding:8px 14px;font:inherit;font-weight:900;background:var(--gold,#F2C94C);color:#24170F;cursor:pointer}
+@media (max-width:900px){
+  .bar-pilih{bottom:calc(84px + env(safe-area-inset-bottom))}
+  .snack{bottom:calc(100px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -1648,9 +1680,9 @@ function barisTx(t){
     warna = k.warna; isi = esc(k.nama.charAt(0).toUpperCase());
     kelas = t.jenis === "masuk" ? "naik" : "turun"; tanda = t.jenis === "masuk" ? "+" : "−";
   }
-  return '<button type="button" class="tx" data-aksi="ubah-tx" data-id="'+t.id+'">'+
+  return awalBarisTx(t)+
     '<span class="tx-ikon" style="background:'+warna+';color:'+kontras(warna)+'">'+isi+'</span>'+
-    '<span class="tx-teks"><strong>'+esc(judul)+'</strong><span>'+esc(sub)+(t.valas ? ' · ' + esc(fmtValas(t.valas.jumlah, t.valas.kode)) : '')+(t.fotoId ? ' · ada struk' : '')+'</span></span>'+
+    '<span class="tx-teks"><strong>'+esc(judul)+'</strong><span>'+esc(sub)+(t.valas ? ' · ' + esc(fmtValas(t.valas.jumlah, t.valas.kode)) : '')+(namaAcaraTx(t) ? ' · Acara ' + esc(namaAcaraTx(t)) : '')+(t.fotoId ? ' · ada struk' : '')+'</span></span>'+
     '<span class="tx-nom '+kelas+'">'+tanda+rupiah(t.nominal)+'</span></button>';
 }
 function navBulan(){
@@ -1698,7 +1730,7 @@ function halBeranda(){
     (ultahHariIni(profil().lahir) ? kartuUltah() : '')+
     (!profil().lahir && !d.pengaturan.tipProfilTutup ? '<section class="card bubble-card">'+maskot("alpha", 64)+'<div class="bubble"><strong>Alpha punya ide</strong><span>Isi tanggal lahirmu di Pengaturan supaya geng maskot bisa merayakan ulang tahunmu.</span>'+
       '<div class="row-btn" style="justify-content:flex-start;margin-top:8px">'+tombolAksi("nav", "Isi sekarang", "btn-primary btn-kecil", ' data-h="pengaturan"')+tombolAksi("tutup-tip-profil", "Nanti saja", "btn-ghost btn-kecil")+'</div></div></section>' : '')+
-    kartuPemulihan()+kartuBeranda7b()+kartuBeranda8()+
+    kartuPemulihan()+kartuAcaraBeranda()+kartuBeranda7b()+kartuBeranda8()+
     '<section class="card bubble-card">'+maskot("piggy", 84)+'<div class="bubble"><strong>Kata Piggy</strong><span>'+esc(pesanPiggy(r))+'</span></div></section>'+
     kartuBerandaLangkah6()+
     '<section class="card"><div class="page-head" style="margin-bottom:16px"><h2>Pembagian per kategori</h2><div class="seg-wrap">'+tab("keluar","Pengeluaran")+tab("masuk","Pemasukan")+tab("dompet","Saldo per dompet")+'</div></div>'+donut+'</section>'+
@@ -1737,7 +1769,7 @@ function halTransaksi(){
     '<optgroup label="Pengeluaran">'+d.kategori.filter(k => k.jenis === "keluar").map(k => opt(k.id, k.nama, f.kategori)).join("")+'</optgroup>'+
     '<optgroup label="Pemasukan">'+d.kategori.filter(k => k.jenis === "masuk").map(k => opt(k.id, k.nama, f.kategori)).join("")+'</optgroup>';
   return '<header class="page-head"><div><h1>Transaksi</h1><p>Semua catatan pemasukan, pengeluaran, dan pindah dompet.</p></div>'+
-      '<button type="button" class="btn btn-primary" data-aksi="tx-baru">'+ikon("plus")+'Catat transaksi</button></header>'+
+      '<div class="row-btn">'+tombolAksi("mode-pilih", S.pilihTx ? "Selesai memilih" : "Pilih", "btn-ghost")+'<button type="button" class="btn btn-primary" data-aksi="tx-baru">'+ikon("plus")+'Catat transaksi</button></div></header>'+
     (S.sesi.data.favorit.length ? barFavorit() : '')+
     '<div class="toolbar">'+navBulan()+
       '<label class="cari">'+maskot("mochi", 30)+'<span class="sr-only">Cari transaksi</span><input id="in-cari" type="search" autocomplete="off" placeholder="Cari catatan, kategori, dompet, nominal..." value="'+esc(f.q)+'"></label></div>'+
@@ -1750,12 +1782,7 @@ function halTransaksi(){
 }
 function hasilTx(){
   const d = S.sesi.data, f = S.filter, cari = f.q.trim().toLowerCase();
-  const list = d.transaksi.filter(t =>
-    (cari || periode(t.tanggal) === S.bulan) &&
-    (f.jenis === "semua" || t.jenis === f.jenis) &&
-    (f.kategori === "semua" || t.kategoriId === f.kategori) &&
-    (f.dompet === "semua" || t.dompetId === f.dompet || t.keDompetId === f.dompet) &&
-    (!cari || teksCari(t).includes(cari))).sort(urutTx);
+  const list = daftarTxTersaring();
   const aktif = cari || f.jenis !== "semua" || f.kategori !== "semua" || f.dompet !== "semua";
   if (!list.length){
     if (aktif) return '<section class="card empty">'+maskot("mochi", 120)+'<h2>Mochi tidak menemukan apa-apa</h2>'+
@@ -1781,7 +1808,7 @@ function hasilTx(){
     html += '<section class="tgl-grup"><div class="tgl-head"><span>'+labelTanggal(tgl)+'</span><span class="'+(net > 0 ? "naik" : net < 0 ? "turun" : "")+'">'+(net > 0 ? "+" : net < 0 ? "−" : "")+rupiah(Math.abs(net))+'</span></div>'+
       '<div class="card tx-card">'+items.map(barisTx).join("")+'</div></section>';
   });
-  return html + '</div>';
+  return html + '</div>' + barPilih();
 }
 function pasangFilterTx(){
   const q = document.getElementById("in-cari");
@@ -1827,6 +1854,7 @@ function bacaFormTx(){
   if (g("in-sub")) f.sub = g("in-sub").value;
   if (g("in-fav")) f.simpanFavorit = g("in-fav").checked;
   bacaValas(f);
+  bacaAcaraForm(f);
 }
 function tampilFormTx(pesanErr){
   const f = S.form, d = S.sesi.data;
@@ -1846,7 +1874,7 @@ function tampilFormTx(pesanErr){
       '<label class="field">Ke dompet<select id="in-ke">'+opsiDompet(f.keDompetId)+'</select></label></div>'
     : '<fieldset><legend>Kategori</legend><div class="kat-grid">'+chips+'<button type="button" class="kat kat-baru" data-aksi="tx-kat-baru">+ Kategori baru</button></div></fieldset>'+
       '<label class="field">Sub-kategori (opsional)<input id="in-sub" list="dl-sub" maxlength="30" autocomplete="off" placeholder="Contoh: Listrik, Air PDAM" value="'+esc(f.sub || "")+'"><datalist id="dl-sub">'+opsiSaranSub(f.kategoriId)+'</datalist></label>'+
-      '<label class="field">Dompet<select id="in-dompet">'+opsiDompet(f.dompetId)+'</select></label>';
+      '<label class="field">Dompet<select id="in-dompet">'+opsiDompet(f.dompetId)+'</select></label>'+acaraFieldHTML(f);
   const m = bukaModal(
     '<h2 id="judul-modal">'+(f.baru ? "Catat transaksi" : "Ubah transaksi")+'</h2>'+
     '<p class="basmalah"><span lang="ar" dir="rtl">'+BASMALAH.arab+'</span> · <span>'+BASMALAH.latin+'</span></p>'+
@@ -1940,7 +1968,11 @@ async function simpanTx(){
       rec.valas = {kode:f.valas.kode, jumlah:f.valas.jumlah, kurs:f.valas.kurs};
       (d.pengaturan.kurs = d.pengaturan.kurs || {})[f.valas.kode] = f.valas.kurs;
     }
+    if (f.jenis === "keluar" && f.acaraId && cariAcara(f.acaraId, !!f.acaraBersama)){ rec.acaraId = f.acaraId; rec.acaraBersama = !!f.acaraBersama; }
+    const acaraLama = rec.acaraId ? cariAcara(rec.acaraId, rec.acaraBersama) : null;
+    let acaraSebelum = acaraLama ? totalPakaiAcara(acaraLama, rec.acaraBersama) : 0;
     const lama = d.transaksi.find(t => t.id === rec.id);
+    if (acaraLama && lama && lama.acaraId === rec.acaraId && lama.jenis === "keluar") acaraSebelum -= lama.nominal;
     let sebelum = rec.jenis === "keluar" ? terpakai(rec.kategoriId, periode(rec.tanggal)) : 0;
     if (lama && lama.jenis === "keluar" && lama.kategoriId === rec.kategoriId && periode(lama.tanggal) === periode(rec.tanggal)) sebelum -= lama.nominal;
     if (lama && lama.rutinId) rec.rutinId = lama.rutinId;
@@ -1958,7 +1990,9 @@ async function simpanTx(){
     const i = d.transaksi.findIndex(t => t.id === rec.id);
     if (i >= 0) d.transaksi[i] = rec; else d.transaksi.push(rec);
     await simpanPribadi();
+    if (sinkronPakaiBersama(rec)) await simpanBersama();
     cekTeguranKenzo(sebelum, rec);
+    cekTeguranCici(rec, acaraSebelum);
     tutupModal();
     S.form = null;
     S.bulan = periode(rec.tanggal);
@@ -1985,6 +2019,7 @@ async function hapusTxYa(){
   if (t && t.fotoId){ try { await hapusFoto(t.fotoId); } catch(e){} }
   d.transaksi = d.transaksi.filter(x => x.id !== S.form.id);
   await simpanPribadi();
+  if (sinkronPakaiBersama({id:S.form.id}, true)) await simpanBersama();
   tutupModal(); S.form = null; render();
   toast("Transaksi dihapus.");
 }
@@ -2328,7 +2363,7 @@ function halAnggaran(){
       '<div class="card stat utama"><span class="lbl">Sisa anggaran</span><span class="val">'+rupiah(totalBatas - totalPakai)+'</span><span class="sub">'+labelPeriode(S.bulan)+'</span></div></div>'+
       '<div class="ang-grid">'+kartu+'</div>'
     : kosongKartu("kenzo", "Belum ada anggaran", "Contoh: Makan & minum Rp 1.500.000 per bulan. Kenzo akan menegur saat sudah terpakai 80%.", tombolAksi("tambah-anggaran", ikon("plus") + "Atur anggaran pertama", "btn-primary")))+
-    (list.length && tanpa.length ? '<p class="muted" style="font-size:14px">Belum punya anggaran: '+tanpa.map(k => esc(k.nama)).join(", ")+'.</p>' : "");
+    (list.length && tanpa.length ? '<p class="muted" style="font-size:14px">Belum punya anggaran: '+tanpa.map(k => esc(k.nama)).join(", ")+'.</p>' : "")+seksiAcara();
 }
 function bukaFormAnggaran(id){
   const d = S.sesi.data, a = id ? d.anggaran.find(x => x.id === id) : null;
@@ -2517,7 +2552,7 @@ function bukaMutasi(target, id, mode){
     '<p class="muted">Saldo sekarang: <strong>'+rupiah(o.saldo)+'</strong></p>'+
     (mode === "ambil" && target === "darurat" ? '<p class="note" style="font-size:14px">Snowy mengingatkan: dana darurat hanya untuk keadaan mendesak, misalnya sakit atau kehilangan pekerjaan. Yakin mau diambil?</p>' : '')+
     '<label class="field">Nominal'+inUang("in-mnom", "", "0")+'</label>'+
-    (mode === "pakai" ? '<label class="field">Untuk<select id="in-mkat">'+KAT_BERSAMA.map(k => '<option>'+k+'</option>').join("")+'</select></label>'
+    (mode === "pakai" ? '<label class="field">Untuk<select id="in-mkat">'+KAT_BERSAMA.map(k => '<option>'+k+'</option>').join("")+'</select></label>'+(target === "dber" ? acaraMutasiHTML() : "")
       : '<label class="field">'+labelDompet+pilihDompet("in-mdompet", (S.sesi.data.dompet[0] || {}).id, "Tidak lewat dompet (uang di luar catatan)")+'</label>')+
     '<label class="field">Tanggal<input type="date" id="in-mtgl" value="'+tglLokal()+'"></label>'+
     '<label class="field">Catatan<input id="in-mcat" maxlength="60" autocomplete="off" placeholder="Opsional"></label>'+
@@ -2539,6 +2574,7 @@ async function simpanMutasi(){
   }
   const e = {id:uid(), tanggal, nominal:f.mode === "setor" ? nominal : -nominal, catatan, txId, oleh:S.sesi.user.id};
   if (f.mode === "pakai") e.kategori = document.getElementById("in-mkat").value;
+  const inAc = document.getElementById("in-macara"); if (f.mode === "pakai" && inAc && inAc.value) e.acaraId = inAc.value;
   if (f.target === "dber"){ e.dompetId = f.id; e.jenis = f.mode; S.sesi.bersama.mutasi.push(e); }
   else o.obj.setoran.push(e);
   await simpanPribadi(); if (o.bersama) await simpanBersama();
@@ -5753,7 +5789,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.4.1c";
+const VERSI_APP = "1.4.2";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -6806,8 +6842,8 @@ document.addEventListener("keydown", e => {
 });
 
 /* ---------- Pintasan ikon aplikasi (manifest) ---------- */
-S.aksiTunda = (() => { try { const a = new URLSearchParams(location.search).get("aksi"); return ["keluar", "masuk", "saldo"].includes(a) ? a : null; } catch(e){ return null; } })();
-if (S.aksiTunda) S.pesanLogin = {keluar:"Masukkan PIN, lalu Tupi langsung membuka catat pengeluaran.", masuk:"Masukkan PIN, lalu Tupi langsung membuka catat pemasukan.", saldo:"Masukkan PIN, lalu Octo menunjukkan saldo semua dompet."}[S.aksiTunda];
+S.aksiTunda = (() => { try { const a = new URLSearchParams(location.search).get("aksi"); return ["keluar", "masuk", "saldo", "bagikan"].includes(a) ? a : null; } catch(e){ return null; } })();
+if (S.aksiTunda) S.pesanLogin = {keluar:"Masukkan PIN, lalu Tupi langsung membuka catat pengeluaran.", masuk:"Masukkan PIN, lalu Tupi langsung membuka catat pemasukan.", saldo:"Masukkan PIN, lalu Octo menunjukkan saldo semua dompet.", bagikan:"Masukkan PIN, lalu Froggy melampirkan bukti transfermu ke catatan baru."}[S.aksiTunda];
 function jalankanAksiTunda(){
   const a = S.aksiTunda;
   if (!a || !S.sesi) return;
@@ -6816,6 +6852,7 @@ function jalankanAksiTunda(){
   setTimeout(() => {
     if (!S.sesi) return;
     if (a === "saldo"){ tutupModal(); S.halaman = "dompet"; render(); catatHalaman("dompet"); toast("Octo menunjukkan saldo semua dompetmu."); }
+    else if (a === "bagikan") bukaDariBagikan();
     else bukaFormTx(null, a);
   }, 350);
 }
@@ -6823,9 +6860,9 @@ function jalankanAksiTunda(){
 /* ---------- Panduan Alpha ---------- */
 const BANTUAN = {
   beranda:["piggy", "Ringkasan uangmu: saldo, pemasukan, dan pengeluaran periode ini.", ["Tombol + (atau tombol N di laptop) untuk mencatat transaksi.", "Catat cepat dari Tupi menyimpan transaksi favorit, jadi cukup sekali ketuk.", "Ketuk Lingling di atas (atau tombol H) untuk menyembunyikan semua nominal saat ada orang di dekatmu.", "Kartu peringatan muncul kalau anggaran menipis atau ada tagihan yang dekat."]],
-  transaksi:["tupi", "Semua catatan pemasukan, pengeluaran, dan pindah dompet.", ["Kolom nominal bisa menghitung, misalnya 25000+12500 lalu tekan =.", "Cari catatan, kategori, dompet, atau nominal lewat kolom Mochi (tombol / di laptop).", "Belanja dengan mata uang asing? Buka Pakai mata uang asing di form, Octo menghitungkan Rupiahnya.", "Ketuk sebuah transaksi untuk mengubah atau menghapusnya."]],
+  transaksi:["tupi", "Semua catatan pemasukan, pengeluaran, dan pindah dompet.", ["Tekan Pilih untuk menghapus beberapa transaksi sekaligus. Masih bisa dibatalkan selama 10 detik.", "Di Android, bagikan screenshot bukti transfer dari m-banking ke Dompet Kita: Froggy langsung melampirkannya.", "Kolom nominal bisa menghitung, misalnya 25000+12500 lalu tekan =.", "Cari catatan, kategori, dompet, atau nominal lewat kolom Mochi (tombol / di laptop).", "Belanja dengan mata uang asing? Buka Pakai mata uang asing di form, Octo menghitungkan Rupiahnya.", "Ketuk sebuah transaksi untuk mengubah atau menghapusnya."]],
   dompet:["octo", "Tempat semua saldo: tunai, rekening bank, dan e-wallet.", ["Pindah saldo antardompet tidak dihitung sebagai pengeluaran.", "Saldo setiap dompet dihitung otomatis dari transaksinya.", "Pintasan ikon aplikasi Lihat saldo langsung membuka halaman ini."]],
-  anggaran:["kenzo", "Batas belanja per kategori untuk setiap periode.", ["Kenzo menegur saat anggaran hampir habis dan saat sudah lewat batas.", "Dova bisa membantu membagi gaji dengan pola 50/30/20.", "Awal periode bisa disamakan dengan tanggal gajian di Pengaturan."]],
+  anggaran:["kenzo", "Batas belanja per kategori untuk setiap periode, plus anggaran acara.", ["Anggaran acara dari Cici: buat acara seperti Lebaran atau liburan, lalu tandai belanjanya saat mencatat transaksi.", "Kenzo menegur saat anggaran hampir habis dan saat sudah lewat batas.", "Dova bisa membantu membagi gaji dengan pola 50/30/20.", "Awal periode bisa disamakan dengan tanggal gajian di Pengaturan."]],
   tabungan:["piyik", "Tabungan impian, dana darurat, dan investasi.", ["Snowy menjaga dana darurat supaya kamu siap saat ada kejadian mendadak.", "Garu mengingatkan update nilai investasi setiap Jumat pukul 19.00, lengkap dengan riwayat naik-turunnya.", "Isi catatan tujuan supaya ingat investasi itu untuk apa."]],
   aset:["kelo", "Kekayaan bersih: semua saldo, investasi, dan aset dikurangi utang.", ["Catat rumah, kendaraan, atau barang berharga beserta perkiraan nilainya.", "Perbarui nilainya sesekali supaya angkanya tetap realistis."]],
   tantangan:["roo", "Tantangan menabung untuk membangun kebiasaan.", ["Tandai setiap kali kamu menyetor.", "Tantangan yang selesai menambah XP dan lencana."]],
@@ -7626,6 +7663,299 @@ Object.assign(AKSI, {
   "lokasi-mati": () => { localStorage.setItem(K_LOKASI_AKTIF, "0"); localStorage.removeItem(K_LOKASI); render(); if (awanTersambung()) laporPerangkat("lokasi"); toast("Lokasi perangkat dimatikan."); },
   "lokasi-nyala": async () => { localStorage.setItem(K_LOKASI_AKTIF, "1"); render(); const l = await perbaruiLokasi(true); render(); toast(l ? "Lokasi: " + teksLokasiTampil(l) + "." : "Zee: " + (PESAN_LOKASI[S.lokasiGalat] || PESAN_LOKASI.jaringan)); }
 });
+
+/* ============ Langkah 13 (v1.4.2): anggaran acara, bagikan bukti transfer, hapus beberapa transaksi ============ */
+
+/* ---------- Anggaran acara (Cici) ---------- */
+const acaraP = () => (S.sesi.data.acara = S.sesi.data.acara || []);
+const acaraB = () => (S.sesi.bersama.acara = S.sesi.bersama.acara || []);
+const cariAcara = (id, bersama) => (bersama ? acaraB() : acaraP()).find(a => a.id === id);
+function statusAcara(a){ const h = tglLokal(); return h < a.mulai ? "akan" : h > a.selesai ? "selesai" : "berjalan"; }
+const fmtTglPendekAcara = t => new Date(t + "T00:00:00").toLocaleDateString("id-ID", {day:"numeric", month:"short", year:"numeric"});
+function pakaiAcara(a, bersama){
+  if (!bersama) return S.sesi.data.transaksi.filter(t => t.jenis === "keluar" && t.acaraId === a.id && !t.acaraBersama)
+    .map(t => ({id:t.id, oleh:S.sesi.user.id, nominal:t.nominal, tanggal:t.tanggal, kategori:(kat(t.kategoriId) || {}).nama || "Lainnya", catatan:t.catatan || ""}));
+  const dariTx = (a.pakai || []).map(p => Object.assign({}, p));
+  const dariDber = S.sesi.bersama.mutasi.filter(m => m.jenis === "pakai" && m.acaraId === a.id)
+    .map(m => ({id:m.id, oleh:m.oleh, nominal:Math.abs(m.nominal), tanggal:m.tanggal, kategori:m.kategori || "Belanja bersama", catatan:m.catatan || "", dber:true}));
+  return dariTx.concat(dariDber);
+}
+const totalPakaiAcara = (a, b) => pakaiAcara(a, b).reduce((s, p) => s + p.nominal, 0);
+function namaAcaraTx(t){ const a = t.acaraId ? cariAcara(t.acaraId, !!t.acaraBersama) : null; return a ? a.nama : ""; }
+/* catatan belanja ke acara berdua disalin ke brankas bersama supaya pasangan ikut melihat */
+function sinkronPakaiBersama(rec, hapus){
+  let ubah = false;
+  acaraB().forEach(a => {
+    const i = (a.pakai || []).findIndex(p => p.id === rec.id);
+    if (i >= 0 && (hapus || !(rec.jenis === "keluar" && rec.acaraBersama && rec.acaraId === a.id))){ a.pakai.splice(i, 1); ubah = true; }
+  });
+  if (!hapus && rec.jenis === "keluar" && rec.acaraBersama){
+    const a = cariAcara(rec.acaraId, true);
+    if (a){
+      a.pakai = a.pakai || [];
+      const e = {id:rec.id, oleh:S.sesi.user.id, nominal:rec.nominal, tanggal:rec.tanggal, kategori:(kat(rec.kategoriId) || {}).nama || "Lainnya", catatan:rec.catatan || ""};
+      const i = a.pakai.findIndex(p => p.id === rec.id);
+      if (i >= 0){ if (kanon(a.pakai[i]) !== kanon(e)){ a.pakai[i] = e; ubah = true; } } else { a.pakai.push(e); ubah = true; }
+    }
+  }
+  return ubah;
+}
+function acaraUntukTanggal(tgl, pilihId){
+  const cocok = x => (x.a.mulai <= tgl && tgl <= x.a.selesai) || statusAcara(x.a) !== "selesai" || x.a.id === pilihId;
+  return acaraP().map(a => ({a, b:false})).concat(acaraB().map(a => ({a, b:true}))).filter(cocok).sort((x, y) => x.a.mulai.localeCompare(y.a.mulai));
+}
+function acaraFieldHTML(f){
+  if (f.jenis !== "keluar") return "";
+  const list = acaraUntukTanggal(f.tanggal || tglLokal(), f.acaraId);
+  if (!list.length) return "";
+  const nilai = f.acaraId ? (f.acaraBersama ? "b:" : "p:") + f.acaraId : "";
+  const op = x => '<option value="'+(x.b ? "b:" : "p:")+x.a.id+'"'+(nilai === (x.b ? "b:" : "p:") + x.a.id ? " selected" : "")+'>'+esc(x.a.nama)+(x.b ? " (berdua)" : "")+'</option>';
+  return '<label class="field">Masuk anggaran acara (opsional)<select id="in-acara"><option value="">Tidak ada</option>'+list.map(op).join("")+'</select></label>'+
+    '<p class="muted acara-cat" style="font-size:12px;margin-top:-6px">Belanja yang masuk acara berdua terlihat oleh pasangan: nominal, kategori, dan catatannya.</p>';
+}
+function bacaAcaraForm(f){
+  const el = document.getElementById("in-acara");
+  if (!el) return;
+  const v = el.value;
+  f.acaraId = v ? v.slice(2) : null; f.acaraBersama = v.startsWith("b:");
+}
+function cekTeguranCici(rec, sebelum){
+  if (!rec || rec.jenis !== "keluar" || !rec.acaraId) return;
+  const a = cariAcara(rec.acaraId, !!rec.acaraBersama);
+  if (!a || !a.anggaran) return;
+  const p1 = sebelum / a.anggaran * 100, p2 = totalPakaiAcara(a, !!rec.acaraBersama) / a.anggaran * 100;
+  let pesan = "";
+  if (p2 >= 100 && p1 < 100) pesan = "Anggaran acara " + a.nama + " sudah lewat batas (" + Math.round(p2) + "%).";
+  else if (p2 >= BATAS_AWAS && p1 < BATAS_AWAS) pesan = "Anggaran acara " + a.nama + " sudah terpakai " + Math.round(p2) + "%. Sisa " + rupiah(a.anggaran - totalPakaiAcara(a, !!rec.acaraBersama)) + ".";
+  if (pesan) setTimeout(() => toast("Cici: " + pesan), 2400);
+}
+function kartuAcara(a, bersama){
+  const pakai = totalPakaiAcara(a, bersama), pct = a.anggaran ? pakai / a.anggaran * 100 : 0, st = statusAcara(a);
+  const sisaHari = hariAntara(tglLokal(), a.selesai);
+  const chipSt = st === "akan" ? '<span class="rchip" style="background:var(--tint);color:var(--chip-teks)">Mulai '+fmtTglPendekAcara(a.mulai)+'</span>'
+    : st === "berjalan" ? '<span class="rchip" style="background:var(--green-bg);color:var(--hijau-teks)">Berlangsung'+(sisaHari > 0 ? " · " + sisaHari + " hari lagi" : " · hari terakhir")+'</span>'
+    : '<span class="rchip" style="background:var(--tint);color:var(--chip-teks)">Selesai</span>';
+  const warna = pct >= 100 ? "#C4574B" : pct >= BATAS_AWAS ? "#D9A441" : "#6F8F5E";
+  return '<article class="card tab-kartu acara-kartu"><div class="ang-head"><h3>'+esc(a.nama)+'</h3>'+(bersama ? '<span class="chip">Berdua</span>' : '')+
+      '<button type="button" class="btn-ikon" data-aksi="ubah-acara" data-id="'+a.id+'" data-b="'+(bersama ? 1 : 0)+'" aria-label="Ubah acara '+esc(a.nama)+'">'+ikon("ubah")+'</button></div>'+
+    '<p class="muted" style="font-size:13px">'+fmtTglPendekAcara(a.mulai)+(a.selesai !== a.mulai ? ' sampai '+fmtTglPendekAcara(a.selesai) : '')+(a.catatan ? ' · ' + esc(a.catatan) : '')+'</p>'+
+    '<div>'+chipSt+'</div>'+
+    '<div class="ang-angka"><strong>'+rupiah(pakai)+'</strong><span class="muted"> dari '+rupiah(a.anggaran)+'</span></div>'+
+    bar(Math.min(100, pct), warna)+
+    '<p style="font-size:14px;font-weight:800;color:'+(pakai > a.anggaran ? "var(--red)" : "inherit")+'">'+(pakai > a.anggaran ? "Lewat " + rupiah(pakai - a.anggaran) : "Sisa " + rupiah(a.anggaran - pakai))+'</p>'+
+    '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("rinci-acara", "Lihat rincian", "btn-ghost btn-kecil", ' data-id="'+a.id+'" data-b="'+(bersama ? 1 : 0)+'"')+
+      (st !== "selesai" ? tombolAksi("tx-acara", ikon("plus") + "Catat belanja", "btn-primary btn-kecil", ' data-id="'+a.id+'" data-b="'+(bersama ? 1 : 0)+'"') : '')+'</div></article>';
+}
+function seksiAcara(){
+  const semua = acaraP().map(a => ({a, b:false})).concat(acaraB().map(a => ({a, b:true})));
+  const aktif = semua.filter(x => statusAcara(x.a) !== "selesai").sort((x, y) => x.a.mulai.localeCompare(y.a.mulai));
+  const lewat = semua.filter(x => statusAcara(x.a) === "selesai").sort((x, y) => y.a.selesai.localeCompare(x.a.selesai));
+  return '<section class="card set-sec" id="seksi-acara"><div class="page-head" style="margin:0"><div class="card-head" style="margin:0">'+maskot("cici", 56)+
+      '<div><h2>Anggaran acara</h2><p class="muted" style="font-size:14px">Batas belanja khusus untuk satu acara, misalnya Lebaran, nikahan teman, atau liburan.</p></div></div>'+
+      tombolAksi("tambah-acara", ikon("plus") + "Acara baru", "btn-primary")+'</div>'+
+    (aktif.length ? '<div class="ang-grid">'+aktif.map(x => kartuAcara(x.a, x.b)).join("")+'</div>'
+      : '<p class="muted">Belum ada acara yang berjalan. Buat acara, lalu tandai belanjanya saat mencatat transaksi.</p>')+
+    (lewat.length ? '<details class="acara-lewat"><summary>Acara yang sudah selesai ('+lewat.length+')</summary><div class="ang-grid" style="margin-top:12px">'+lewat.map(x => kartuAcara(x.a, x.b)).join("")+'</div></details>' : '')+
+  '</section>';
+}
+function kartuAcaraBeranda(){
+  const jalan = acaraP().map(a => ({a, b:false})).concat(acaraB().map(a => ({a, b:true}))).filter(x => statusAcara(x.a) === "berjalan").slice(0, 3);
+  if (!jalan.length) return "";
+  return '<section class="card"><div class="page-head" style="margin-bottom:10px"><div class="card-head" style="margin:0">'+maskot("cici", 48)+'<h2>Acara berjalan</h2></div>'+tombolAksi("ke-acara", "Atur", "link")+'</div>'+
+    jalan.map(x => {
+      const p = totalPakaiAcara(x.a, x.b), pct = x.a.anggaran ? p / x.a.anggaran * 100 : 0;
+      return '<div class="acara-mini"><div class="ang-head"><strong>'+esc(x.a.nama)+'</strong>'+(x.b ? '<span class="chip">Berdua</span>' : '')+'<span class="muted" style="margin-left:auto;font-size:13px">'+rupiah(p)+' / '+rupiah(x.a.anggaran)+'</span></div>'+
+        bar(Math.min(100, pct), pct >= 100 ? "#C4574B" : pct >= BATAS_AWAS ? "#D9A441" : "#6F8F5E")+'</div>';
+    }).join("")+'</section>';
+}
+function modalAcara(id, bersama){
+  const a = id ? cariAcara(id, bersama) : null, h = tglLokal();
+  S.formAcara = {id, bersama};
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("cici", 56)+'<h2 id="judul-modal">'+(a ? "Ubah acara" : "Acara baru")+'</h2></div>'+
+    '<label class="field">Nama acara<input id="in-anama" maxlength="40" autocomplete="off" placeholder="Contoh: Lebaran 2027, Nikahan Dina, Liburan Bali" value="'+esc(a ? a.nama : "")+'"></label>'+
+    '<label class="field">Anggaran'+inUang("in-aang", a ? a.anggaran : "", "0")+'</label>'+
+    '<div class="dua"><label class="field">Mulai<input type="date" id="in-amulai" value="'+(a ? a.mulai : h)+'"></label>'+
+      '<label class="field">Selesai<input type="date" id="in-aselesai" value="'+(a ? a.selesai : h)+'"></label></div>'+
+    '<fieldset><legend>Milik</legend><div class="seg-wrap" role="radiogroup">'+
+      '<label class="seg-radio"><input type="radio" name="in-ajenis" value="p"'+(!bersama ? " checked" : "")+(a ? " disabled" : "")+'> Pribadi</label>'+
+      '<label class="seg-radio"><input type="radio" name="in-ajenis" value="b"'+(bersama ? " checked" : "")+(a ? " disabled" : "")+'> Berdua</label></div>'+
+      '<p class="muted" style="font-size:13px;margin-top:6px">'+(a ? "Jenis acara tidak bisa diubah setelah dibuat." : "Acara berdua bisa dilihat dan dipakai pasangan. Belanja dari dompet bersama juga bisa masuk ke sini.")+'</p></fieldset>'+
+    '<label class="field">Catatan<input id="in-acat" maxlength="60" autocomplete="off" placeholder="Opsional" value="'+esc(a ? a.catatan || "" : "")+'"></label>'+
+    '<p class="err" id="err-acara" role="alert"></p>'+
+    '<div class="row-btn">'+(a ? '<button type="button" class="btn btn-ghost btn-hapus" data-aksi="hapus-acara">Hapus</button>' : '')+tombolAksi("tutup-modal", "Batal")+tombolAksi("simpan-acara", "Simpan", "btn-primary")+'</div>');
+  document.querySelectorAll(".backdrop .in-uang").forEach(i => { if (i.value) i.dispatchEvent(new Event("input", {bubbles:true})); });
+}
+async function simpanAcara(){
+  const f = S.formAcara, err = document.getElementById("err-acara");
+  const nama = document.getElementById("in-anama").value.trim(), anggaran = nilaiUang("in-aang");
+  const mulai = document.getElementById("in-amulai").value, selesai = document.getElementById("in-aselesai").value, catatan = document.getElementById("in-acat").value.trim();
+  if (!nama){ err.textContent = "Isi nama acaranya."; return; }
+  if (!anggaran || isNaN(anggaran) || anggaran <= 0){ err.textContent = "Isi anggaran yang benar."; return; }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(mulai) || !/^\d{4}-\d{2}-\d{2}$/.test(selesai)){ err.textContent = "Isi tanggal mulai dan selesai."; return; }
+  if (selesai < mulai){ err.textContent = "Tanggal selesai tidak boleh sebelum tanggal mulai."; return; }
+  const bersama = f.id ? f.bersama : document.querySelector('input[name="in-ajenis"]:checked').value === "b";
+  const a = f.id ? cariAcara(f.id, bersama) : null;
+  if (a) Object.assign(a, {nama, anggaran, mulai, selesai, catatan});
+  else (bersama ? acaraB() : acaraP()).push(Object.assign({id:uid(), nama, anggaran, mulai, selesai, catatan, dibuat:new Date().toISOString(), oleh:S.sesi.user.id}, bersama ? {pakai:[]} : {}));
+  if (bersama) await simpanBersama(); else await simpanPribadi();
+  tutupModal(); render(); toast(a ? "Acara diperbarui." : "Cici mencatat acara " + nama + ". Tandai belanjanya saat mencatat transaksi.");
+}
+async function hapusAcara(){
+  const f = S.formAcara, b = document.querySelector('[data-aksi="hapus-acara"]');
+  if (b.dataset.yakin !== "1"){ b.dataset.yakin = "1"; b.textContent = "Yakin hapus?"; document.getElementById("err-acara").textContent = "Transaksinya tidak ikut terhapus, hanya tidak lagi masuk acara ini."; return; }
+  const list = f.bersama ? acaraB() : acaraP();
+  list.splice(list.findIndex(a => a.id === f.id), 1);
+  S.sesi.data.transaksi.forEach(t => { if (t.acaraId === f.id){ delete t.acaraId; delete t.acaraBersama; } });
+  if (f.bersama) S.sesi.bersama.mutasi.forEach(m => { if (m.acaraId === f.id) delete m.acaraId; });
+  await simpanPribadi(); if (f.bersama) await simpanBersama();
+  tutupModal(); render(); toast("Acara dihapus.");
+}
+function modalRinciAcara(id, bersama){
+  const a = cariAcara(id, bersama);
+  if (!a) return;
+  const list = pakaiAcara(a, bersama).sort((x, y) => y.tanggal.localeCompare(x.tanggal)), total = list.reduce((s, p) => s + p.nominal, 0);
+  const grup = (kunci) => { const m = new Map(); list.forEach(p => m.set(kunci(p), (m.get(kunci(p)) || 0) + p.nominal)); return [...m.entries()].sort((x, y) => y[1] - x[1]); };
+  const barisGrup = g => g.map(([n, v]) => '<div class="rinci-baris"><span>'+esc(n)+'</span><span class="muted">'+rupiah(v)+' · '+Math.round(v / (total || 1) * 100)+'%</span></div>'+bar(v / (total || 1) * 100, "#B98B63")).join("");
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("cici", 56)+'<div><h2 id="judul-modal">'+esc(a.nama)+'</h2><p class="muted" style="font-size:14px">'+fmtTglPendekAcara(a.mulai)+' sampai '+fmtTglPendekAcara(a.selesai)+(bersama ? ' · berdua' : '')+'</p></div></div>'+
+    '<div class="stats" style="margin:8px 0"><div class="card stat"><span class="lbl">Anggaran</span><span class="val">'+rupiah(a.anggaran)+'</span></div>'+
+      '<div class="card stat"><span class="lbl" style="color:var(--red)">Terpakai</span><span class="val">'+rupiah(total)+'</span></div>'+
+      '<div class="card stat utama"><span class="lbl">'+(total > a.anggaran ? "Lewat" : "Sisa")+'</span><span class="val">'+rupiah(Math.abs(a.anggaran - total))+'</span></div></div>'+
+    (list.length ? '<h3>Per kategori</h3>'+barisGrup(grup(p => p.kategori))+
+      (bersama ? '<h3 style="margin-top:12px">Per orang</h3>'+barisGrup(grup(p => p.dber ? "Dompet bersama (" + namaPengguna(p.oleh) + ")" : namaPengguna(p.oleh))) : '')+
+      '<h3 style="margin-top:12px">Semua belanja</h3><ul class="rinci-tx">'+list.map(p => '<li><span><strong>'+esc(p.catatan || p.kategori)+'</strong><span class="muted">'+fmtTglPendekAcara(p.tanggal)+' · '+esc(p.kategori)+(bersama ? ' · ' + esc(namaPengguna(p.oleh)) : '')+'</span></span><span class="turun">−'+rupiah(p.nominal)+'</span></li>').join("")+'</ul>'
+      : '<p class="muted">Belum ada belanja yang ditandai ke acara ini.</p>')+
+    '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup", "btn-primary")+'</div>', "modal-lebar");
+}
+function acaraMutasiHTML(){
+  const list = acaraUntukTanggal(tglLokal(), null).filter(x => x.b);
+  if (!list.length) return "";
+  return '<label class="field">Masuk anggaran acara (opsional)<select id="in-macara"><option value="">Tidak ada</option>'+list.map(x => '<option value="'+x.a.id+'">'+esc(x.a.nama)+'</option>').join("")+'</select></label>';
+}
+
+/* ---------- Bagikan bukti transfer ke Dompet Kita (Froggy, Android) ---------- */
+async function ambilBagikan(){
+  try {
+    if (!("caches" in window)) return {foto:null, teks:""};
+    const c = await caches.open("dompet-kita-bagikan");
+    const rf = await c.match("foto"), rt = await c.match("teks");
+    const hasil = {foto:rf ? await rf.blob() : null, teks:rt ? await rt.text() : ""};
+    await c.delete("foto"); await c.delete("teks");
+    return hasil;
+  } catch(e){ return {foto:null, teks:""}; }
+}
+function nominalDariTeks(teks){
+  const m = String(teks || "").match(/(?:Rp|IDR)\s*\.?\s*([\d][\d.,]*)/i);
+  if (!m) return null;
+  const n = hitung(m[1].replace(/[.,]\d{2}$/, ""));
+  return n && !isNaN(n) && n > 0 ? n : null;
+}
+async function bukaDariBagikan(){
+  const b = await ambilBagikan();
+  bukaFormTx(null, "keluar");
+  if (!S.form) return;
+  bacaFormTx();
+  const n = nominalDariTeks(b.teks);
+  if (n) S.form.ekspr = String(n);
+  if (!S.form.catatan) S.form.catatan = "Bukti transfer";
+  if (b.foto){ try { S.form.fotoBlob = await kompresFoto(b.foto); } catch(e){} }
+  tampilFormTx();
+  toast(b.foto ? "Froggy melampirkan bukti transfernya." + (n ? " Nominal terbaca " + rupiah(n) + ", cek lagi ya." : " Isi nominalnya ya.") : "Tidak ada gambar yang ikut dibagikan. Isi transaksinya seperti biasa.");
+}
+
+/* ---------- Pilih & hapus beberapa transaksi ---------- */
+S.pilihTx = null;
+function daftarTxTersaring(){
+  const d = S.sesi.data, f = S.filter, cari = f.q.trim().toLowerCase();
+  return d.transaksi.filter(t =>
+    (cari || periode(t.tanggal) === S.bulan) &&
+    (f.jenis === "semua" || t.jenis === f.jenis) &&
+    (f.kategori === "semua" || t.kategoriId === f.kategori) &&
+    (f.dompet === "semua" || t.dompetId === f.dompet || t.keDompetId === f.dompet) &&
+    (!cari || teksCari(t).includes(cari))).sort(urutTx);
+}
+function awalBarisTx(t){
+  if (!(S.pilihTx && S.halaman === "transaksi")) return '<button type="button" class="tx" data-aksi="ubah-tx" data-id="'+t.id+'">';
+  if (t.terkait) return '<button type="button" class="tx tx-kunci" data-aksi="pilih-terkait" data-id="'+t.id+'" title="Transaksi otomatis: hapus lewat halaman asalnya"><span class="tx-cek kunci" aria-hidden="true">'+ikon("kunci")+'</span>';
+  const on = S.pilihTx.has(t.id);
+  return '<button type="button" class="tx'+(on ? " dipilih" : "")+'" data-aksi="pilih-tx" data-id="'+t.id+'" aria-pressed="'+on+'"><span class="tx-cek" aria-hidden="true">'+(on ? "✓" : "")+'</span>';
+}
+function barPilih(){
+  if (!S.pilihTx || S.halaman !== "transaksi") return "";
+  const d = S.sesi.data, dipilih = d.transaksi.filter(t => S.pilihTx.has(t.id));
+  const keluar = dipilih.filter(t => t.jenis === "keluar").reduce((a, t) => a + t.nominal, 0), masuk = dipilih.filter(t => t.jenis === "masuk").reduce((a, t) => a + t.nominal, 0);
+  const bisa = daftarTxTersaring().filter(t => !t.terkait), semua = bisa.length && bisa.every(t => S.pilihTx.has(t.id));
+  return '<div class="bar-pilih" role="region" aria-label="Transaksi dipilih"><div class="bar-pilih-teks"><strong>'+dipilih.length+' dipilih</strong>'+
+      '<span class="muted">'+(keluar ? "Keluar " + rupiah(keluar) : "")+(keluar && masuk ? " · " : "")+(masuk ? "Masuk " + rupiah(masuk) : "")+(!keluar && !masuk ? "Ketuk transaksi untuk memilih" : "")+'</span></div>'+
+    '<div class="row-btn">'+tombolAksi("pilih-semua", semua ? "Batalkan semua" : "Pilih semua", "btn-ghost btn-kecil")+tombolAksi("mode-pilih", "Selesai", "btn-ghost btn-kecil")+
+      (dipilih.length ? tombolAksi("hapus-terpilih", "Hapus", "btn-danger btn-kecil") : '')+'</div></div>';
+}
+function konfirmasiHapusTerpilih(){
+  const dipilih = S.sesi.data.transaksi.filter(t => S.pilihTx.has(t.id));
+  if (!dipilih.length) return;
+  const foto = dipilih.filter(t => t.fotoId).length;
+  bukaModal(maskot("tupi", 76)+'<h2 id="judul-modal">Hapus '+dipilih.length+' transaksi?</h2>'+
+    '<p class="muted">'+(foto ? foto + " foto struk ikut terhapus. " : "")+'Setelah dihapus, kamu masih bisa membatalkannya selama 10 detik.</p>'+
+    '<div class="row-btn">'+tombolAksi("tutup-modal", "Batal")+tombolAksi("hapus-terpilih-ya", "Hapus " + dipilih.length + " transaksi", "btn-danger")+'</div>', "center");
+}
+let snackTimer = null;
+function snack(teks, label, aksi){
+  document.querySelectorAll(".snack").forEach(x => x.remove());
+  clearTimeout(snackTimer);
+  const el = document.createElement("div");
+  el.className = "snack"; el.setAttribute("role", "status");
+  el.innerHTML = '<span>'+esc(teks)+'</span>';
+  if (label){
+    const b = document.createElement("button"); b.type = "button"; b.className = "snack-btn"; b.textContent = label;
+    b.addEventListener("click", () => { clearTimeout(snackTimer); el.remove(); aksi(); });
+    el.appendChild(b);
+  }
+  document.body.appendChild(el);
+  snackTimer = setTimeout(() => el.remove(), 10000);
+}
+async function hapusTerpilih(){
+  const d = S.sesi.data, sesi = S.sesi, items = d.transaksi.filter(t => S.pilihTx.has(t.id));
+  if (!items.length) return;
+  d.transaksi = d.transaksi.filter(t => !S.pilihTx.has(t.id));
+  let ubahB = false;
+  items.forEach(t => { if (sinkronPakaiBersama({id:t.id}, true)) ubahB = true; });
+  await simpanPribadi(); if (ubahB) await simpanBersama();
+  S.pilihTx = null; tutupModal(); render();
+  let batal = false;
+  snack(items.length + " transaksi dihapus.", "Batalkan", async () => {
+    if (S.sesi !== sesi) return;
+    batal = true;
+    const ada = new Set(sesi.data.transaksi.map(t => t.id));
+    sesi.data.transaksi.push(...items.filter(t => !ada.has(t.id)));
+    let ub = false;
+    items.forEach(t => { if (sinkronPakaiBersama(t)) ub = true; });
+    await simpanPribadi(); if (ub) await simpanBersama();
+    render(); toast("Tupi mengembalikan " + items.length + " transaksi.");
+  });
+  /* foto struk baru benar-benar dihapus setelah waktu batal habis */
+  setTimeout(() => { if (!batal) items.forEach(t => { if (t.fotoId) hapusFoto(t.fotoId).catch(() => {}); }); }, 11000);
+}
+
+Object.assign(AKSI, {
+  "tambah-acara": () => modalAcara(null, false),
+  "ubah-acara": t => modalAcara(t.dataset.id, t.dataset.b === "1"),
+  "simpan-acara": () => simpanAcara(),
+  "hapus-acara": () => hapusAcara(),
+  "rinci-acara": t => modalRinciAcara(t.dataset.id, t.dataset.b === "1"),
+  "tx-acara": t => { bukaFormTx(null, "keluar"); if (S.form){ bacaFormTx(); S.form.acaraId = t.dataset.id; S.form.acaraBersama = t.dataset.b === "1"; tampilFormTx(); } },
+  "ke-acara": () => { tutupModal(); S.halaman = "anggaran"; render(); catatHalaman("anggaran"); const s = document.getElementById("seksi-acara"); if (s) s.scrollIntoView({block:"start"}); },
+  "mode-pilih": () => { S.pilihTx = S.pilihTx ? null : new Set(); render(); },
+  "pilih-tx": t => { const id = t.dataset.id; if (S.pilihTx.has(id)) S.pilihTx.delete(id); else S.pilihTx.add(id); perbaruiHasilTx(); },
+  "pilih-terkait": t => { const x = S.sesi.data.transaksi.find(y => y.id === t.dataset.id); toast("Transaksi otomatis dari " + (x && x.terkait ? x.terkait.label : "fitur lain") + ". Hapus lewat halaman asalnya."); },
+  "pilih-semua": () => {
+    const bisa = daftarTxTersaring().filter(t => !t.terkait);
+    if (bisa.length && bisa.every(t => S.pilihTx.has(t.id))) bisa.forEach(t => S.pilihTx.delete(t.id)); else bisa.forEach(t => S.pilihTx.add(t.id));
+    perbaruiHasilTx();
+  },
+  "hapus-terpilih": () => konfirmasiHapusTerpilih(),
+  "hapus-terpilih-ya": () => hapusTerpilih()
+});
+const navSebelum13 = AKSI.nav;
+AKSI.nav = t => { if (t.dataset.h !== "transaksi") S.pilihTx = null; navSebelum13(t); };
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-aksi]");
