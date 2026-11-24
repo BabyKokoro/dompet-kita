@@ -836,6 +836,12 @@ html[data-tema=gelap] .ob-centang.dibaca{color:#8EC5FF}
 .ob-baru{align-self:center;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 6px;border-radius:999px;border:2px solid var(--primary);background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .ob-baru[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){.bn-ob.ada .bn-ob-ikon .maskot,.ob-ketik-boo .maskot,.ob-titik i{animation:none}}
+/* langkah 17: kutipan & doa berganti */
+[data-putar]{transition:opacity .32s ease,transform .32s ease}
+[data-putar].putar-keluar{opacity:0;transform:translateY(6px)}
+.maskot.angguk-sekali{animation:angguk-sekali .7s ease}
+@keyframes angguk-sekali{0%,100%{transform:none}30%{transform:rotate(-8deg) translateY(-2px)}60%{transform:rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){[data-putar]{transition:none}.maskot.angguk-sekali{animation:none}}
 </style>
 </head>
 <body>
@@ -1273,7 +1279,6 @@ function layarLogin(){
   if (!pengguna.some(u => u.id === S.loginId)) S.loginId = pengguna[0].id;
   const u = pengguna.find(x => x.id === S.loginId);
   const prof = pengguna.map(p => '<button type="button" class="profile'+(p.id === S.loginId ? " on" : "")+'" data-aksi="pilih-login" data-id="'+p.id+'" aria-pressed="'+(p.id === S.loginId)+'">'+maskot(p.avatar, 64)+'<span>'+esc(p.nama)+' '+benderaPengguna(p, 12)+'</span></button>').join("");
-  const q = kutipanHariIni();
   const tgl = new Date().toLocaleDateString("id-ID", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
   return '<main class="login-wrap">'+DEKOR_LOGIN+'<div class="login-grid">'+
     '<section class="login-hero">'+
@@ -1281,7 +1286,7 @@ function layarLogin(){
       '<span class="eyebrow sapa">'+sapaan()+'!</span>'+
       '<h1>Catat bareng,<br>hemat bareng.</h1>'+
       '<p class="muted hero-desc">Pemasukan, pengeluaran, anggaran, dan tabungan impian kalian berdua, rapi dalam satu tempat.</p>'+
-      '<p class="kutipan-pil">'+maskot("eli", 36)+'<span>"'+esc(q[0])+'"</span></p>'+
+      '<p class="kutipan-pil">'+maskot("eli", 36)+'<span data-putar="eli" data-gaya="pil" aria-live="polite">'+isiPutar("eli", "pil")+'</span></p>'+
       lengkungMaskot()+
     '</section>'+
     '<section class="card login-card" aria-labelledby="judul-login">'+
@@ -3295,9 +3300,36 @@ const DOA = {
     latin:"Rabbanā ātinā fid-dunyā ḥasanah, wa fil-ākhirati ḥasanah, wa qinā 'adhāban-nār.",
     arti:"Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan lindungilah kami dari azab neraka.", sumber:"QS Al-Baqarah: 201"},
   syukur:{judul:"Pengingat untuk bersyukur", arab:"لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ", latin:"La'in syakartum la'azīdannakum.",
-    arti:"Sesungguhnya jika kamu bersyukur, niscaya Aku akan menambah (nikmat) kepadamu.", sumber:"QS Ibrāhīm: 7"}
+    arti:"Sesungguhnya jika kamu bersyukur, niscaya Aku akan menambah (nikmat) kepadamu.", sumber:"QS Ibrāhīm: 7"},
+  tawakal:{judul:"Doa bertawakal saat keluar rumah", arab:"بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+    latin:"Bismillāh, tawakkaltu 'alallāh, lā ḥawla wa lā quwwata illā billāh.",
+    arti:"Dengan nama Allah, aku bertawakal kepada Allah. Tidak ada daya dan kekuatan kecuali dengan pertolongan Allah.", sumber:"HR Abu Dawud no. 5095 dan Tirmidzi no. 3426"},
+  mudah:{judul:"Doa agar dimudahkan segala urusan", arab:"رَبِّ اشْرَحْ لِي صَدْرِي، وَيَسِّرْ لِي أَمْرِي، وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي، يَفْقَهُوا قَوْلِي",
+    latin:"Rabbisyraḥ lī ṣadrī, wa yassir lī amrī, waḥlul 'uqdatan min lisānī, yafqahū qaulī.",
+    arti:"Ya Tuhanku, lapangkanlah dadaku, mudahkanlah urusanku, dan lepaskanlah kekakuan dari lidahku, agar mereka memahami perkataanku.", sumber:"QS Ṭāhā: 25–28"},
+  keluarga:{judul:"Doa untuk pasangan dan keluarga", arab:"رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
+    latin:"Rabbanā hab lanā min azwājinā wa dhurriyyātinā qurrata a'yun, waj'alnā lil-muttaqīna imāmā.",
+    arti:"Ya Tuhan kami, anugerahkanlah kepada kami pasangan dan keturunan sebagai penyejuk hati kami, dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa.", sumber:"QS Al-Furqān: 74"},
+  butuh:{judul:"Doa memohon kebaikan dari Allah", arab:"رَبِّ إِنِّي لِمَا أَنْزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ",
+    latin:"Rabbi innī limā anzalta ilayya min khairin faqīr.",
+    arti:"Ya Tuhanku, sesungguhnya aku sangat membutuhkan kebaikan apa pun yang Engkau turunkan kepadaku.", sumber:"QS Al-Qaṣaṣ: 24 (doa Nabi Musa)"},
+  nikmat:{judul:"Doa agar nikmat tidak hilang", arab:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ",
+    latin:"Allāhumma innī a'ūdhu bika min zawāli ni'matik, wa taḥawwuli 'āfiyatik, wa fujā'ati niqmatik, wa jamī'i sakhaṭik.",
+    arti:"Ya Allah, aku berlindung kepada-Mu dari hilangnya nikmat-Mu, berubahnya kesehatan yang Engkau berikan, datangnya hukuman-Mu secara tiba-tiba, dan dari segala murka-Mu.", sumber:"HR Muslim no. 2739"},
+  gembira:{judul:"Doa saat mendapat kabar gembira", arab:"الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ",
+    latin:"Alḥamdu lillāhil-ladhī bini'matihī tatimmuṣ-ṣāliḥāt.",
+    arti:"Segala puji bagi Allah yang dengan nikmat-Nya segala kebaikan menjadi sempurna.", sumber:"HR Ibnu Majah no. 3803 (dinilai hasan oleh Al-Albani)"},
+  berat:{judul:"Doa saat urusan terasa berat", arab:"يَا حَيُّ يَا قَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ",
+    latin:"Yā Ḥayyu yā Qayyūm, biraḥmatika astaghīth, aṣliḥ lī sya'nī kullah, wa lā takilnī ilā nafsī ṭarfata 'ain.",
+    arti:"Wahai Yang Maha Hidup, wahai Yang Maha Berdiri Sendiri, dengan rahmat-Mu aku memohon pertolongan. Perbaikilah seluruh urusanku, dan jangan Engkau serahkan aku kepada diriku sendiri walau sekejap mata.", sumber:"HR An-Nasa'i (As-Sunan Al-Kubra) dan Al-Hakim; dinilai hasan oleh Al-Albani (Ash-Shahihah no. 227)"},
+  pasangan:{judul:"Doa keberkahan untuk pasangan", arab:"بَارَكَ اللَّهُ لَكَ، وَبَارَكَ عَلَيْكَ، وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ",
+    latin:"Bārakallāhu laka, wa bāraka 'alaika, wa jama'a bainakumā fī khair.",
+    arti:"Semoga Allah memberkahimu, melimpahkan keberkahan kepadamu, dan mengumpulkan kalian berdua dalam kebaikan.", sumber:"HR Abu Dawud no. 2130 dan Tirmidzi no. 1091 (doa untuk pengantin)"},
+  lunas:{judul:"Doa saat melunasi utang", arab:"بَارَكَ اللَّهُ لَكَ فِي أَهْلِكَ وَمَالِكَ، إِنَّمَا جَزَاءُ السَّلَفِ الْحَمْدُ وَالْأَدَاءُ",
+    latin:"Bārakallāhu laka fī ahlika wa mālik, innamā jazā'us-salafil-ḥamdu wal-adā'.",
+    arti:"Semoga Allah memberkahimu pada keluarga dan hartamu. Sesungguhnya balasan bagi orang yang memberi pinjaman adalah pujian (terima kasih) dan pelunasan.", sumber:"HR An-Nasa'i no. 4683 dan Ibnu Majah no. 2424 (diucapkan Nabi ﷺ saat melunasi utang)"}
 };
-const DOA_HARIAN = ["dunia", "rezeki", "berkah", "cukup", "syukur", "utang"];
+const DOA_HARIAN = ["dunia", "rezeki", "berkah", "cukup", "syukur", "utang", "tawakal", "mudah", "keluarga", "butuh", "nikmat", "gembira", "berat", "pasangan", "lunas"];
 const KUTIPAN = [
   ["Sedikit demi sedikit, lama-lama menjadi bukit.", "Peribahasa"],
   ["Hemat pangkal kaya, rajin pangkal pandai.", "Peribahasa"],
@@ -3357,7 +3389,6 @@ function tampilDoaMomen(momen, kunci){
     '<div class="row-btn">'+tombolAksi("tutup-modal", "Nanti saja")+tombolAksi("aamiin", "Aamiin", "btn-primary")+'</div>');
   return true;
 }
-function kutipanHariIni(geser){ return KUTIPAN[(hariKe() + (geser || 0)) % KUTIPAN.length]; }
 function sorakEli(){ const k = KUTIPAN[Math.floor(Math.random() * KUTIPAN.length)]; setTimeout(() => toast("Eli: " + k[0]), 1600); }
 
 /* ============ Ringkasan, wawasan Rubi, grafik, kalender ============ */
@@ -3942,18 +3973,18 @@ async function catatAktifBersama(){
 
 /* ---- kartu Beranda: level, Eli, Jamal ---- */
 function kartuBerandaLangkah6(){
-  const info = infoLevel(), q = kutipanHariIni(S.geserKutipan || 0), kunciDoa = DOA_HARIAN[(hariKe() + (S.geserDoa || 0)) % DOA_HARIAN.length];
+  const info = infoLevel();
   return '<div class="grid2">'+
     '<section class="card"><div class="page-head" style="margin-bottom:10px"><div class="card-head" style="margin:0">'+maskot("ducky", 48)+'<h2>Level '+info.lv+'</h2></div><button type="button" class="link" data-aksi="nav" data-h="lencana">Lencana</button></div>'+
       '<p style="font-weight:800;margin-bottom:8px">'+info.gelar+'</p>'+bar(info.pct, "#E3A857")+
       '<p class="muted" style="font-size:14px;margin-top:6px">'+(info.lv < 100 ? info.sudah.toLocaleString("id-ID") + " / " + info.butuh.toLocaleString("id-ID") + " XP menuju Level " + (info.lv + 1) : "Level tertinggi!")+'</p></section>'+
     '<section class="card eli-kartu"><div class="card-head">'+maskot("eli", 48)+'<h2>Semangat dari Eli</h2></div>'+
-      '<blockquote class="kutipan">'+esc(q[0])+'<cite>'+(q[1] === "Peribahasa" ? "Peribahasa" : "Eli")+'</cite></blockquote>'+
+      '<blockquote class="kutipan" data-putar="eli" aria-live="polite">'+isiPutar("eli")+'</blockquote>'+
       tipsUsia()+'<button type="button" class="link" data-aksi="kutipan-lain">Kutipan lain</button></section>'+
     '</div>'+
-    '<section class="card jamal-kartu"><div class="page-head" style="margin-bottom:8px"><div class="card-head" style="margin:0">'+maskot("jamal", 52)+'<h2>Doa hari ini dari Jamal</h2></div>'+
+    '<section class="card jamal-kartu"><div class="page-head" style="margin-bottom:8px"><div class="card-head" style="margin:0">'+maskot("jamal", 52)+'<h2>Doa dari Jamal</h2></div>'+
       '<div class="toolbar">'+tombolAksi("doa-lain", "Doa lain", "btn-ghost btn-kecil")+tombolAksi("aamiin", "Aamiin", "btn-primary btn-kecil")+'</div></div>'+
-      doaHTML(kunciDoa, true)+'</section>';
+      '<div data-putar="jamal">'+isiPutar("jamal")+'</div></section>';
 }
 
 /* ---- aksi klik langkah 6 ---- */
@@ -3965,13 +3996,6 @@ Object.assign(AKSI, {
   "cetak": () => cetakLaporan(),
   "buka-rapor": t => { tutupModal(); S.bulan = t.dataset.kb; S.halaman = "laporan"; S.tabLap = "pribadi"; render(); },
   "tab-lencana": t => { S.tabLencana = t.dataset.t; render(); },
-  "kutipan-lain": async () => {
-    S.geserKutipan = (S.geserKutipan || 0) + 1;
-    const st = statistik();
-    if (!st.quoteHari.includes(tglLokal())){ st.quoteHari.push(tglLokal()); await simpanPribadi(); }
-    render();
-  },
-  "doa-lain": () => { S.geserDoa = (S.geserDoa || 0) + 1; render(); },
   "aamiin": async () => { statistik().doa++; tutupModal(); await simpanPribadi(); toast("Aamiin. Semoga berkah, kata Jamal."); }
 });
 
@@ -5881,7 +5905,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.5.1";
+const VERSI_APP = "1.5.2";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -8717,6 +8741,70 @@ Object.assign(AKSI, {
   "ob-kirim-tagihan": t => obLampirkan(kartuDariTagihan(t.dataset.id)),
   "ob-kirim-acara": t => obLampirkan(kartuDariAcara(t.dataset.id, t.dataset.b === "1")),
   "ob-kirim-tx": () => { const id = S.form && S.form.id; tutupModal(); obLampirkan(kartuDariTx(id)); }
+});
+
+/* ============ langkah 17: kutipan Eli & doa Jamal berganti sendiri, diacak ============ */
+const PUTAR_MS = {eli:15000, jamal:30000};
+const PUTAR = {eli:{idx:null, sejak:0}, jamal:{idx:null, sejak:0}};
+const putarJumlah = j => j === "eli" ? KUTIPAN.length : DOA_HARIAN.length;
+/* "kocok kartu": semua item muncul sekali dalam urutan acak, baru dikocok ulang */
+function kantongAcak(jenis){
+  const n = putarJumlah(jenis), kunci = "dompetKita.acak." + jenis;
+  let k = null;
+  try { k = JSON.parse(localStorage.getItem(kunci) || "null"); } catch(e){}
+  const sah = k && Array.isArray(k.u) && k.u.length === n && typeof k.p === "number";
+  if (!sah || k.p >= n){
+    const terakhir = sah && k.p > 0 ? k.u[k.p - 1] : -1;
+    const u = [...Array(n).keys()];
+    for (let i = n - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [u[i], u[j]] = [u[j], u[i]]; }
+    if (n > 1 && u[0] === terakhir) [u[0], u[1]] = [u[1], u[0]];
+    k = {u, p:0};
+  }
+  const idx = k.u[k.p++];
+  try { localStorage.setItem(kunci, JSON.stringify(k)); } catch(e){}
+  return idx;
+}
+function putarIdx(jenis){
+  const st = PUTAR[jenis];
+  if (st.idx === null || st.idx >= putarJumlah(jenis)){ st.idx = kantongAcak(jenis); st.sejak = Date.now(); }
+  return st.idx;
+}
+const kutipanSaatIni = () => KUTIPAN[putarIdx("eli")];
+const doaSaatIni = () => DOA_HARIAN[putarIdx("jamal")];
+function isiPutar(jenis, gaya){
+  if (jenis === "jamal") return doaHTML(doaSaatIni(), true);
+  const q = kutipanSaatIni();
+  return gaya === "pil" ? '"'+esc(q[0])+'"' : esc(q[0])+'<cite>'+(q[1] === "Peribahasa" ? "Peribahasa" : "Eli")+'</cite>';
+}
+function putarMaju(jenis){
+  const st = PUTAR[jenis];
+  st.idx = kantongAcak(jenis); st.sejak = Date.now();
+  const reduksi = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll('[data-putar="'+jenis+'"]').forEach(el => {
+    const pasang = () => { el.innerHTML = isiPutar(jenis, el.dataset.gaya); el.classList.remove("putar-keluar"); };
+    const wadah = el.closest(".card, .kutipan-pil"), m = wadah && wadah.querySelector(".maskot");
+    if (reduksi) return pasang();
+    if (m){ m.classList.remove("angguk-sekali"); void m.offsetWidth; m.classList.add("angguk-sekali"); }
+    el.classList.add("putar-keluar"); setTimeout(pasang, 320);
+  });
+}
+setInterval(() => {
+  const kini = Date.now();
+  ["eli", "jamal"].forEach(j => {
+    const st = PUTAR[j], els = [...document.querySelectorAll('[data-putar="'+j+'"]')];
+    if (!els.length || document.visibilityState !== "visible"){ st.sejak = Math.max(st.sejak, kini - PUTAR_MS[j] + 3000); return; }
+    const dibaca = els.some(el => { const w = el.closest(".card, .kutipan-pil") || el; return w.matches(":hover") || w.matches(":focus-within"); });
+    if (dibaca){ st.sejak = Math.max(st.sejak, kini - PUTAR_MS[j] + 3000); return; }
+    if (kini - st.sejak >= PUTAR_MS[j]) putarMaju(j);
+  });
+}, 1000);
+Object.assign(AKSI, {
+  "kutipan-lain": async () => {
+    putarMaju("eli");
+    const st = statistik();
+    if (!st.quoteHari.includes(tglLokal())){ st.quoteHari.push(tglLokal()); await simpanPribadi(); }
+  },
+  "doa-lain": () => putarMaju("jamal")
 });
 
 document.addEventListener("click", e => {
