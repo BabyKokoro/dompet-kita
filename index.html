@@ -4887,6 +4887,7 @@ function seksiPengingat(){
     barisIngatInv()+
     '<div class="set-row"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-rm-aktif"'+(p.ringkasMinggu ? " checked" : "")+'> <span><strong>Ringkasan mingguan dari Rubi</strong><br><span class="muted" style="font-size:14px;font-weight:600">Muncul Minggu malam atau saat pertama membuka aplikasi di awal minggu.</span></span></label>'+
       tombolAksi("ringkas-minggu", "Lihat sekarang", "btn-ghost")+'</div>'+
+    barisPush()+
     '<div class="set-row"><div><strong>Notifikasi laptop</strong><p class="muted" style="font-size:14px">Status: '+(izin === "granted" ? "aktif" : izin === "denied" ? "ditolak browser" : izin === "default" ? "belum diizinkan" : izin)+'. Pengingat tetap muncul di dalam aplikasi walau notifikasi belum aktif.</p></div>'+
       (izin === "default" ? tombolAksi("izin-notif", "Izinkan", "btn-ghost") : '')+'</div>'+
   '</section>';
@@ -5801,7 +5802,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.4.2a";
+const VERSI_APP = "1.4.3";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -6862,8 +6863,8 @@ document.addEventListener("keydown", e => {
 });
 
 /* ---------- Pintasan ikon aplikasi (manifest) ---------- */
-S.aksiTunda = (() => { try { const a = new URLSearchParams(location.search).get("aksi"); return ["keluar", "masuk", "saldo", "bagikan"].includes(a) ? a : null; } catch(e){ return null; } })();
-if (S.aksiTunda) S.pesanLogin = {keluar:"Masukkan PIN, lalu Tupi langsung membuka catat pengeluaran.", masuk:"Masukkan PIN, lalu Tupi langsung membuka catat pemasukan.", saldo:"Masukkan PIN, lalu Octo menunjukkan saldo semua dompet.", bagikan:"Masukkan PIN, lalu Froggy melampirkan bukti transfermu ke catatan baru."}[S.aksiTunda];
+S.aksiTunda = (() => { try { const a = new URLSearchParams(location.search).get("aksi"); return ["keluar", "masuk", "saldo", "bagikan", "tagihan"].includes(a) ? a : null; } catch(e){ return null; } })();
+if (S.aksiTunda) S.pesanLogin = {keluar:"Masukkan PIN, lalu Tupi langsung membuka catat pengeluaran.", masuk:"Masukkan PIN, lalu Tupi langsung membuka catat pemasukan.", saldo:"Masukkan PIN, lalu Octo menunjukkan saldo semua dompet.", bagikan:"Masukkan PIN, lalu Froggy melampirkan bukti transfermu ke catatan baru.", tagihan:"Masukkan PIN, lalu Pipo menunjukkan tagihan yang mendekati jatuh tempo."}[S.aksiTunda];
 function jalankanAksiTunda(){
   const a = S.aksiTunda;
   if (!a || !S.sesi) return;
@@ -6873,6 +6874,7 @@ function jalankanAksiTunda(){
     if (!S.sesi) return;
     if (a === "saldo"){ tutupModal(); S.halaman = "dompet"; render(); catatHalaman("dompet"); toast("Octo menunjukkan saldo semua dompetmu."); }
     else if (a === "bagikan") bukaDariBagikan();
+    else if (a === "tagihan"){ tutupModal(); S.halaman = "rutin"; render(); catatHalaman("rutin"); }
     else bukaFormTx(null, a);
   }, 350);
 }
@@ -6889,7 +6891,7 @@ const BANTUAN = {
   keinginan:["snaily", "Daftar barang yang ingin dibeli, dengan masa tunda.", ["Tunggu masa tunda selesai sebelum membeli. Sering kali keinginannya hilang sendiri.", "Kalau batal beli, uangnya bisa dialihkan ke tabungan."]],
   bersama:["cici", "Dompet, tabungan impian, dan tagihan berdua dengan pasangan.", ["Isi area Bersama bisa dilihat kalian berdua.", "Otto membantu membagi tagihan secara adil.", "Angka pribadi yang boleh dilihat pasangan diatur Lingling di Pengaturan."]],
   utang:["kuku", "Catatan siapa meminjam berapa, dan kapan jatuh temponya.", ["Punya beberapa utang? Buka tab Utangku lalu coba Simulasi lunas untuk membandingkan cara melunasinya.", "Kuku mengingatkan saat jatuh tempo sudah dekat.", "Tekan Bayar cicilan setiap kali membayar supaya sisanya selalu tepat."]],
-  rutin:["pipo", "Gaji, kos, cicilan, dan langganan yang berulang.", ["Pipo bisa mencatatnya otomatis setiap jatuh tempo.", "Pengingat muncul saat tagihan mendekati jatuh tempo."]],
+  rutin:["pipo", "Gaji, kos, cicilan, dan langganan yang berulang.", ["Aktifkan Notifikasi tagihan saat aplikasi tertutup di Pengaturan, bagian Pengingat, supaya Pipo tetap mengingatkan H-3 sampai H-1.", "Pipo bisa mencatatnya otomatis setiap jatuh tempo.", "Pengingat muncul saat tagihan mendekati jatuh tempo."]],
   zakat:["jamal", "Hitung zakat mal dan zakat penghasilan.", ["Nisab mengikuti harga emas yang kamu isi.", "Hasilnya perkiraan. Untuk kepastian, tanyakan ke lembaga amil zakat."]],
   laporan:["rubi", "Grafik, diagram per kategori, kalender pengeluaran, dan ekspor.", ["Owi menandai hari-hari dengan pengeluaran besar di kalender.", "Bee-bee mengekspor laporan ke Excel dan PDF."]],
   lencana:["ducky", "Lencana dan level dari kebiasaan baikmu.", ["XP bertambah dari mencatat rutin, menabung, dan menyelesaikan tantangan."]],
@@ -6913,6 +6915,7 @@ const FAQ = [
   ["Foto struk ikut tersinkron?", "Belum. Foto hanya ada di perangkat tempat ia dilampirkan, tetapi ikut masuk file backup kalau opsinya dicentang."],
   ["Kurs mata uang asing diambil dari mana?", "Kamu isi sendiri, misalnya dari aplikasi bank atau struk penukaran uang. Octo mengingat kurs terakhir untuk tiap mata uang."],
   ["Kenapa nominal berubah jadi Rp •••••?", "Sembunyi kilat dari Lingling sedang aktif. Ketuk Lingling atau tekan H untuk menampilkannya lagi."],
+  ["Apakah notifikasi tagihan menyebut nominal?", "Tidak. Server hanya menerima waktu kirim dan jumlah, misalnya \"Ada 2 tagihan besok\". Nama tagihan dan nominalnya tetap terkunci di brankasmu."],
   ["Bagaimana memasang aplikasi di HP atau laptop?", "Buka Pengaturan, bagian Install aplikasi, lalu ikuti petunjuknya."]
 ];
 const PINTASAN_KB = [
@@ -8127,6 +8130,148 @@ Object.assign(AKSI, {
   "undang-pasangan": () => modalUndang(),
   "undang-salin": async () => { try { await navigator.clipboard.writeText(S.tautanUndang); toast("Tautan undangan disalin. Kirim lewat chat pribadi, berlaku " + MENIT_UNDANGAN + " menit."); } catch(e){ toast("Tidak bisa menyalin otomatis."); } },
   "undang-unduh": () => unduhQRUndangan()
+});
+
+/* ============ Langkah 15 (v1.4.3): notifikasi tagihan saat aplikasi tertutup (Pipo) ============ */
+const K_PUSH = id => PFX + "push." + id;
+const pushDukung = () => DI_WEB && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const diIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
+const pushJam = () => (S.sesi && S.sesi.data.pengaturan.pushJam) || "07:00";
+function pushSaya(id){ return bacaJson(K_PUSH(id || (S.sesi && S.sesi.user.id))) || {}; }
+function statusPush(){
+  if (!pushDukung()) return diIOS() && !SUDAH_TERINSTALL() ? "ios" : "tidak";
+  if (!awanTersambung()) return "awan";
+  if (Notification.permission === "denied") return "ditolak";
+  return pushSaya().aktif ? "aktif" : "mati";
+}
+function kunciVapid(s){
+  const b = atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4));
+  return Uint8Array.from(b, c => c.charCodeAt(0));
+}
+function gabungKata(a){ return a.length <= 1 ? (a[0] || "") : a.slice(0, -1).join(", ") + " dan " + a[a.length - 1]; }
+/* jadwal kirim: H-3, H-2, H-1 sebelum jatuh tempo, pada jam pilihan. Hanya jumlah yang dikirim ke server. */
+function hitungJadwalPush(){
+  const d = S.sesi.data, hari = tglLokal(), batas = tambahHari(hari, 60), due = [];
+  d.rutin.forEach(migrasiRutin);
+  d.rutin.filter(r => r.aktif && r.mode === "ingatkan" && r.jenis !== "masuk" && !rutinSelesai(r))
+    .forEach(r => jadwalRutin(r, batas).forEach(t => { if (t > hari && !r.dicatatTgl.includes(t)) due.push({t, j:"tagihan"}); }));
+  d.utang.filter(u => u.jatuhTempo && sisaUtang(u) > 0 && u.jatuhTempo > hari && u.jatuhTempo <= batas)
+    .forEach(u => due.push({t:u.jatuhTempo, j:u.jenis === "piutang" ? "piutang" : "tagihan"}));
+  (d.bpjs || []).forEach(b => { const t = jatuhBpjs(b); if (t && t > hari && t <= batas) due.push({t, j:"tagihan"}); });
+  kewajibanAset().forEach(x => { if (x.k.tgl > hari && x.k.tgl <= batas) due.push({t:x.k.tgl, j:"tagihan"}); });
+  const per = new Map();
+  due.forEach(x => [1, 2, 3].forEach(o => {
+    const s = tambahHari(x.t, -o);
+    if (s < hari) return;
+    const m = per.get(s) || {};
+    m[o] = m[o] || {tagihan:0, piutang:0}; m[o][x.j]++;
+    per.set(s, m);
+  }));
+  const jam = pushJam(), label = {1:"besok", 2:"lusa", 3:"3 hari lagi"}, out = [];
+  per.forEach((m, s) => {
+    const waktu = new Date(s + "T" + jam + ":00");
+    if (waktu.getTime() < Date.now() + 60000) return;
+    const bagian = [];
+    [1, 2, 3].forEach(o => {
+      if (!m[o]) return;
+      if (m[o].tagihan) bagian.push(m[o].tagihan + " tagihan " + label[o]);
+      if (m[o].piutang) bagian.push(m[o].piutang + " piutang jatuh tempo " + label[o]);
+    });
+    out.push({waktu:waktu.toISOString(), judul:"Pipo: pengingat tagihan", isi:"Ada " + gabungKata(bagian) + ". Buka Dompet Kita untuk detailnya.", tag:"dompet-kita-tagihan"});
+  });
+  return out.sort((a, b) => a.waktu.localeCompare(b.waktu)).slice(0, 150);
+}
+async function langgananPush(paksaBaru){
+  const reg = await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  const vapid = await rpc("notif_vapid", {});
+  if (!vapid) throw Object.assign(new Error("belum-siap"), {kode:"belum-siap"});
+  if (sub && (paksaBaru || (sub.options && sub.options.applicationServerKey && keB64(sub.options.applicationServerKey) !== keB64(kunciVapid(vapid))))){
+    try { await sub.unsubscribe(); } catch(e){}
+    sub = null;
+  }
+  if (!sub) sub = await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:kunciVapid(vapid)});
+  return sub;
+}
+let timerPush = null;
+function jadwalkanPush(){ clearTimeout(timerPush); timerPush = setTimeout(() => kirimJadwalPush(false), 4000); }
+async function kirimJadwalPush(paksa, tambahan){
+  if (!S.sesi || statusPush() !== "aktif") return false;
+  const id = S.sesi.user.id, simpan = pushSaya(id);
+  try {
+    if (Notification.permission !== "granted") return false;
+    const sub = await langgananPush(false), j = sub.toJSON(), jadwal = hitungJadwalPush().concat(tambahan || []);
+    const sidik = kanon({e:j.endpoint, jadwal});
+    if (!paksa && simpan.sidik === sidik && Date.now() - (simpan.kirim || 0) < 12 * 3600e3) return true;
+    await rpc("notif_simpan", {p_rumah:awanCfg().rumah, p_perangkat:idPerangkatTetap(), p_profil:id, p_endpoint:j.endpoint, p_p256dh:j.keys.p256dh, p_auth:j.keys.auth, p_jadwal:jadwal});
+    localStorage.setItem(K_PUSH(id), JSON.stringify(Object.assign(simpan, {aktif:true, sidik:tambahan ? "" : sidik, kirim:Date.now(), jumlah:jadwal.length})));
+    return true;
+  } catch(e){ console.warn("Jadwal notifikasi gagal:", e); return false; }
+}
+async function aktifkanPush(){
+  const st = statusPush();
+  if (st === "awan" || st === "tidak" || st === "ios"){ render(); return; }
+  const izin = await Notification.requestPermission();
+  if (izin !== "granted"){ toast("Pipo: izin notifikasi belum diberikan."); render(); return; }
+  toast("Pipo menyiapkan notifikasi...");
+  try { await langgananPush(false); }
+  catch(e){
+    toast(e.kode === "belum-siap" ? "Server notifikasi belum siap. Pastikan langkah Supabase untuk 1.4.3 sudah selesai, lalu coba lagi 5 menit lagi."
+      : e.status === 404 ? "SQL notifikasi (dompet-kita-supabase-4.sql) belum dijalankan di Supabase." : "Pipo belum bisa mendaftarkan notifikasi: " + (e.message || e));
+    return;
+  }
+  localStorage.setItem(K_PUSH(S.sesi.user.id), JSON.stringify({aktif:true}));
+  const ok = await kirimJadwalPush(true);
+  render();
+  toast(ok ? "Pipo siap mengingatkan tagihan, walaupun aplikasinya tertutup." : "Notifikasi aktif, tapi jadwal belum terkirim. Pipo coba lagi otomatis nanti.");
+}
+async function matikanPush(){
+  const id = S.sesi.user.id;
+  try { await rpc("notif_hapus", {p_rumah:awanCfg().rumah, p_perangkat:idPerangkatTetap(), p_profil:id}); } catch(e){}
+  localStorage.removeItem(K_PUSH(id));
+  const lain = S.meta.pengguna.some(p => p.id !== id && pushSaya(p.id).aktif);
+  if (!lain){ try { const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription(); if (sub) await sub.unsubscribe(); } catch(e){} }
+  render(); toast("Notifikasi tagihan dimatikan di perangkat ini.");
+}
+async function tesPush(){
+  const ok = await kirimJadwalPush(true, [{waktu:new Date(Date.now() + 20000).toISOString(), judul:"Dompet Kita", isi:"Tes notifikasi berhasil! Pengingat tagihan akan muncul seperti ini.", tag:"dompet-kita-tes"}]);
+  toast(ok ? "Notifikasi tes akan muncul dalam 5 menit. Coba tutup aplikasinya untuk melihatnya." : "Tes belum terkirim. Cek koneksi internet lalu coba lagi.");
+}
+function barisPush(){
+  const st = statusPush(), jam = pushJam(), info = pushSaya();
+  const ket = {
+    tidak:"Browser ini belum mendukung notifikasi saat aplikasi tertutup. Coba Chrome di Android atau laptop.",
+    ios:"Di iPhone/iPad, pasang Dompet Kita ke Layar Utama dulu (Safari → Bagikan → Tambah ke Layar Utama), lalu buka dari ikonnya.",
+    awan:"Butuh sinkron awan. Sambungkan dulu perangkat ini di bagian Sinkron antarperangkat.",
+    ditolak:"Izin notifikasi untuk situs ini ditolak di browser. Buka setelan situs, izinkan Notifikasi, lalu tekan Aktifkan.",
+    mati:"Belum aktif di perangkat ini.",
+    aktif:"Aktif di perangkat ini. Pipo mengingatkan H-3, H-2, dan H-1 sebelum jatuh tempo, pukul " + jam + "." + (info.jumlah != null ? " Ada " + info.jumlah + " pengingat terjadwal." : "")
+  }[st];
+  const jamOpsi = Array.from({length:17}, (_, i) => String(i + 5).padStart(2, "0") + ":00").map(j => '<option'+(j === jam ? " selected" : "")+'>'+j+'</option>').join("");
+  const tombol = st === "aktif"
+    ? '<select id="in-push-jam" class="pilih-set" aria-label="Jam pengingat tagihan">'+jamOpsi+'</select>'+tombolAksi("push-tes", "Kirim tes", "btn-ghost btn-kecil")+tombolAksi("push-mati", "Matikan", "btn-ghost btn-kecil")
+    : (st === "mati" || st === "ditolak" ? tombolAksi("push-aktif", "Aktifkan", "btn-primary btn-kecil") : "");
+  return '<div class="set-row pulih-baris"><div class="pulih-kiri">'+maskot("pipo", 40)+'<div><strong>Notifikasi tagihan saat aplikasi tertutup</strong> '+
+      '<span class="pulih-status '+(st === "aktif" ? "siap" : "belum")+'">'+(st === "aktif" ? "Aktif" : "Belum aktif")+'</span>'+
+      '<p class="muted" style="font-size:14px">'+esc(ket)+' Isinya hanya jumlah, misalnya "Ada 2 tagihan besok", tanpa nama dan nominal.</p></div></div>'+
+    '<div class="row-btn" style="justify-content:flex-end">'+tombol+'</div></div>';
+}
+document.addEventListener("change", async e => {
+  if (e.target.id !== "in-push-jam" || !S.sesi) return;
+  S.sesi.data.pengaturan.pushJam = e.target.value;
+  await simpanPribadi();
+  await kirimJadwalPush(true);
+  toast("Pipo akan mengingatkan pukul " + e.target.value + ".");
+});
+/* setiap data berubah, jadwal pengingat diperbarui (hanya kalau notifikasi aktif di perangkat ini) */
+const simpanPribadiSebelum15 = simpanPribadi;
+simpanPribadi = async function(){ const h = await simpanPribadiSebelum15.apply(this, arguments); if (S.sesi && pushSaya().aktif) jadwalkanPush(); return h; };
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.sesi && pushSaya().aktif) kirimJadwalPush(false); });
+
+Object.assign(AKSI, {
+  "push-aktif": () => aktifkanPush(),
+  "push-mati": () => matikanPush(),
+  "push-tes": () => tesPush()
 });
 
 document.addEventListener("click", e => {

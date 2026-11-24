@@ -1,5 +1,5 @@
 /* Service worker Dompet Kita: aplikasi tetap bisa dibuka tanpa internet */
-const VERSI = "dompet-kita-001d96816d";
+const VERSI = "dompet-kita-0a5baab5c5";
 const INTI = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSI).then(c => c.addAll(INTI))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
@@ -36,5 +36,22 @@ self.addEventListener("fetch", e => {
   e.respondWith(caches.match(r).then(hit => {
     const ambil = fetch(r).then(res => { if (res.ok || res.type === "opaque"){ const c = res.clone(); caches.open(VERSI).then(x => x.put(r, c)); } return res; }).catch(() => hit);
     return hit || ambil;
+  }));
+});
+
+/* notifikasi pengingat tagihan dari server (aplikasi boleh tertutup) */
+self.addEventListener("push", e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch(err){ d = {isi:e.data ? e.data.text() : ""}; }
+  e.waitUntil(self.registration.showNotification(d.judul || "Dompet Kita", {
+    body:d.isi || "Ada pengingat baru dari Dompet Kita.", icon:"icons/icon-192.png", badge:"icons/icon-192.png",
+    tag:d.tag || "dompet-kita", renotify:true, data:{url:"./?aksi=tagihan"}}));
+});
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || "./", self.registration.scope).href;
+  e.waitUntil(self.clients.matchAll({type:"window", includeUncontrolled:true}).then(ws => {
+    for (const w of ws){ if (w.url.startsWith(self.registration.scope) && "focus" in w) return w.focus(); }
+    return self.clients.openWindow(url);
   }));
 });
