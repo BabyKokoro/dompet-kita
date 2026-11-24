@@ -5753,7 +5753,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.4.1";
+const VERSI_APP = "1.4.1b";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -7113,41 +7113,83 @@ function teksLokasi(l){
 const kodeLokasi = l => teksLokasi(l) ? (l.negara || "") + "|" + teksLokasi(l) : "";
 function uraiKodeLokasi(s){ if (!s) return null; const i = s.indexOf("|"); return i < 0 ? {negara:"", teks:s} : {negara:s.slice(0, i), teks:s.slice(i + 1)}; }
 function lokasiKodeHTML(s, h){ const l = uraiKodeLokasi(s); return l ? '<span class="lokasi-baris">'+benderaHTML(l.negara, h || 12)+'<span>'+esc(l.teks)+'</span></span>' : ""; }
+const PESAN_LOKASI = {
+  ditolak:"Izin lokasi ditolak. Buka setelan situs di browser, ubah Lokasi ke Izinkan, lalu tekan Perbarui.",
+  waktu:"GPS terlalu lama merespons. Coba Perbarui lagi, sebaiknya saat Wi-Fi menyala.",
+  sinyal:"Perangkat belum bisa menentukan posisinya. Pastikan Lokasi/GPS perangkat menyala. Di laptop Windows, cek Settings → Privacy & security → Location.",
+  jaringan:"Gagal menghubungi layanan nama kota. Cek koneksi internet, lalu tekan Perbarui."
+};
 function lokasiHTML(){
   if (!lokasiAktif()) return "";
   const l = lokasiSaya();
   if (!l) return "";
-  if (l.ditolak) return '<span class="jam-lokasi redup">Lokasi tidak diketahui</span>';
+  if (l.ditolak || l.gagal) return '<span class="jam-lokasi redup" title="'+esc(PESAN_LOKASI[l.ditolak ? "ditolak" : l.gagal] || "")+'">'+(l.ditolak ? "Izin lokasi ditolak" : "Lokasi belum terbaca")+'</span>';
   return '<span class="jam-lokasi" title="Lokasi perangkat ini">'+benderaHTML(l.negara, 12)+'<span class="jam-lokasi-teks">'+esc(teksLokasi(l))+'</span></span>';
 }
 function perbaruiTampilLokasi(){ document.querySelectorAll(".lokasi-wadah").forEach(el => { el.innerHTML = lokasiHTML(); }); }
+async function izinLokasi(){ try { return (await navigator.permissions.query({name:"geolocation"})).state; } catch(e){ return "prompt"; } }
+const adaKota = l => !!(l && (l.kota || l.provinsi));
+let janjiLokasi = null;
 async function perbaruiLokasi(paksa){
-  if (!lokasiAktif() || !("geolocation" in navigator) || S.lokasiSibuk) return null;
+  if (!lokasiAktif() || !("geolocation" in navigator)) return null;
   const lama = lokasiSaya();
-  if (!paksa && lama && Date.now() - lama.waktu < 24 * 3600e3) return lama;
-  S.lokasiSibuk = true;
-  try {
-    const pos = await new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, {enableHighAccuracy:false, timeout:20000, maximumAge:3600e3}));
-    /* koordinat dibulatkan (sekitar 100 m) sebelum diubah jadi nama kota */
-    const r = await fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" + pos.coords.latitude.toFixed(3) + "&longitude=" + pos.coords.longitude.toFixed(3) + "&localityLanguage=id");
-    if (!r.ok) throw new Error("geocode " + r.status);
-    const j = await r.json();
-    const baru = {kota:rapikanKota(j.city || j.locality), provinsi:String(j.principalSubdivision || "").trim(), negara:String(j.countryCode || "").toUpperCase(), waktu:Date.now()};
-    localStorage.setItem(K_LOKASI, JSON.stringify(baru));
-    perbaruiTampilLokasi();
-    if (typeof awanTersambung === "function" && awanTersambung()) laporPerangkat("lokasi");
-    return baru;
-  } catch(e){
-    if (e && e.code === 1){ localStorage.setItem(K_LOKASI, JSON.stringify({ditolak:true, waktu:Date.now()})); perbaruiTampilLokasi(); }
-    return null;
-  } finally { S.lokasiSibuk = false; }
+  if (!paksa && lama){
+    const umur = Date.now() - lama.waktu;
+    if (adaKota(lama) && umur < 24 * 3600e3) return lama;
+    if (lama.ditolak && umur < 24 * 3600e3 && await izinLokasi() === "denied") return lama;
+    if (lama.gagal && umur < 10 * 60e3) return lama;
+  }
+  if (janjiLokasi && !paksa) return janjiLokasi;
+  const jalan = (async () => {
+    let kode = "jaringan";
+    try {
+      const pos = await Promise.race([
+        new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, {enableHighAccuracy:false, timeout:20000, maximumAge:3600e3})),
+        new Promise((_, rej) => setTimeout(() => rej({code:3}), 30000))
+      ]);
+      /* koordinat dibulatkan (sekitar 100 m) sebelum diubah jadi nama kota */
+      const r = await fetch("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=" + pos.coords.latitude.toFixed(3) + "&longitude=" + pos.coords.longitude.toFixed(3) + "&localityLanguage=id");
+      if (!r.ok) throw new Error("geocode " + r.status);
+      const j = await r.json(), adm = (j.localityInfo && j.localityInfo.administrative) || [];
+      /* tingkat 4 = provinsi (di Indonesia principalSubdivision berisi pulau, misalnya "Jawa") */
+      const tingkat = n => (adm.find(a => a.adminLevel === n) || {}).name || "";
+      const baru = {kota:rapikanKota(j.city || tingkat(5) || j.locality), provinsi:String(tingkat(4) || j.principalSubdivision || "").trim(), negara:String(j.countryCode || "").toUpperCase(), waktu:Date.now()};
+      if (!adaKota(baru)) throw new Error("kosong");
+      localStorage.setItem(K_LOKASI, JSON.stringify(baru));
+      S.lokasiGalat = null;
+      perbaruiTampilLokasi();
+      if (typeof awanTersambung === "function" && awanTersambung()) laporPerangkat("lokasi");
+      return baru;
+    } catch(e){
+      if (e && e.code === 1) kode = "ditolak"; else if (e && e.code === 3) kode = "waktu"; else if (e && e.code === 2) kode = "sinyal";
+      S.lokasiGalat = kode;
+      /* lokasi lama yang sudah terbaca tetap dipakai kalau pembaruan gagal */
+      if (!(adaKota(lama) && kode !== "ditolak")){
+        localStorage.setItem(K_LOKASI, JSON.stringify(kode === "ditolak" ? {ditolak:true, waktu:Date.now()} : {gagal:kode, waktu:Date.now()}));
+        perbaruiTampilLokasi();
+      }
+      return null;
+    }
+  })();
+  janjiLokasi = jalan;
+  try { return await jalan; } finally { if (janjiLokasi === jalan) janjiLokasi = null; }
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.sesi) perbaruiLokasi(false); });
+try {
+  navigator.permissions.query({name:"geolocation"}).then(p => {
+    p.onchange = async () => {
+      if (p.state !== "granted" || !S.sesi) return;
+      await perbaruiLokasi(true);
+      if (S.halaman === "pengaturan" && !document.querySelector(".backdrop")) render();
+    };
+  }).catch(() => {});
+} catch(e){}
 function seksiLokasi(){
   const l = lokasiSaya(), aktif = lokasiAktif();
-  const st = !aktif ? "Dimatikan" : !l ? "Belum terbaca" : l.ditolak ? "Izin lokasi ditolak di browser" : teksLokasi(l);
+  const st = !aktif ? "Dimatikan" : !l ? "Belum terbaca" : l.ditolak ? "Izin lokasi ditolak di browser" : l.gagal ? "Belum terbaca" : teksLokasi(l);
+  const ket = aktif && l && (l.ditolak || l.gagal) ? '<p class="note" style="font-size:13px;margin-top:6px;text-align:left">'+esc(PESAN_LOKASI[l.ditolak ? "ditolak" : l.gagal])+'</p>' : '';
   return '<div class="set-row"><div><strong>Lokasi perangkat</strong><p class="muted" style="font-size:14px">Zee mencatat kota dan provinsi perangkat ini (bukan titik persis), paling sering sekali sehari. Tampil di jam, daftar perangkat, dan riwayat pemulihan PIN.</p>'+
-      '<p style="font-size:14px;font-weight:800;margin-top:4px">'+(aktif && l && !l.ditolak ? benderaHTML(l.negara, 13) + " " : "")+esc(st)+'</p></div>'+
+      '<p style="font-size:14px;font-weight:800;margin-top:4px">'+(aktif && adaKota(l) ? benderaHTML(l.negara, 13) + " " : "")+esc(st)+'</p>'+ket+'</div>'+
       '<div class="row-btn" style="justify-content:flex-end">'+(aktif ? tombolAksi("lokasi-segarkan", "Perbarui", "btn-ghost btn-kecil")+tombolAksi("lokasi-mati", "Matikan", "btn-ghost btn-kecil") : tombolAksi("lokasi-nyala", "Nyalakan", "btn-primary btn-kecil"))+'</div></div>';
 }
 
@@ -7531,9 +7573,9 @@ Object.assign(AKSI, {
   "pulih-kode-cek": () => cekPulihKode(),
   "pulih-tanya": () => modalPulihTanya(),
   "pulih-tanya-cek": () => cekPulihTanya(),
-  "lokasi-segarkan": async () => { toast("Zee membaca lokasi..."); const l = await perbaruiLokasi(true); render(); toast(l ? "Lokasi: " + teksLokasi(l) + "." : "Lokasi belum terbaca. Pastikan izin lokasi untuk situs ini diizinkan."); },
+  "lokasi-segarkan": async () => { toast("Zee membaca lokasi..."); const l = await perbaruiLokasi(true); render(); toast(l ? "Lokasi: " + teksLokasi(l) + "." : "Zee: " + (PESAN_LOKASI[S.lokasiGalat] || PESAN_LOKASI.jaringan)); },
   "lokasi-mati": () => { localStorage.setItem(K_LOKASI_AKTIF, "0"); localStorage.removeItem(K_LOKASI); render(); if (awanTersambung()) laporPerangkat("lokasi"); toast("Lokasi perangkat dimatikan."); },
-  "lokasi-nyala": async () => { localStorage.setItem(K_LOKASI_AKTIF, "1"); render(); const l = await perbaruiLokasi(true); render(); toast(l ? "Lokasi: " + teksLokasi(l) + "." : "Izinkan akses lokasi untuk situs ini supaya Zee bisa membacanya."); }
+  "lokasi-nyala": async () => { localStorage.setItem(K_LOKASI_AKTIF, "1"); render(); const l = await perbaruiLokasi(true); render(); toast(l ? "Lokasi: " + teksLokasi(l) + "." : "Zee: " + (PESAN_LOKASI[S.lokasiGalat] || PESAN_LOKASI.jaringan)); }
 });
 
 document.addEventListener("click", e => {
