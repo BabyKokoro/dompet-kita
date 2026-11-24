@@ -756,6 +756,15 @@ html[data-tema=gelap] .snack{background:#F3E6D8;color:#24170F}
   .bar-pilih{bottom:calc(84px + env(safe-area-inset-bottom))}
   .snack{bottom:calc(100px + env(safe-area-inset-bottom))}
 }
+/* langkah 14 */
+.status-aktif{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted)}
+.status-aktif i{width:9px;height:9px;border-radius:50%;background:#9A8A7C;display:inline-block}
+.status-aktif.on{color:var(--green)}
+.status-aktif.on i{background:#4CAF50;box-shadow:0 0 0 3px rgba(76,175,80,.22)}
+.status-aktif.redup{font-weight:600;opacity:.75}
+.status-pasangan{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}
+.qr-hitung.ok{color:var(--green);font-weight:800}
+.modal-undang .qr-wadah,.modal-undang .qr-hitung{align-self:center;text-align:center}
 </style>
 </head>
 <body>
@@ -1080,7 +1089,7 @@ function layarDaftar(){
   if (d.langkah === 1){
     const opsi = AVATAR.map(j => '<button type="button" class="avatar-opt'+(j === d.avatar ? " on" : "")+'" data-aksi="pilih-avatar-daftar" data-j="'+j+'" aria-pressed="'+(j === d.avatar)+'">'+maskot(j, 56)+'<span>'+INFO[j].nama+'</span></button>').join("");
     return '<main class="center-screen"><div class="card setup">'+
-      '<div class="setup-head">'+maskot(d.avatar, 72)+'<div><span class="eyebrow">'+label+' · Langkah 1 dari 3</span><h1>Kenalan dulu, yuk!</h1></div></div>'+
+      '<div class="setup-head">'+maskot(d.avatar, 72)+'<div><span class="eyebrow">'+label+' · Langkah 1 dari 3</span><h1>Kenalan dulu, yuk!</h1>'+(d.diundang ? '<p class="muted" style="font-size:14px">Diundang oleh '+esc(d.diundang)+'. Data pribadimu tetap hanya bisa dibuka dengan PIN-mu sendiri.</p>' : '')+'</div></div>'+
       '<form id="form-daftar" novalidate>'+
         '<label class="field">Nama panggilan<input id="in-nama" maxlength="20" autocomplete="off" placeholder="Contoh: Rara" value="'+esc(d.nama)+'"></label>'+
         '<fieldset><legend>Pilih avatar</legend><div class="avatar-grid">'+opsi+'</div></fieldset>'+
@@ -1144,6 +1153,7 @@ async function selesaiDaftar(pin){
     const kb = S.sesi ? S.sesi.kunciBersama : S.kunciBersamaSementara;
     const u = await daftarkanPengguna(d.nama, d.avatar, pin, kb);
     S.daftar = null;
+    if (!S.sesi && selesaiUndangan(u)){ S.kunciBersamaSementara = null; S.loginId = u.id; S.layar = "login"; render(); toast("Selamat bergabung, " + u.nama + "! Masuk dengan PIN-mu."); return; }
     if (S.sesi){ S.layar = "app"; S.halaman = "pengaturan"; render(); toast(u.nama + " sudah terdaftar!"); }
     else { S.kunciBersamaSementara = null; S.loginId = S.meta.pengguna[0].id; S.layar = "login"; render(); toast("Pendaftaran selesai. Silakan masuk."); }
   } catch(err){
@@ -1222,6 +1232,7 @@ async function masukDenganKunci(u, k){
   statistik();
   if (!S.sesi.data.statistik.halaman.includes("beranda")) S.sesi.data.statistik.halaman.push("beranda");
   await catatAktifBersama();
+  await catatTerakhirAktif(true);
   if (cekRapor() || cekMingguan()) S.cekUltahNanti = true; else cekUltah();
   await simpanPribadi();
   render();
@@ -1385,7 +1396,7 @@ function halPengaturan(){
   const pilih = S.avatarSet || u.avatar;
   const opsi = AVATAR.map(j => '<button type="button" class="avatar-opt'+(j === pilih ? " on" : "")+'" data-aksi="pilih-avatar-set" data-j="'+j+'" aria-pressed="'+(j === pilih)+'">'+maskot(j, 52)+'<span>'+INFO[j].nama+'</span></button>').join("");
   const menitOpsi = [1,3,5,10,15,30].map(m => '<option value="'+m+'"'+(m === s.data.pengaturan.kunciOtomatisMenit ? " selected" : "")+'>'+m+' menit</option>').join("");
-  const anggota = S.meta.pengguna.map(p => '<div class="set-row"><div class="member">'+maskot(p.avatar, 44)+'<div><strong>'+esc(p.nama)+'</strong> '+benderaPengguna(p)+(p.id === u.id ? ' <span class="chip">Kamu</span>' : '')+'<div class="muted" style="font-size:13px">Terdaftar '+new Date(p.dibuat).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})+'</div></div></div></div>').join("");
+  const anggota = S.meta.pengguna.map(p => '<div class="set-row"><div class="member">'+maskot(p.avatar, 44)+'<div><strong>'+esc(p.nama)+'</strong> '+benderaPengguna(p)+(p.id === u.id ? ' <span class="chip">Kamu</span>' : '')+'<div class="muted" style="font-size:13px">Terdaftar '+new Date(p.dibuat).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})+'</div>'+(p.id !== u.id ? '<div style="font-size:13px">'+statusAktifHTML(p.id)+'</div>' : '')+'</div></div></div>').join("");
   return '<header class="page-head"><div><h1>Pengaturan</h1><p>Atur profil, kategori, tampilan, backup, keamanan, dan pengguna.</p></div></header>'+
     '<section class="card set-sec" aria-labelledby="set-profil"><h2 id="set-profil">Profil</h2>'+
       '<form id="form-profil" class="set-sec" novalidate>'+
@@ -1414,7 +1425,8 @@ function halPengaturan(){
     seksiPemulihan()+
     '<section class="card set-sec" aria-labelledby="set-pengguna"><div class="card-head" style="margin:0">'+maskot("cici", 48)+'<h2 id="set-pengguna">Pengguna di laptop ini</h2></div>'+
       '<div>'+anggota+'</div>'+
-      (S.meta.pengguna.length < 2 ? '<div><button type="button" class="btn btn-primary" data-aksi="daftar-pasangan">'+ikon("plus")+'Daftarkan pasangan</button></div>' : '<p class="muted" style="font-size:14px">Dompet Kita dibuat untuk dua orang, jadi slot pengguna sudah penuh.</p>')+
+      (S.meta.pengguna.length < 2 ? '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("undang-pasangan", ikon("plus") + "Undang pasangan ke HP-nya", "btn-primary")+'<button type="button" class="btn btn-ghost" data-aksi="daftar-pasangan">Daftarkan di perangkat ini</button></div>' : '<p class="muted" style="font-size:14px">Dompet Kita dibuat untuk dua orang, jadi slot pengguna sudah penuh.</p>')+
+      (S.meta.pengguna.length >= 2 ? '<label class="pilih-cek"><input type="checkbox" id="in-statusaktif"'+(S.sesi.data.pengaturan.sembunyiStatus ? "" : " checked")+'> Tampilkan kapan aku terakhir aktif ke pasangan</label>' : '')+
     '</section>'+
     '<section class="card set-sec danger" aria-labelledby="set-bahaya"><h2 id="set-bahaya" style="color:var(--red)">Zona bahaya</h2>'+
       '<div class="set-row"><div><strong>Hapus semua data</strong><p class="muted" style="font-size:14px">Menghapus semua pengguna, transaksi, dan area Bersama di laptop ini. Tidak bisa dibatalkan.</p></div>'+
@@ -2637,10 +2649,10 @@ function halBersama(){
         : '<button type="button" class="btn btn-ghost btn-kecil" data-aksi="lunas-bagi" data-id="'+x.id+'">Tandai lunas</button>')+
       '<button type="button" class="btn-ikon" data-aksi="ubah-bagi" data-id="'+x.id+'" aria-label="Ubah '+esc(x.judul)+'">'+ikon("ubah")+'</button></li>';
   };
-  return '<header class="page-head"><div><h1>Bersama</h1><p>Bisa dibuka '+peng.map(p => esc(p.nama)).join(" dan ")+'. Data pribadi masing-masing tetap rahasia.</p></div></header>'+
+  return '<header class="page-head"><div><h1>Bersama</h1><p>Bisa dibuka '+peng.map(p => esc(p.nama)).join(" dan ")+'. Data pribadi masing-masing tetap rahasia.</p>'+barisStatusPasangan()+'</div></header>'+
     kartuBagiPasangan()+
     (!berdua ? '<section class="card bubble-card">'+maskot("cici", 80)+'<div class="bubble"><strong>Kata Cici</strong><span>Pasanganmu belum terdaftar. Dompet dan tabungan bersama sudah bisa dipakai, tapi bagi tagihan butuh dua orang.</span>'+
-      '<button type="button" class="btn btn-ghost" style="align-self:flex-start;margin-top:8px" data-aksi="daftar-pasangan">Daftarkan pasangan</button></div></section>' : '')+
+      '<div class="row-btn" style="justify-content:flex-start;margin-top:8px">'+tombolAksi("undang-pasangan", "Undang ke HP-nya", "btn-primary btn-kecil")+'<button type="button" class="btn btn-ghost btn-kecil" data-aksi="daftar-pasangan">Daftarkan di perangkat ini</button></div></div></section>' : '')+
     '<div class="page-head"><h2>Dompet bersama</h2>'+tombolAksi("tambah-dber", ikon("plus") + "Dompet bersama", "btn-ghost")+'</div>'+
     '<div class="ang-grid">'+dompet+'</div>'+
     '<div class="page-head"><h2>Tabungan impian berdua</h2>'+tombolAksi("tambah-tabber", ikon("plus") + "Tabungan berdua", "btn-ghost")+'</div>'+
@@ -5789,7 +5801,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.4.2";
+const VERSI_APP = "1.4.2a";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -6238,6 +6250,7 @@ async function sinkron(alasan){
     }
     for (const k of daftarKunciLokal()) await dorongKunci(c.rumah, k);
     ok = true; setStatusAwan("ok");
+    if (S.undanganTunda) setTimeout(lanjutkanUndangan, 50);
     await laporPerangkat(alasan);
   } catch(e){
     console.warn("Sinkron gagal:", e);
@@ -6275,6 +6288,8 @@ async function tanganiKembaliAwan(){
     toast("Zee: login Google gagal. " + (p.get("error_description") || "").replace(/\+/g, " "));
     return null;
   }
+  const un = undanganDariTeks(h);
+  if (un){ bersihkan(); return Object.assign({jenis:"undang"}, un); }
   const m = h.match(/pasang=([0-9a-f]{32,})/i);
   if (m){ bersihkan(); return {jenis:"pasang", kode:m[1].toLowerCase()}; }
   return null;
@@ -6284,6 +6299,7 @@ async function awanMulai(){
   try { k = await tanganiKembaliAwan(); }
   catch(e){ toast("Zee: gagal masuk. " + e.message); }
   if (k && k.jenis === "pasang") return gabungPakaiKode(k.kode);
+  if (k && k.jenis === "undang") return terimaUndangan(k.kode, k.rahasia);
   if (!awanCfg() || !awanCfg().sesi){ perbaruiStatusAwan(); return; }
   if (k && k.jenis === "google") return setelahMasukGoogle();
   sinkron("mulai");
@@ -6391,7 +6407,7 @@ async function modalScanQR(){
     '<p class="muted" style="font-size:14px">Di perangkat yang sudah tersambung, buka <em>Pengaturan → Sinkron → Tampilkan QR</em>.</p>'+
     (bisaScan ? '<div class="scan-wadah"><video id="scan-video" playsinline muted></video><span class="scan-bingkai"></span></div><p class="muted" id="scan-pesan" style="font-size:14px;text-align:center">Mengaktifkan kamera...</p>'
       : '<p class="note" style="font-size:14px">Browser ini belum bisa scan langsung dari aplikasi. Buka aplikasi <strong>Kamera</strong> HP, arahkan ke QR-nya, lalu ketuk tautan yang muncul.</p>')+
-    '<label class="field">Atau tempel tautan dari "Salin tautan"<input id="in-tautan-qr" autocomplete="off" placeholder="https://.../#pasang=..."></label>'+
+    '<label class="field">Atau tempel tautan dari "Salin tautan" atau undangan pasangan<input id="in-tautan-qr" autocomplete="off" placeholder="https://.../#pasang=... atau #undang=..."></label>'+
     '<p class="err" id="err-scan" role="alert"></p>'+
     '<div class="row-btn">'+tombolAksi("tutup-scan", "Batal")+tombolAksi("pakai-tautan-qr", "Gabung", "btn-primary")+'</div>', "center");
   if (!bisaScan) return;
@@ -6405,7 +6421,9 @@ async function modalScanQR(){
     const cari = async () => {
       if (!aliranKamera || !document.body.contains(v)){ hentikanKamera(); return; }
       try {
-        const hasil = await det.detect(v), kode = hasil.length ? kodeDariTeks(hasil[0].rawValue) : null;
+        const hasil = await det.detect(v), un = hasil.length ? undanganDariTeks(hasil[0].rawValue) : null;
+        if (un){ hentikanKamera(); tutupModal(); return terimaUndangan(un.kode, un.rahasia); }
+        const kode = hasil.length ? kodeDariTeks(hasil[0].rawValue) : null;
         if (kode){ hentikanKamera(); tutupModal(); return gabungPakaiKode(kode); }
       } catch(e){}
       setTimeout(cari, 300);
@@ -6496,6 +6514,8 @@ Object.assign(AKSI, {
   "scan-qr": () => modalScanQR(),
   "tutup-scan": () => { hentikanKamera(); tutupModal(); },
   "pakai-tautan-qr": () => {
+    const un = undanganDariTeks(document.getElementById("in-tautan-qr").value);
+    if (un){ hentikanKamera(); tutupModal(); terimaUndangan(un.kode, un.rahasia); return; }
     const kode = kodeDariTeks(document.getElementById("in-tautan-qr").value);
     if (!kode){ document.getElementById("err-scan").textContent = "Tautan atau kode belum benar."; return; }
     hentikanKamera(); tutupModal(); gabungPakaiKode(kode);
@@ -7956,6 +7976,158 @@ Object.assign(AKSI, {
 });
 const navSebelum13 = AKSI.nav;
 AKSI.nav = t => { if (t.dataset.h !== "transaksi") S.pilihTx = null; navSebelum13(t); };
+
+/* ============ Langkah 14 (v1.4.2a): undang pasangan & status aktif pasangan ============ */
+
+/* ---------- Undang pasangan (Cici) ---------- */
+const MENIT_UNDANGAN = 5;
+const b64url = buf => keB64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+async function kunciUndangan(rahasia, salt){ return kunciDariPin("undangan:" + rahasia, salt, 20000); }
+function undanganDariTeks(t){
+  const m = String(t || "").match(/undang=([0-9a-f]{64})\.([A-Za-z0-9_-]{16,})/i);
+  return m ? {kode:m[1].toLowerCase(), rahasia:m[2]} : null;
+}
+let timerUndang = null;
+async function modalUndang(){
+  if (!DI_WEB || !awanTersambung()){
+    bukaModal('<div class="card-head" style="margin:0">'+maskot("cici", 64)+'<h2 id="judul-modal">Sambungkan ke awan dulu</h2></div>'+
+      '<p>Supaya pasangan bisa mendaftar dari HP-nya sendiri, perangkat ini harus tersambung ke awan lewat <strong>Pengaturan → Sinkron antarperangkat</strong>.</p>'+
+      '<p class="muted" style="font-size:14px">Kalau sedang bersama, pasangan juga bisa langsung mendaftar di perangkat ini lewat tombol <em>Daftarkan di perangkat ini</em>.</p>'+
+      '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup", "btn-primary")+'</div>', "center");
+    return;
+  }
+  if (S.meta.pengguna.length >= 2){ toast("Slot pengguna sudah penuh: Dompet Kita untuk dua orang."); return; }
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("cici", 64)+'<h2 id="judul-modal">Menyiapkan undangan...</h2></div><p class="muted">Cici sedang menyiapkan kunci undangan.</p>', "center");
+  let kode, tautan;
+  try {
+    kode = await rpc("buat_kode_pasang", {p_rumah:awanCfg().rumah});
+    const rahasia = b64url(crypto.getRandomValues(new Uint8Array(18))), salt = saltBaru();
+    const k = await kunciUndangan(rahasia, salt);
+    S.meta.undangan = {id:uid(), salt, kotak:await bungkusKunci(k, S.sesi.kunciBersama), kedaluwarsa:new Date(Date.now() + MENIT_UNDANGAN * 60000).toISOString(), oleh:S.sesi.user.id};
+    simpanMeta();
+    const ok = await sinkron("undangan");
+    if (!ok) throw new Error("Undangan belum terkirim ke awan. Cek internet lalu coba lagi.");
+    tautan = location.origin + location.pathname + "#undang=" + kode + "." + rahasia;
+  } catch(e){ tutupModal(); toast("Cici: " + (e.message || "undangan gagal dibuat.")); return; }
+  S.tautanUndang = tautan;
+  const idAwal = S.meta.pengguna.map(p => p.id);
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("cici", 64)+'<div><h2 id="judul-modal">Undang pasangan</h2><p class="muted" style="font-size:14px">Pasanganmu mendaftar dengan nama dan PIN-nya sendiri di HP-nya.</p></div></div>'+
+    '<div class="qr-wadah" id="qr-undang">'+QR.svg(tautan, 260)+'</div>'+
+    '<p class="qr-hitung" id="undang-hitung">Berlaku '+MENIT_UNDANGAN+':00</p>'+
+    '<ol class="panduan"><li>Di HP pasangan: buka <strong>Kamera</strong> lalu arahkan ke QR ini, atau pakai menu <em>Scan QR</em> di layar awal Dompet Kita.</li>'+
+      '<li>Sedang berjauhan? Kirim <strong>tautan</strong> atau <strong>gambar QR</strong> lewat chat pribadi, lalu minta segera dibuka.</li>'+
+      '<li>Pasangan mengisi nama, avatar, dan PIN-nya sendiri. Profilnya otomatis muncul juga di sini.</li></ol>'+
+    '<p class="note" style="font-size:13px;text-align:left">Undangan ini kunci masuk ke area Bersama selama '+MENIT_UNDANGAN+' menit dan hanya bisa dipakai sekali. Brankas pribadimu tetap tidak bisa dibuka siapa pun tanpa PIN-mu.</p>'+
+    '<div class="row-btn">'+tombolAksi("undang-salin", "Salin tautan", "btn-ghost btn-kecil")+tombolAksi("undang-unduh", "Unduh gambar QR", "btn-ghost btn-kecil")+
+      tombolAksi("undang-pasangan", "Buat ulang", "btn-ghost btn-kecil")+tombolAksi("tutup-modal", "Selesai", "btn-primary")+'</div>', "modal-pulih modal-undang");
+  const batas = Date.now() + MENIT_UNDANGAN * 60000;
+  clearInterval(timerUndang);
+  timerUndang = setInterval(() => {
+    const el = document.getElementById("undang-hitung");
+    if (!el){ clearInterval(timerUndang); return; }
+    const m = bacaJson(K_META);
+    if (m && m.pengguna.length >= 2){
+      clearInterval(timerUndang);
+      const baru = m.pengguna.find(p => !idAwal.includes(p.id));
+      el.textContent = (baru ? baru.nama : "Pasanganmu") + " sudah terdaftar! Sekarang kalian bisa memakai area Bersama dari HP masing-masing."; el.classList.add("ok");
+      document.getElementById("qr-undang").classList.add("kedaluwarsa");
+      return;
+    }
+    const sisa = Math.max(0, Math.round((batas - Date.now()) / 1000));
+    el.textContent = sisa ? "Berlaku " + Math.floor(sisa / 60) + ":" + String(sisa % 60).padStart(2, "0") : "Undangan sudah kedaluwarsa. Tekan Buat ulang.";
+    if (!sisa){ clearInterval(timerUndang); document.getElementById("qr-undang").classList.add("kedaluwarsa"); }
+    else if (sisa % 10 === 0) sinkron("tunggu-undangan");
+  }, 1000);
+}
+function unduhQRUndangan(){
+  const svg = QR.svg(S.tautanUndang, 520), img = new Image();
+  img.onload = () => {
+    const c = document.createElement("canvas"); c.width = 640; c.height = 760;
+    const x = c.getContext("2d");
+    x.fillStyle = "#FFF8F0"; x.fillRect(0, 0, 640, 760);
+    x.drawImage(img, 60, 60, 520, 520);
+    x.fillStyle = "#5C3D2E"; x.font = "bold 30px sans-serif"; x.textAlign = "center";
+    x.fillText("Undangan Dompet Kita dari " + S.sesi.user.nama, 320, 640);
+    x.font = "22px sans-serif"; x.fillText("Scan dengan Kamera HP · berlaku " + MENIT_UNDANGAN + " menit · sekali pakai", 320, 685);
+    const a = document.createElement("a"); a.href = c.toDataURL("image/png"); a.download = "undangan-dompet-kita.png";
+    document.body.appendChild(a); a.click(); a.remove();
+  };
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.indexOf("xmlns") < 0 ? svg.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"') : svg);
+}
+/* di HP pasangan: gabung ke rumah, ambil data, lalu buka kunci area Bersama dari undangan */
+async function terimaUndangan(kode, rahasia){
+  S.undanganTunda = {rahasia, waktu:Date.now()};
+  toast("Cici: membuka undangan...");
+  await gabungPakaiKode(kode);
+}
+async function lanjutkanUndangan(){
+  const r = S.undanganTunda;
+  if (!r) return;
+  S.undanganTunda = null;
+  const meta = bacaJson(K_META), u = meta && meta.undangan;
+  if (!u){ toast("Cici: undangan tidak ditemukan atau sudah dipakai. Minta pasanganmu membuat undangan baru."); return; }
+  if (Date.parse(u.kedaluwarsa) < Date.now()){ toast("Cici: undangan sudah kedaluwarsa. Minta pasanganmu menekan Buat ulang."); return; }
+  if (meta.pengguna.length >= 2){ toast("Cici: Dompet Kita ini sudah punya dua pengguna."); return; }
+  let kb;
+  try { kb = await bukaKunci(await kunciUndangan(r.rahasia, u.salt), u.kotak); }
+  catch(e){ toast("Cici: kunci undangan tidak cocok. Minta undangan baru ya."); return; }
+  S.meta = meta; S.kunciBersamaSementara = kb; S.undanganAktif = u.id;
+  tutupModal();
+  mulaiDaftar("pasangan");
+  S.daftar.diundang = namaPengguna(u.oleh);
+  render();
+}
+function selesaiUndangan(u){
+  if (!S.undanganAktif) return false;
+  if (S.meta.undangan && S.meta.undangan.id === S.undanganAktif){ delete S.meta.undangan; simpanMeta(); }
+  S.undanganAktif = null;
+  setTimeout(() => sinkron("undangan-selesai"), 100);
+  return true;
+}
+
+/* ---------- Status aktif pasangan ---------- */
+async function catatTerakhirAktif(paksa){
+  if (!S.sesi) return;
+  const p = S.sesi.data.pengaturan, b = S.sesi.bersama, me = S.sesi.user.id;
+  b.terakhir = b.terakhir || {};
+  if (p.sembunyiStatus){ if (b.terakhir[me]){ delete b.terakhir[me]; await tulisBersama(); } return; }
+  const lama = b.terakhir[me] ? Date.parse(b.terakhir[me]) : 0;
+  if (!paksa && Date.now() - lama < 5 * 60000) return;
+  b.terakhir[me] = new Date().toISOString();
+  await tulisBersama();
+}
+setInterval(() => { if (S.sesi && document.visibilityState === "visible" && Date.now() - aktivitasTerakhir < 5 * 60000) catatTerakhirAktif(false); }, 60000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.sesi) catatTerakhirAktif(false); });
+function teksAktif(iso){
+  const m = Math.floor((Date.now() - Date.parse(iso)) / 60000);
+  if (m < 6) return "sedang aktif";
+  if (m < 60) return "aktif " + m + " menit lalu";
+  if (m < 1440) return "aktif " + Math.floor(m / 60) + " jam lalu";
+  if (m < 7 * 1440) return "aktif " + Math.floor(m / 1440) + " hari lalu";
+  return "terakhir aktif " + new Date(iso).toLocaleDateString("id-ID", {day:"numeric", month:"long"});
+}
+function statusAktifHTML(id){
+  const t = S.sesi && S.sesi.bersama.terakhir && S.sesi.bersama.terakhir[id];
+  if (!t) return '<span class="status-aktif redup"><i></i>status tidak dibagikan</span>';
+  return '<span class="status-aktif'+(Date.now() - Date.parse(t) < 6 * 60000 ? " on" : "")+'"><i></i>'+teksAktif(t)+'</span>';
+}
+function barisStatusPasangan(){
+  const lain = S.meta.pengguna.filter(p => p.id !== S.sesi.user.id);
+  if (!lain.length) return "";
+  return lain.map(p => '<p class="status-pasangan">'+maskot(p.avatar, 26)+'<strong>'+esc(p.nama)+'</strong> '+benderaPengguna(p, 11)+' '+statusAktifHTML(p.id)+'</p>').join("");
+}
+document.addEventListener("change", async e => {
+  if (e.target.id !== "in-statusaktif" || !S.sesi) return;
+  S.sesi.data.pengaturan.sembunyiStatus = !e.target.checked;
+  await simpanPribadi(); await catatTerakhirAktif(true);
+  toast(e.target.checked ? "Pasangan bisa melihat kapan kamu terakhir aktif." : "Status aktifmu disembunyikan dari pasangan.");
+});
+
+Object.assign(AKSI, {
+  "undang-pasangan": () => modalUndang(),
+  "undang-salin": async () => { try { await navigator.clipboard.writeText(S.tautanUndang); toast("Tautan undangan disalin. Kirim lewat chat pribadi, berlaku " + MENIT_UNDANGAN + " menit."); } catch(e){ toast("Tidak bisa menyalin otomatis."); } },
+  "undang-unduh": () => unduhQRUndangan()
+});
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-aksi]");
