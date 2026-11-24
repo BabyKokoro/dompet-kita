@@ -1,5 +1,5 @@
 /* Service worker Dompet Kita: aplikasi tetap bisa dibuka tanpa internet */
-const VERSI = "dompet-kita-0a5baab5c5";
+const VERSI = "dompet-kita-8f8e360411";
 const INTI = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSI).then(c => c.addAll(INTI))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
@@ -43,15 +43,24 @@ self.addEventListener("fetch", e => {
 self.addEventListener("push", e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch(err){ d = {isi:e.data ? e.data.text() : ""}; }
-  e.waitUntil(self.registration.showNotification(d.judul || "Dompet Kita", {
-    body:d.isi || "Ada pengingat baru dari Dompet Kita.", icon:"icons/icon-192.png", badge:"icons/icon-192.png",
-    tag:d.tag || "dompet-kita", renotify:true, data:{url:"./?aksi=tagihan"}}));
+  const obrolan = String(d.tag || "").startsWith("dompet-kita-obrolan");
+  e.waitUntil(self.clients.matchAll({type:"window", includeUncontrolled:true}).then(ws => {
+    if (obrolan){
+      const tampil = ws.filter(w => w.visibilityState === "visible");
+      ws.forEach(w => w.postMessage({jenis:"obrolan-baru"}));
+      if (tampil.length) return;
+    }
+    return self.registration.showNotification(d.judul || "Dompet Kita", {
+      body:d.isi || "Ada pengingat baru dari Dompet Kita.", icon:"icons/icon-192.png", badge:"icons/icon-192.png",
+      tag:d.tag || "dompet-kita", renotify:true, data:{url:obrolan ? "./?aksi=obrolan" : "./?aksi=tagihan", jenis:obrolan ? "obrolan" : "tagihan"}});
+  }));
 });
 self.addEventListener("notificationclick", e => {
   e.notification.close();
   const url = new URL((e.notification.data && e.notification.data.url) || "./", self.registration.scope).href;
   e.waitUntil(self.clients.matchAll({type:"window", includeUncontrolled:true}).then(ws => {
-    for (const w of ws){ if (w.url.startsWith(self.registration.scope) && "focus" in w) return w.focus(); }
+    const jenis = (e.notification.data && e.notification.data.jenis) || "tagihan";
+    for (const w of ws){ if (w.url.startsWith(self.registration.scope) && "focus" in w){ w.postMessage({jenis:"buka", aksi:jenis}); return w.focus(); } }
     return self.clients.openWindow(url);
   }));
 });
