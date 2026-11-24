@@ -813,10 +813,29 @@ html[data-tema=gelap] .ob-centang.dibaca{color:#8EC5FF}
   .shell:has(.ob-tulis) .fab-bantu{display:none}
   .topbar-hp .brand{min-width:0}
 }
-@media (max-width:400px){
-  .topbar-hp .brand{font-size:0;gap:0}
-  .topbar-hp .brand .maskot{font-size:16px}
+/* 1.5.1: bilah bawah Obrolan + Lingling di kartu saldo + peran Boo */
+.lingling-kartu{display:none}
+@media (max-width:900px){
+  .stat.utama{position:relative}
+  .lingling-kartu{display:block;position:absolute;top:12px;right:12px}
 }
+.bn-ob-ikon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px}
+.bn-ob-ikon .maskot{display:none}
+.bn-ob.ada .bn-ob-ikon .ico{display:none}
+.bn-ob.ada .bn-ob-ikon .maskot{display:inline-flex;animation:boo-angguk 2.4s ease-in-out infinite}
+.bn-ob .ob-lencana{position:absolute;top:-7px;right:-12px;margin:0;border:2px solid var(--bg);min-width:18px;height:18px;font-size:11px}
+@keyframes boo-angguk{0%,70%,100%{transform:translateY(0) rotate(0)}78%{transform:translateY(-3px) rotate(-8deg)}86%{transform:translateY(0) rotate(6deg)}}
+.ob-penjaga{display:flex;gap:8px;align-items:center;justify-content:center;margin:2px auto 6px;padding:8px 14px;border-radius:14px;background:var(--tint);color:var(--chip-teks);font-size:13px;font-weight:700;max-width:440px;text-align:left}
+.ob-ketik-boo{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--muted)}
+.ob-ketik-boo[hidden]{display:none}
+.ob-ketik-boo .maskot{animation:boo-angguk 1.2s ease-in-out infinite}
+.ob-titik{display:inline-flex;gap:3px}
+.ob-titik i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.35;animation:ob-titik 1.2s infinite}
+.ob-titik i:nth-child(2){animation-delay:.2s}.ob-titik i:nth-child(3){animation-delay:.4s}
+@keyframes ob-titik{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+.ob-baru{align-self:center;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 6px;border-radius:999px;border:2px solid var(--primary);background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.ob-baru[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.bn-ob.ada .bn-ob-ikon .maskot,.ob-ketik-boo .maskot,.ob-titik i{animation:none}}
 </style>
 </head>
 <body>
@@ -1391,7 +1410,7 @@ function layarApp(){
   const u = S.sesi.user, lvInfo = infoLevel();
   const nav = HALAMAN.map(h => '<button type="button" class="nav-item'+(h.id === S.halaman ? " on" : "")+'" data-aksi="nav" data-h="'+h.id+'"'+(h.id === S.halaman ? ' aria-current="page"' : '')+'>'+ikon(h.ikon)+h.label+(h.id === "obrolan" ? '<span class="ob-lencana" hidden></span>' : '')+'</button>').join("");
   const bn = (id, label, ik) => '<button type="button" class="bn'+(S.halaman === id ? " on" : "")+'" data-aksi="nav" data-h="'+id+'">'+ikon(ik)+label+'</button>';
-  const utamaHP = ["beranda","transaksi","laporan"];
+  const utamaHP = ["beranda","transaksi","obrolan"];
   return '<div class="shell">'+
     '<aside class="sidebar" aria-label="Menu utama">'+
       '<div class="brand">'+maskot("piggy", 40)+'Dompet Kita</div>'+
@@ -1403,12 +1422,12 @@ function layarApp(){
       tombolTema()+
       '<button type="button" class="btn btn-ghost" data-aksi="kunci">'+ikon("kunci")+'Kunci aplikasi</button>'+
     '</aside>'+
-    '<header class="topbar-hp"><div class="brand">'+maskot("piggy", 30)+'Dompet Kita</div><div class="topbar-kanan">'+tombolObrolanHP()+tombolSembunyi(true)+tombolKunciHP()+jamHTML("jam-kecil")+'</div></header>'+
+    '<header class="topbar-hp"><div class="brand">'+maskot("piggy", 30)+'Dompet Kita</div><div class="topbar-kanan">'+tombolKunciHP()+jamHTML("jam-kecil")+'</div></header>'+
     '<main class="content" id="konten">'+halaman()+'</main>'+
     '<nav class="bottomnav" aria-label="Menu bawah">'+
       bn("beranda","Beranda","beranda")+bn("transaksi","Transaksi","transaksi")+
       '<button type="button" class="bn-plus" data-aksi="tx-baru" aria-label="Catat transaksi">'+ikon("plus")+'</button>'+
-      bn("laporan","Laporan","laporan")+
+      '<button type="button" class="bn bn-ob'+(S.halaman === "obrolan" ? " on" : "")+'" data-aksi="nav" data-h="obrolan"><span class="bn-ob-ikon">'+ikon("obrolan")+maskot("boo", 26)+'<span class="ob-lencana" hidden></span></span>Obrolan</button>'+
       '<button type="button" class="bn'+(utamaHP.includes(S.halaman) ? "" : " on")+'" data-aksi="menu-hp">'+ikon("lainnya")+'Lainnya</button>'+
     '</nav>'+tombolBantuan()+
   '</div>';
@@ -1795,7 +1814,7 @@ function halBeranda(){
     '<div class="stats">'+
       '<div class="card stat"><span class="lbl" style="color:var(--green)">Pemasukan</span><span class="val">'+rupiah(r.masuk)+'</span><span class="sub">'+(r.masuk ? "Periode " + labelPeriode(S.bulan) : "Belum ada pemasukan")+'</span></div>'+
       '<div class="card stat"><span class="lbl" style="color:var(--red)">Pengeluaran</span><span class="val">'+rupiah(r.keluar)+'</span><span class="sub">'+(r.keluar ? "Periode " + labelPeriode(S.bulan) : "Belum ada pengeluaran")+'</span></div>'+
-      '<div class="card stat utama"><span class="lbl">Sisa uang '+(kini ? "bulan ini" : labelPeriode(S.bulan))+'</span><span class="val">'+rupiah(sisa)+'</span><span class="sub">Total di '+d.dompet.length+' dompet: '+rupiah(totalSaldo())+'</span></div>'+
+      '<div class="card stat utama"><span class="lingling-kartu">'+tombolSembunyi(true)+'</span><span class="lbl">Sisa uang '+(kini ? "bulan ini" : labelPeriode(S.bulan))+'</span><span class="val">'+rupiah(sisa)+'</span><span class="sub">Total di '+d.dompet.length+' dompet: '+rupiah(totalSaldo())+'</span></div>'+
     '</div>'+
     (ultahHariIni(profil().lahir) ? kartuUltah() : '')+
     (!profil().lahir && !d.pengaturan.tipProfilTutup ? '<section class="card bubble-card">'+maskot("alpha", 64)+'<div class="bubble"><strong>Alpha punya ide</strong><span>Isi tanggal lahirmu di Pengaturan supaya geng maskot bisa merayakan ulang tahunmu.</span>'+
@@ -5862,7 +5881,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.5.0";
+const VERSI_APP = "1.5.1";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -8366,6 +8385,7 @@ function obBelumDibaca(){
 function obPerbaruiLencana(){
   const n = obBelumDibaca(), teks = n > 99 ? "99+" : String(n);
   document.querySelectorAll(".ob-lencana").forEach(el => { el.textContent = teks; el.hidden = !n; });
+  document.querySelectorAll(".bn-ob").forEach(el => el.classList.toggle("ada", !!n));
 }
 async function obIsi(r){
   if (r.dihapus) return {jenis:"hapus"};
@@ -8578,7 +8598,7 @@ function modalPilihKartu(tab){
     isi = list.length ? list.map(t => { const k = kartuDariTx(t.id); return '<button type="button" class="opsi-pulih" data-aksi="ob-pilih" data-k="transaksi" data-id="'+t.id+'">'+maskot("tupi", 32)+'<span><strong>'+esc(k.judul)+'</strong><span class="muted">'+rupiah(t.nominal)+' · '+labelTanggal(t.tanggal)+'</span></span></button>'; }).join("")
       : '<p class="muted">Belum ada transaksi.</p>';
   }
-  bukaModal('<div class="card-head" style="margin:0">'+maskot("boo", 56)+'<div><h2 id="judul-modal">Kirim kartu keuangan</h2><p class="muted" style="font-size:14px">Kartu transaksi pribadi akan terlihat oleh pasanganmu setelah dikirim.</p></div></div>'+
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("boo", 56)+'<div><h2 id="judul-modal">Boo bawakan kartu apa?</h2><p class="muted" style="font-size:14px">Kartu transaksi pribadi akan terlihat oleh pasanganmu setelah dikirim.</p></div></div>'+
     '<div class="seg-wrap">'+tb("tagihan", "Tagihan berdua")+tb("acara", "Acara")+tb("transaksi", "Transaksi")+'</div>'+
     '<div class="pilih-pulih ob-pilih-list">'+isi+'</div>', "modal-pulih");
 }
@@ -8595,13 +8615,15 @@ function halObrolan(){
   const lain = obPasangan();
   const kepala = '<header class="page-head ob-kepala"><div class="ob-judul">'+(lain ? maskot(lain.avatar, 44) : maskot("boo", 44))+
     '<div><h1>'+(lain ? esc(lain.nama) + ' ' + benderaPengguna(lain, 13) : "Obrolan")+'</h1>'+
-    (lain ? '<p class="ob-status">'+statusAktifHTML(lain.id)+'<span id="ob-ketik" class="ob-ketik" hidden>sedang mengetik…</span></p>' : '<p>Ngobrol berdua soal keuangan, dibantu Boo.</p>')+'</div></div></header>';
+    (lain ? '<p class="ob-status">'+statusAktifHTML(lain.id)+'</p>' : '<p>Ngobrol berdua soal keuangan, dibantu Boo.</p>')+'</div></div></header>';
   if (!lain) return kepala + kosongKartu("boo", "Belum ada pasangan", "Undang pasanganmu dulu supaya kalian bisa mengobrol di sini.", tombolAksi("undang-pasangan", "Undang pasangan", "btn-primary"));
   if (!DI_WEB || !awanTersambung()) return kepala + kosongKartu("boo", "Sambungkan sinkron awan dulu", "Obrolan butuh sinkron awan supaya pesan sampai ke HP pasanganmu. Sambungkan di Pengaturan → Sinkron antarperangkat.", tombolAksi("nav", "Buka Pengaturan", "btn-primary", ' data-h="pengaturan"'));
   if (!OB.sql) return kepala + kosongKartu("boo", "Server obrolan belum disiapkan", "Jalankan dompet-kita-supabase-5.sql di Supabase (SQL Editor), lalu buka halaman ini lagi.", "");
   return kepala+
     '<section class="card ob-wadah"><div class="ob-daftar" id="ob-daftar" aria-live="polite"><p class="muted ob-memuat">Boo membuka pesan...</p></div></section>'+
     '<div class="ob-tulis" id="ob-tulis">'+
+      '<button type="button" class="ob-baru" id="ob-baru" data-aksi="ob-ke-bawah" hidden>'+maskot("boo", 26)+'<span></span></button>'+
+      '<div id="ob-ketik" class="ob-ketik-boo" hidden>'+maskot("boo", 30)+'<span>'+esc(lain.nama)+' sedang mengetik</span><span class="ob-titik"><i></i><i></i><i></i></span></div>'+
       '<div id="ob-lampiran" class="ob-lampiran-wadah"></div>'+
       '<div class="ob-tulis-baris">'+
         '<button type="button" class="btn-ikon ob-plus" data-aksi="ob-kartu" aria-label="Kirim kartu keuangan" title="Kirim kartu keuangan">'+ikon("plus")+'</button>'+
@@ -8622,9 +8644,9 @@ async function obTampilkanUlang(keBawah){
   const semua = [...OB.rows.values()].concat(OB.antre.filter(a => !OB.rows.has(a.id)).map(a => Object.assign({antre:true}, a))).sort((a, b) => a.dibuat.localeCompare(b.dibuat));
   const isi = await Promise.all(semua.map(obIsi));
   if (ke !== obRenderKe) return;
-  if (!semua.length){ wadah.innerHTML = '<div class="empty" style="padding:24px">'+maskot("boo", 96)+'<h2>Mulai mengobrol</h2><p class="muted">Pesan kalian dikunci dengan kunci area Bersama. Server pun tidak bisa membacanya.</p></div>'; return; }
+  if (!semua.length){ wadah.innerHTML = '<div class="empty" style="padding:24px">'+maskot("boo", 96)+'<h2>Belum ada obrolan</h2><p class="muted">Mulai dengan sapa '+esc((obPasangan() || {}).nama || "pasanganmu")+'! Boo siap mengantar pesan kalian.</p></div>'; return; }
   const bacaLain = OB.bacaLain[(obPasangan() || {}).id] || "";
-  let html = "", hariLalu = "";
+  let html = '<div class="ob-penjaga">'+maskot("boo", 30)+'<span>🔒 Boo menjaga obrolan kalian. Hanya kalian berdua yang bisa membacanya.</span></div>', hariLalu = "";
   semua.forEach((r, i) => {
     const v = isi[i], milik = r.dari === me, hari = labelHariOb(r.dibuat);
     if (hari !== hariLalu){ html += '<div class="ob-hari"><span>'+hari+'</span></div>'; hariLalu = hari; }
@@ -8639,9 +8661,26 @@ async function obTampilkanUlang(keBawah){
       (milik && S.obMenu === r.id ? '<div class="ob-menu">'+tombolAksi("ob-hapus", "Hapus untuk semua", "btn-ghost btn-kecil btn-hapus", ' data-id="'+r.id+'"')+'</div>' : '')+'</div>';
   });
   wadah.innerHTML = html;
-  if (keBawah || dekatBawah || !wadah.dataset.siap){ wadah.dataset.siap = "1"; requestAnimationFrame(() => scrollTo(0, document.body.scrollHeight)); }
+  const terakhir = semua.length ? semua[semua.length - 1].dibuat : "";
+  if (keBawah || dekatBawah || !wadah.dataset.siap){ wadah.dataset.siap = "1"; S.obTerlihat = terakhir; requestAnimationFrame(() => scrollTo(0, document.body.scrollHeight)); }
+  obPenunjukBaru(semua);
   obTandaiDibaca(); obTampilKetik();
 }
+function obPenunjukBaru(semua){
+  const el = document.getElementById("ob-baru");
+  if (!el || !S.sesi) return;
+  const me = S.sesi.user.id;
+  const n = (semua || [...OB.rows.values()]).filter(r => r.dari !== me && r.dibuat > (S.obTerlihat || "")).length;
+  el.hidden = !n;
+  if (n) el.querySelector("span").textContent = n + " pesan baru ↓";
+}
+addEventListener("scroll", () => {
+  if (S.halaman !== "obrolan" || !document.getElementById("ob-baru")) return;
+  if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 160){
+    const semua = [...OB.rows.values()];
+    if (semua.length){ S.obTerlihat = semua.reduce((m, r) => r.dibuat > m ? r.dibuat : m, ""); obPenunjukBaru(); }
+  }
+}, {passive:true});
 function pasangObrolan(){
   const t = document.getElementById("ob-teks");
   if (!t) return;
@@ -8668,6 +8707,7 @@ function tombolObrolanHP(){
 
 Object.assign(AKSI, {
   "ob-kirim": () => obKirimDariForm(),
+  "ob-ke-bawah": () => scrollTo({top:document.body.scrollHeight, behavior:"smooth"}),
   "ob-kartu": () => modalPilihKartu("tagihan"),
   "ob-kartu-tab": t => modalPilihKartu(t.dataset.t),
   "ob-pilih": t => obLampirkan(t.dataset.k === "tagihan" ? kartuDariTagihan(t.dataset.id) : t.dataset.k === "acara" ? kartuDariAcara(t.dataset.id, t.dataset.b === "1") : kartuDariTx(t.dataset.id)),
