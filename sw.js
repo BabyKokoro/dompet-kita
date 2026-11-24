@@ -1,5 +1,5 @@
 /* Service worker Dompet Kita: aplikasi tetap bisa dibuka tanpa internet */
-const VERSI = "dompet-kita-e0e7604c04";
+const VERSI = "dompet-kita-7f060a48d9";
 const INTI = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSI).then(c => c.addAll(INTI))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
@@ -11,6 +11,7 @@ self.addEventListener("fetch", e => {
   const url = new URL(r.url);
   const font = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
   if (url.origin !== location.origin && !font) return;
+  if (url.searchParams.has("cekversi")) return; /* cek versi baru: selalu langsung ke jaringan */
   if (r.mode === "navigate"){
     /* halaman: ambil versi terbaru dulu, kalau offline pakai simpanan */
     e.respondWith(fetch(r).then(res => { const c = res.clone(); caches.open(VERSI).then(x => x.put("index.html", c)); return res; })

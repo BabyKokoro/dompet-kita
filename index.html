@@ -444,6 +444,7 @@ html[data-tema=gelap] .lengkung-garis path{stroke:#6B4E3A}
 .pv-item input{width:20px;height:20px;accent-color:var(--primary);margin-top:2px;flex:0 0 20px}
 .pv-item > span{display:flex;flex-direction:column;font-size:15px}
 .pv-item .muted{font-size:13px;font-weight:600}
+.fav-atur li.dicabut{opacity:.6}
 .awan-status{display:flex;align-items:center;gap:8px;border:none;background:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;padding:2px 6px;text-align:left}
 .awan-status:hover{color:var(--text)}
 .awan-titik{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9A8B80;flex:0 0 9px}
@@ -458,6 +459,17 @@ html[data-tema=gelap] .lengkung-garis path{stroke:#6B4E3A}
 .scan-bingkai{position:absolute;inset:18%;border:3px solid #FFFFFF;border-radius:18px;box-shadow:0 0 0 999px rgba(0,0,0,.35)}
 .g-logo{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FFFFFF;color:#4285F4;font-weight:800;font-size:14px;margin-right:4px;font-family:Arial,sans-serif}
 .sambut-awan{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:6px;border-top:2px dashed var(--line);width:100%}
+.geng-kartu[data-k]{position:relative;cursor:pointer;transition:transform .15s}
+.geng-kartu[data-k]:hover,.geng-kartu.fakta-buka{transform:translateY(-2px);border-color:var(--primary)}
+.geng-fakta{position:absolute;left:8px;right:8px;bottom:8px;top:96px;z-index:3;display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:16px;background:var(--surface);border:2px solid var(--primary);box-shadow:0 8px 22px var(--bayang);font-size:13px;line-height:1.45;text-align:left;overflow:auto;animation:muncul .18s ease-out}
+.geng-fakta::before{content:"";position:absolute;top:-10px;left:50%;margin-left:-9px;border:9px solid transparent;border-top:0;border-bottom:10px solid var(--primary)}
+.geng-fakta::after{content:"";position:absolute;top:-7px;left:50%;margin-left:-7px;border:7px solid transparent;border-top:0;border-bottom:8px solid var(--surface)}
+.geng-fakta strong{color:var(--primary-dark);font-size:13px}
+html[data-tema=gelap] .geng-fakta strong{color:var(--gold)}
+.fakta-titik{display:flex;gap:4px;justify-content:center;margin-top:auto;padding-top:4px}
+.fakta-titik i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.fakta-titik i.on{background:var(--primary)}
+@keyframes muncul{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 /* ---- langkah 8 ---- */
 [hidden]{display:none!important}
 .dua > .field{justify-content:flex-end}
@@ -605,6 +617,73 @@ html[data-tema=gelap] .roo-sel.isi{background:#557A4A;border-color:#557A4A}
   .kw-list li{flex-wrap:wrap}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* langkah 11 */
+html,body{overscroll-behavior-y:contain}
+.pilih-set{height:48px;border-radius:14px;border:2px solid var(--line);padding:0 12px;font-weight:700;background:var(--input);color:var(--text);font:inherit;font-weight:700}
+kbd{display:inline-block;min-width:26px;padding:2px 8px;border:2px solid var(--line);border-bottom-width:4px;border-radius:8px;background:var(--surface);font-family:inherit;font-weight:800;font-size:13px;text-align:center;line-height:1.4}
+.ptr{position:fixed;top:0;left:50%;z-index:45;display:flex;white-space:nowrap;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--surface);border:2px solid var(--line);box-shadow:0 6px 18px rgba(60,40,28,.2);font-weight:800;font-size:14px;color:var(--primary-dark);opacity:0;pointer-events:none;transform:translate(-50%,-60px);transition:opacity .15s}
+.ptr.on{opacity:1}
+.ptr .maskot{transition:transform .05s}
+.ptr.muter .maskot{animation:ptr-putar 1s linear infinite}
+@keyframes ptr-putar{to{transform:rotate(360deg)}}
+.banner-versi{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:55;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 24px);padding:10px 14px;border-radius:18px;background:var(--surface);border:2px solid var(--primary);box-shadow:0 8px 24px rgba(60,40,28,.25);font-size:14px}
+.banner-versi > span:not(.maskot){flex:1 1 200px}.banner-versi{width:max-content;max-width:min(560px,calc(100% - 24px))}
+.btn-kunci-hp{position:relative;display:flex;align-items:center;justify-content:center;min-width:40px;min-height:40px;padding:2px;border-radius:14px;border:2px solid var(--line);background:var(--surface);cursor:pointer}
+.btn-kunci-hp:hover{border-color:var(--primary)}
+.btn-kunci-hp .gembok{position:absolute;right:-5px;bottom:-5px;width:20px;height:20px;border-radius:50%;background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.btn-kunci-hp .gembok .ico{width:12px;height:12px}
+.topbar-hp .jam-hidup{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;border-radius:10px;transition:background .3s}
+.topbar-hp .jam-hidup.ditekan{background:var(--tint);transition:background .7s}
+.fab-bantu{position:fixed;right:24px;bottom:24px;z-index:38;width:52px;height:52px;border-radius:50%;border:3px solid var(--primary);background:var(--surface);color:var(--primary-dark);font-size:26px;font-weight:900;line-height:1;box-shadow:0 6px 18px rgba(60,40,28,.25);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.fab-bantu:hover{background:var(--tint)}
+html[data-tema=gelap] .fab-bantu{color:var(--gold)}
+.modal-panduan{max-width:620px;width:100%}
+.pa-tab{margin:10px 0 4px}
+.pa-isi{display:flex;flex-direction:column;gap:12px;min-height:260px}
+.pa-hal{display:flex;gap:14px;align-items:center}
+.pa-hal h3{margin:0}
+.pa-hal p{margin:2px 0 0}
+.pa-tur{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.pa-tur h3{margin:4px 0 0}
+.pa-tur p{margin:0;max-width:440px}
+.pa-titik{display:flex;gap:6px;margin:6px 0}
+.pa-titik span{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.pa-titik span.on{background:var(--primary);width:22px;border-radius:6px}
+.pa-faq details{border:2px solid var(--line);border-radius:14px;padding:10px 14px}
+.pa-faq summary{font-weight:800;cursor:pointer}
+.pa-faq details p{margin:8px 0 0}
+.pa-faq{display:flex;flex-direction:column;gap:8px}
+.pa-sub{margin:4px 0 0;font-size:16px}
+.pa-tabel{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center}
+.valas{border:2px solid var(--line);border-radius:16px;padding:6px 12px}
+.valas summary{display:flex;align-items:center;gap:8px;font-weight:800;cursor:pointer;list-style:none;min-height:40px}
+.valas summary::-webkit-details-marker{display:none}
+.valas summary::after{content:"▾";margin-left:auto;color:var(--muted)}
+.valas[open] summary::after{content:"▴"}
+.valas-isi{display:flex;flex-direction:column;gap:10px;padding:6px 0 8px}
+.valas-hasil{font-weight:800;color:var(--primary-dark);margin:0;min-height:1.2em}
+html[data-tema=gelap] .valas-hasil{color:var(--gold)}
+.sim-list{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.sim-baris{border:2px solid var(--line);border-radius:16px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.sim-nama{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin:12px 0}
+.sim-kartu{padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.sim-kartu h3{margin:0}
+.sim-kartu.unggul{border-color:var(--primary);background:var(--tint)}
+.sim-angka{display:flex;justify-content:space-between;gap:8px;font-size:14px}
+.sim-urut{margin:4px 0 0;padding-left:20px;font-size:14px}
+@media (max-width:900px){
+  .shell{padding-bottom:150px}
+  .fab-bantu{right:14px;bottom:calc(86px + env(safe-area-inset-bottom));width:46px;height:46px;font-size:22px}
+  .topbar-kanan{gap:8px}
+}
+@media (max-width:600px){
+  .pa-tabel{grid-template-columns:1fr;gap:2px}
+  .pa-tabel > div:nth-child(2n){margin-bottom:8px;color:var(--muted)}
+  .pa-tab .seg{font-size:12px}
+}
+@media print{.fab-bantu,.ptr,.banner-versi{display:none!important}}
 </style>
 </head>
 <body>
@@ -1061,13 +1140,24 @@ function layarLogin(){
 }
 let timerBlokir;
 function setelahRenderLogin(){
-  const u = S.meta.pengguna.find(x => x.id === S.loginId);
+  let u = S.meta.pengguna.find(x => x.id === S.loginId);
+  if (awanTersambung() && Date.now() - (S.sinkronLogin || 0) > 15000){ S.sinkronLogin = Date.now(); setTimeout(() => sinkron("layar-login"), 50); }
   const api = pasangPinpad(document.getElementById("app"), async (pin, api) => {
     const b = infoBlokir(u.id);
     if (b.sampai > Date.now()){ cekBlokir(); return; }
     api.pesan("Membuka brankas...", true);
     try {
-      const k = await bukaDenganPin(u, pin);
+      let k;
+      try { k = await bukaDenganPin(u, pin); }
+      catch(e0){
+        /* mungkin PIN baru saja diganti di perangkat lain: ambil data terbaru lalu coba lagi */
+        if (!awanTersambung()) throw e0;
+        api.pesan("Mengecek PIN terbaru dari perangkat lain...", true);
+        await sinkron("cek-pin");
+        const u2 = ((bacaJson(K_META) || {}).pengguna || []).find(x => x.id === u.id);
+        if (!u2 || kanon(u2) === kanon(u)) throw e0;
+        k = await bukaDenganPin(u2, pin); u = u2;
+      }
       resetGagal(u.id);
       const data = migrasi8(migrasi7b(migrasiKategori7(migrasiData5(migrasiData(await dekripsiJson(k.dek, bacaJson(kBrankas(u.id))))))));
       const bersama = migrasiBersama(await dekripsiJson(k.kunciBersama, bacaJson(K_BERSAMA)));
@@ -1083,6 +1173,7 @@ function setelahRenderLogin(){
       render();
       if (nOtomatis) toast("Pipo mencatat " + nOtomatis + " transaksi rutin otomatis.");
       cekPengingat();
+      jalankanAksiTunda();
     } catch(err){
       const g = catatGagal(u.id);
       if (g.sampai > Date.now()) cekBlokir();
@@ -1167,14 +1258,14 @@ function layarApp(){
       tombolTema()+
       '<button type="button" class="btn btn-ghost" data-aksi="kunci">'+ikon("kunci")+'Kunci aplikasi</button>'+
     '</aside>'+
-    '<header class="topbar-hp"><div class="brand">'+maskot("piggy", 30)+'Dompet Kita</div><div class="topbar-kanan">'+tombolSembunyi(true)+jamHTML("jam-kecil")+'</div></header>'+
+    '<header class="topbar-hp"><div class="brand">'+maskot("piggy", 30)+'Dompet Kita</div><div class="topbar-kanan">'+tombolSembunyi(true)+tombolKunciHP()+jamHTML("jam-kecil")+'</div></header>'+
     '<main class="content" id="konten">'+halaman()+'</main>'+
     '<nav class="bottomnav" aria-label="Menu bawah">'+
       bn("beranda","Beranda","beranda")+bn("transaksi","Transaksi","transaksi")+
       '<button type="button" class="bn-plus" data-aksi="tx-baru" aria-label="Catat transaksi">'+ikon("plus")+'</button>'+
       bn("laporan","Laporan","laporan")+
       '<button type="button" class="bn'+(utamaHP.includes(S.halaman) ? "" : " on")+'" data-aksi="menu-hp">'+ikon("lainnya")+'Lainnya</button>'+
-    '</nav>'+
+    '</nav>'+tombolBantuan()+
   '</div>';
 }
 function halaman(){
@@ -1201,10 +1292,13 @@ function halaman(){
       '<p>'+h.isi+'</p><span class="chip">Hadir di langkah '+h.langkah+'</span></section>';
 }
 function halGeng(){
-  const kartu = AVATAR.map(k => '<article class="card geng-kartu">'+maskot(k, 112)+
+  const kartu = AVATAR.map(k => '<article class="card geng-kartu" data-k="'+k+'" tabindex="0" role="button" aria-expanded="false" aria-label="'+INFO[k].nama+', '+INFO[k].hewan+'. Tekan untuk fun fact">'+maskot(k, 112)+
     '<h3>'+INFO[k].nama+'</h3><span class="eyebrow">'+INFO[k].hewan+'</span>'+
-    '<span class="muted geng-aks">'+INFO[k].aksesoris+'</span><span class="geng-tugas">'+INFO[k].tugas+'</span></article>').join("");
-  return '<header class="page-head"><div><h1>Geng maskot</h1><p>'+AVATAR.length+' teman yang menjaga keuangan kalian. Semuanya bisa dipilih jadi avatar di Pengaturan.</p></div></header>'+
+    '<span class="muted geng-aks">'+INFO[k].aksesoris+'</span><span class="geng-tugas">'+INFO[k].tugas+'</span>'+
+    '<div class="geng-fakta" role="note" hidden></div></article>').join("");
+  const sentuh = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  return '<header class="page-head"><div><h1>Geng maskot</h1><p>'+AVATAR.length+' teman yang menjaga keuangan kalian. Semuanya bisa dipilih jadi avatar di Pengaturan.</p>'+
+    '<p class="muted" style="font-size:14px;margin-top:4px">'+(sentuh ? "Ketuk" : "Arahkan kursor ke")+' maskot untuk melihat fun fact, kenapa dia cocok dengan tugasnya. Ada 3 fakta yang bergantian.</p></div></header>'+
     '<div class="geng-grid">'+kartu+'</div>';
 }
 function halPengaturan(){
@@ -1235,7 +1329,7 @@ function halPengaturan(){
     '<section class="card set-sec" aria-labelledby="set-aman"><div class="card-head" style="margin:0">'+maskot("niko", 48)+'<h2 id="set-aman">Keamanan</h2></div>'+
       '<div><div class="set-row"><div><strong>PIN</strong><p class="muted" style="font-size:14px">Ganti PIN 6 angka untuk membuka brankasmu.</p></div><button type="button" class="btn btn-ghost" data-aksi="ganti-pin">Ganti PIN</button></div>'+
       '<div class="set-row"><label for="in-menit"><strong>Kunci otomatis</strong><p class="muted" style="font-size:14px">Aplikasi terkunci kalau tidak disentuh selama ini.</p></label>'+
-        '<select id="in-menit" style="height:48px;border-radius:14px;border:2px solid var(--line);padding:0 12px;font-weight:700;background:var(--input)">'+menitOpsi+'</select></div></div>'+
+        '<select id="in-menit" class="pilih-set">'+menitOpsi+'</select></div>'+seksiKunciPindah()+'</div>'+
     '</section>'+
     '<section class="card set-sec" aria-labelledby="set-pengguna"><div class="card-head" style="margin:0">'+maskot("cici", 48)+'<h2 id="set-pengguna">Pengguna di laptop ini</h2></div>'+
       '<div>'+anggota+'</div>'+
@@ -1248,6 +1342,7 @@ function halPengaturan(){
 }
 function setelahRenderApp(){
   if (S.halaman === "transaksi") pasangFilterTx();
+  if (S.halaman === "geng") pasangFaktaGeng();
   if (S.halaman === "zakat"){ document.querySelectorAll(".in-uang").forEach(i => { if (i.value) i.dispatchEvent(new Event("input", {bubbles:true})); }); hitungZakat(); }
   if (S.halaman !== "pengaturan") return;
   const f = document.getElementById("form-profil");
@@ -1505,7 +1600,7 @@ function barisTx(t){
   }
   return '<button type="button" class="tx" data-aksi="ubah-tx" data-id="'+t.id+'">'+
     '<span class="tx-ikon" style="background:'+warna+';color:'+kontras(warna)+'">'+isi+'</span>'+
-    '<span class="tx-teks"><strong>'+esc(judul)+'</strong><span>'+esc(sub)+(t.fotoId ? ' · ada struk' : '')+'</span></span>'+
+    '<span class="tx-teks"><strong>'+esc(judul)+'</strong><span>'+esc(sub)+(t.valas ? ' · ' + esc(fmtValas(t.valas.jumlah, t.valas.kode)) : '')+(t.fotoId ? ' · ada struk' : '')+'</span></span>'+
     '<span class="tx-nom '+kelas+'">'+tanda+rupiah(t.nominal)+'</span></button>';
 }
 function navBulan(){
@@ -1661,7 +1756,7 @@ function bukaFormTx(id, jenisAwal){
     const t = d.transaksi.find(x => x.id === id);
     if (!t) return;
     if (t.terkait){ modalTerkait(t); return; }
-    S.form = Object.assign({}, t, {baru:false, ekspr:String(t.nominal), fotoBlob:null, hapusFoto:false, catatan:t.catatan || ""});
+    S.form = Object.assign({}, t, {baru:false, ekspr:String(t.nominal), fotoBlob:null, hapusFoto:false, catatan:t.catatan || "", valasBuka:!!t.valas, valasDraf:null});
     if (t.jenis !== "pindah") S.form.keDompetId = (d.dompet.find(w => w.id !== t.dompetId) || d.dompet[0]).id;
   } else {
     const a = d.dompet[0], b = d.dompet[1] || d.dompet[0];
@@ -1681,6 +1776,7 @@ function bacaFormTx(){
   if (g("in-catatan")) f.catatan = g("in-catatan").value;
   if (g("in-sub")) f.sub = g("in-sub").value;
   if (g("in-fav")) f.simpanFavorit = g("in-fav").checked;
+  bacaValas(f);
 }
 function tampilFormTx(pesanErr){
   const f = S.form, d = S.sesi.data;
@@ -1708,7 +1804,7 @@ function tampilFormTx(pesanErr){
     '<div class="tx-form">'+
       '<div class="tx-kiri">'+
         '<label class="field">Nominal<input id="in-nom" inputmode="'+(layarSentuh() ? "none" : "decimal")+'" autocomplete="off" placeholder="0" value="'+esc(f.ekspr)+'"></label>'+
-        '<p class="nom-pratinjau" id="nom-pratinjau" aria-live="polite"></p>'+
+        '<p class="nom-pratinjau" id="nom-pratinjau" aria-live="polite"></p>'+valasHTML(f)+
         '<div class="kalk-head">'+maskot("raku", 34)+'<span>Kalkulator Raku</span></div>'+
         '<div class="keypad">'+keypad+'</div>'+
       '</div>'+
@@ -1744,6 +1840,7 @@ function tampilFormTx(pesanErr){
       .catch(() => { img.alt = "Foto struk tidak bisa dibuka"; });
   }
   if (!f.baru || layarSentuh()) inNom.blur();
+  pasangValas();
 }
 function perbaruiPratinjau(){
   const inp = document.getElementById("in-nom"), p = document.getElementById("nom-pratinjau");
@@ -1789,6 +1886,10 @@ async function simpanTx(){
     const rec = {id:f.id || uid(), jenis:f.jenis, nominal, kategoriId:f.jenis === "pindah" ? null : f.kategoriId, sub:f.jenis === "pindah" ? "" : (f.sub || "").trim(),
       dompetId:f.dompetId, keDompetId:f.jenis === "pindah" ? f.keDompetId : null, tanggal:f.tanggal,
       catatan:f.catatan.trim(), fotoId, dibuat:f.dibuat || sekarang, diubah:sekarang};
+    if (f.jenis !== "pindah" && f.valas){
+      rec.valas = {kode:f.valas.kode, jumlah:f.valas.jumlah, kurs:f.valas.kurs};
+      (d.pengaturan.kurs = d.pengaturan.kurs || {})[f.valas.kode] = f.valas.kurs;
+    }
     const lama = d.transaksi.find(t => t.id === rec.id);
     let sebelum = rec.jenis === "keluar" ? terpakai(rec.kategoriId, periode(rec.tanggal)) : 0;
     if (lama && lama.jenis === "keluar" && lama.kategoriId === rec.kategoriId && periode(lama.tanggal) === periode(rec.tanggal)) sebelum -= lama.nominal;
@@ -2570,6 +2671,7 @@ function halUtang(){
       '<div class="card stat"><span class="lbl" style="color:var(--green)">Orang lain berutang padamu</span><span class="val">'+rupiah(totPiutang)+'</span></div>'+
       '<div class="card stat"><span class="lbl" style="color:var(--red)">Kamu berutang</span><span class="val">'+rupiah(totUtang)+'</span></div></div>'+
     '<div class="seg-wrap">'+tb("piutang", "Piutang")+tb("utang", "Utangku")+tb("lunas", "Sudah lunas")+'</div>'+
+    (tab === "utang" && list.length ? kartuSimUtang() : '')+
     (list.length ? '<div class="ang-grid">'+kartu+'</div>' : kosongKartu("kuku", tab === "lunas" ? "Belum ada yang lunas" : "Belum ada catatan", "Catat kalau ada yang meminjam uangmu, atau kamu meminjam uang orang lain. Kuku akan mengingatkan saat jatuh tempo."));
 }
 function bukaFormUtang(id){
@@ -5601,7 +5703,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.3.0";
+const VERSI_APP = "1.4.0";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -5817,7 +5919,7 @@ const adaDataLokal = () => { const m = bacaJson(K_META); return !!(m && m.penggu
 function labelPerangkat(cara){
   const ua = navigator.userAgent;
   const jenis = /Android/i.test(ua) ? "HP Android" : /iPhone|iPad|iPod/i.test(ua) ? "iPhone/iPad" : /Windows/i.test(ua) ? "Laptop Windows" : /Macintosh/i.test(ua) ? "Mac" : "Perangkat";
-  return jenis + " · " + cara + " · " + new Date().toLocaleDateString("id-ID", {day:"numeric", month:"short", year:"numeric"});
+  return jenis + (typeof SUDAH_TERINSTALL === "function" && SUDAH_TERINSTALL() ? " (aplikasi)" : " (browser)") + " · " + cara;
 }
 
 /* ---- jaringan ---- */
@@ -6050,8 +6152,10 @@ async function sinkron(alasan){
     }
     for (const k of daftarKunciLokal()) await dorongKunci(c.rumah, k);
     ok = true; setStatusAwan("ok");
+    await laporPerangkat(alasan);
   } catch(e){
     console.warn("Sinkron gagal:", e);
+    if (/Bukan anggota/i.test(e.message || "")){ awanSibuk = false; putuskanAwan("Perangkat ini sudah dikeluarkan dari sinkron oleh perangkat lain. Datanya tetap ada di sini."); return false; }
     setStatusAwan(e.offline ? "offline" : "galat", e.offline ? "Offline" : (e.status === 401 ? "Perlu masuk lagi" : "Gagal sinkron, dicoba lagi nanti"));
   } finally {
     awanSibuk = false;
@@ -6059,7 +6163,7 @@ async function sinkron(alasan){
   }
   return ok;
 }
-setInterval(() => { if (document.visibilityState === "visible" && awanTersambung()) sinkron("berkala"); }, 60000);
+setInterval(() => { if (document.visibilityState === "visible" && awanTersambung()) sinkron("berkala"); }, 30000);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && awanTersambung()) sinkron("kembali"); });
 addEventListener("online", () => { if (awanCfg()) sinkron("online"); });
 addEventListener("offline", perbaruiStatusAwan);
@@ -6227,27 +6331,55 @@ async function modalScanQR(){
   }
 }
 
-/* ---- daftar perangkat ---- */
+/* ---- daftar perangkat (butuh SQL tambahan 2) ---- */
+function idPerangkat(){
+  const c = awanCfg();
+  if (!c.perangkatId){ c.perangkatId = uid(); simpanAwanCfg(c); }
+  return c.perangkatId;
+}
+async function laporPerangkat(alasan){
+  const c = awanCfg();
+  if (!c || !c.rumah) return;
+  if (alasan === "berkala" && Date.now() - (c.lapor || 0) < 5 * 60000) return;
+  try {
+    const dicabut = await rpc("lapor_perangkat", {p_rumah:c.rumah, p_perangkat:idPerangkat(), p_label:labelPerangkat(c.sesi.user.anonim ? "scan QR" : "Google")});
+    const c2 = awanCfg(); if (c2){ c2.lapor = Date.now(); simpanAwanCfg(c2); }
+    S.perangkatLama = false;
+    if (dicabut === true) putuskanAwan("Perangkat ini sudah dikeluarkan dari sinkron oleh perangkat lain. Datanya tetap ada di sini.");
+  } catch(e){
+    if (e.status === 404) S.perangkatLama = true;
+    else if (/Bukan anggota/i.test(e.message || "")) putuskanAwan("Perangkat ini sudah dikeluarkan dari sinkron oleh perangkat lain. Datanya tetap ada di sini.");
+  }
+}
 async function modalPerangkat(){
   const c = awanCfg();
-  let list;
-  try { list = await awanFetch("/rest/v1/anggota?select=user_id,label,dibuat&rumah_id=eq." + encodeURIComponent(c.rumah) + "&order=dibuat.asc"); }
-  catch(e){ toast("Zee: " + e.message); return; }
-  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 56)+'<h2 id="judul-modal">Perangkat & akun tersambung</h2></div>'+
-    '<p class="muted" style="font-size:14px">Semua yang ada di sini bisa mengunduh brankas terenkripsi kalian. Isinya tetap hanya bisa dibuka dengan PIN.</p>'+
-    '<ul class="fav-atur">'+list.map(a => '<li><span class="fav-atur-nama"><strong>'+esc(a.label || "Perangkat")+'</strong><span class="muted" style="font-size:13px">'+
-      (a.user_id === c.sesi.user.id ? "Perangkat ini" : "Bergabung " + new Date(a.dibuat).toLocaleDateString("id-ID", {day:"numeric", month:"short", year:"numeric"}))+'</span></span>'+
-      (a.user_id === c.sesi.user.id ? '' : '<button type="button" class="btn-ikon" data-aksi="hapus-perangkat" data-u="'+a.user_id+'" aria-label="Keluarkan perangkat">&times;</button>')+'</li>').join("")+'</ul>'+
+  await laporPerangkat("buka-daftar");
+  let list = null;
+  try { list = await awanFetch("/rest/v1/perangkat?select=perangkat_id,label,akun,lewat_qr,terakhir,dicabut&rumah_id=eq." + encodeURIComponent(c.rumah) + "&order=terakhir.desc"); }
+  catch(e){ if (e.status !== 404){ toast("Zee: " + e.message); return; } }
+  if (!list){
+    bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 56)+'<h2 id="judul-modal">Perangkat tersambung</h2></div>'+
+      '<p class="note" style="font-size:14px">Daftar per perangkat butuh tambahan SQL kedua (<strong>dompet-kita-supabase-2.sql</strong>). Jalankan di Supabase → SQL Editor, lalu buka daftar ini lagi.</p>'+
+      '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup", "btn-primary")+'</div>');
+    return;
+  }
+  const relatif = t => { const m = Math.floor((Date.now() - new Date(t)) / 60000); return m < 1 ? "baru saja" : m < 60 ? m + " menit lalu" : m < 1440 ? Math.floor(m / 60) + " jam lalu" : Math.floor(m / 1440) + " hari lalu"; };
+  const saya = idPerangkat();
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("zee", 56)+'<h2 id="judul-modal">Perangkat tersambung</h2></div>'+
+    '<p class="muted" style="font-size:14px">Semua perangkat yang ikut sinkron. Isinya tetap hanya bisa dibuka dengan PIN masing-masing.</p>'+
+    '<ul class="fav-atur">'+list.map(p => '<li'+(p.dicabut ? ' class="dicabut"' : '')+'><span class="fav-atur-nama"><strong>'+esc(p.label || "Perangkat")+(p.perangkat_id === saya ? ' <span class="rchip" style="background:var(--tint);color:var(--chip-teks)">Perangkat ini</span>' : '')+'</strong>'+
+      '<span class="muted" style="font-size:13px">'+(p.lewat_qr ? "Bergabung lewat scan QR" : "Google " + esc(p.akun || ""))+' · '+(p.dicabut ? "dikeluarkan" : "sinkron " + relatif(p.terakhir))+'</span></span>'+
+      (p.perangkat_id === saya ? '' : p.dicabut ? tombolAksi("hapus-catatan-perangkat", "Hapus dari daftar", "btn-ghost btn-kecil", ' data-p="'+p.perangkat_id+'"')
+        : tombolAksi("cabut-perangkat", "Keluarkan", "btn-ghost btn-kecil", ' data-p="'+p.perangkat_id+'" data-q="'+(p.lewat_qr ? 1 : 0)+'"'))+'</li>').join("")+'</ul>'+
+    '<p class="muted" style="font-size:13px">Perangkat hasil scan QR langsung kehilangan akses saat dikeluarkan. Perangkat yang masuk dengan Google akan terputus sendiri begitu dibuka lagi. Untuk HP yang hilang, ganti juga PIN-mu.</p>'+
     '<p class="err" id="err-perangkat" role="alert"></p>'+
     '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup", "btn-primary")+'</div>');
 }
-async function hapusPerangkat(t){
-  if (t.dataset.yakin !== "1"){ t.dataset.yakin = "1"; t.textContent = "?"; document.getElementById("err-perangkat").textContent = "Klik sekali lagi untuk mengeluarkan perangkat itu. Data yang sudah ada di perangkat itu tidak ikut terhapus."; return; }
-  const c = awanCfg();
-  try { await awanFetch("/rest/v1/anggota?rumah_id=eq." + encodeURIComponent(c.rumah) + "&user_id=eq." + encodeURIComponent(t.dataset.u), {method:"DELETE"}); }
+async function cabutPerangkat(t){
+  if (t.dataset.yakin !== "1"){ t.dataset.yakin = "1"; t.textContent = "Yakin?"; document.getElementById("err-perangkat").textContent = "Klik sekali lagi untuk mengeluarkan perangkat itu dari sinkron. Data yang sudah ada di perangkat itu tidak ikut terhapus."; return; }
+  try { await rpc("cabut_perangkat", {p_rumah:awanCfg().rumah, p_perangkat:t.dataset.p}); }
   catch(e){ toast("Zee: " + e.message); return; }
-  toast("Perangkat dikeluarkan dari sinkron.");
-  modalPerangkat();
+  toast("Perangkat dikeluarkan dari sinkron."); modalPerangkat();
 }
 
 /* ---- tampilan ---- */
@@ -6282,7 +6414,8 @@ Object.assign(AKSI, {
   "salin-tautan-qr": async t => { try { await navigator.clipboard.writeText(t.dataset.t); toast("Tautan disalin. Berlaku 5 menit dan hanya sekali pakai."); } catch(e){ toast("Tidak bisa menyalin otomatis."); } },
   "sinkron-sekarang": async () => { const ok = await sinkron("manual"); toast(ok ? "Zee: semua sudah tersinkron." : "Zee: sinkron belum berhasil. " + teksStatusAwan().teks); },
   "daftar-perangkat": () => modalPerangkat(),
-  "hapus-perangkat": t => hapusPerangkat(t),
+  "cabut-perangkat": t => cabutPerangkat(t),
+  "hapus-catatan-perangkat": async t => { try { await rpc("hapus_catatan_perangkat", {p_rumah:awanCfg().rumah, p_perangkat:t.dataset.p}); } catch(e){ toast("Zee: " + e.message); return; } modalPerangkat(); },
   "putus-awan": t => {
     if (t.dataset.yakin !== "1"){ t.dataset.yakin = "1"; t.textContent = "Yakin? Klik lagi"; return; }
     putuskanAwan();
@@ -6290,6 +6423,569 @@ Object.assign(AKSI, {
   "awan-pakai-remote": () => pakaiDataAwan(),
   "awan-batal-gabung": () => putuskanAwan("Dibatalkan. Perangkat ini tidak disinkronkan."),
   "buka-awan": () => { tutupModal(); S.halaman = "pengaturan"; render(); const el = document.getElementById("awan-box"); if (el) el.scrollIntoView({block:"start"}); }
+});
+
+/* ============ Fun fact geng maskot ============ */
+const FAKTA = {
+  alpha:["Alpaka hidup berkawanan dan saling memberi tanda bahaya dengan suara melengking. Makanya Alpha rajin kasih peringatan dan tips.",
+    "Alpaka berasal dari pegunungan Andes yang terjal. Terbiasa menunjukkan jalan di medan sulit, cocok jadi pemandu.",
+    "Satu kawanan alpaka biasanya memakai tempat buang kotoran bersama, jadi padangnya tetap rapi. Teratur seperti panduan Alpha."],
+  anty:["Koloni semut membagi tugas: ada ratu, pekerja, dan prajurit. Seperti kategori yang memisahkan pengeluaran sesuai fungsinya.",
+    "Semut bisa mengangkat beban berkali-kali lipat berat tubuhnya. Catatan yang terkategori rapi juga terasa jauh lebih ringan.",
+    "Semut meninggalkan jejak feromon supaya kawanannya tidak tersesat. Anty meninggalkan jejak kategori supaya uangmu mudah dilacak."],
+  beebee:["Lebah madu menari goyang untuk memberi tahu kawanannya arah dan jarak bunga. Seperti laporan yang membagikan informasi penting.",
+    "Sarang lebah tersusun dari sel segi enam yang rapi dan hemat bahan. Mirip baris dan kolom Excel yang dibuat Bee-bee.",
+    "Seekor lebah pekerja hanya menghasilkan sekitar 1/12 sendok teh madu seumur hidupnya. Hasil besar datang dari kerja kecil yang dikumpulkan."],
+  brownie:["Beruang madu adalah jenis beruang terkecil di dunia, dan hidup di hutan Asia Tenggara termasuk Sumatra dan Kalimantan.",
+    "Lidah beruang madu panjangnya 20–25 cm, terpanjang di antara semua beruang, untuk menyedot madu dari dalam pohon. Brownie jago menangkap setiap pemasukan.",
+    "Pola keemasan di dada tiap beruang madu berbeda-beda. Seperti setiap sumber pemasukan yang punya ciri sendiri."],
+  cici:["Kelinci liar tinggal bersama di jaringan liang yang saling terhubung. Cocok sekali menjaga area Bersama.",
+    "Kelinci yang sedang senang bisa melompat sambil memutar badan, namanya binky. Cici selalu binky kalau kalian kompak.",
+    "Gigi kelinci tumbuh terus seumur hidup, jadi harus rutin dirawat. Seperti kebersamaan yang perlu dijaga setiap hari."],
+  dova:["Merpati pos bisa pulang ke sarangnya dari jarak ratusan kilometer, makanya dulu dipakai mengantar surat. Dova mengantar gajimu ke pos yang tepat.",
+    "Merpati diduga memakai medan magnet bumi dan posisi matahari sebagai kompas. Alokasi 50/30/20 adalah kompas keuanganmu.",
+    "Tahun 1918, merpati bernama Cher Ami mengantar pesan yang menyelamatkan ratusan tentara. Tugas kecil, dampak besar."],
+  ducky:["Anak bebek mengikuti makhluk pertama yang dilihatnya setelah menetas. Ducky setia menemanimu sampai naik level.",
+    "Bulu bebek dilapisi minyak dari kelenjar dekat ekornya, jadi tahan air. Semangatmu juga harus tahan godaan belanja!",
+    "Anak-anak bebek berjalan berbaris rapi di belakang induknya, seperti lencana yang terkumpul satu per satu."],
+  duri:["Landak punya sekitar 5.000–7.000 duri di punggungnya. Perlindungan berlapis, persis seperti jaminan sosial.",
+    "Saat terancam, landak menggulung tubuhnya jadi bola berduri. BPJS juga bekerja justru saat kamu paling membutuhkan.",
+    "Duri landak sebenarnya rambut yang mengeras dari keratin, bahan yang sama dengan kuku kita."],
+  eli:["Gajah punya ingatan yang kuat. Induk tertua bisa mengingat lokasi sumber air selama bertahun-tahun. Eli selalu mengingatkan tujuan menabungmu.",
+    "Gajah menghibur kawanannya yang sedang gelisah dengan sentuhan belalai dan suara lembut. Begitulah Eli memberi semangat.",
+    "Gajah bisa berkomunikasi lewat getaran suara frekuensi rendah yang merambat sampai berkilo-kilometer. Semangat yang menular jauh."],
+  froggy:["Katak menyerap air lewat kulitnya, bukan dengan minum. Froggy juga menyerap setiap detail dari foto struk.",
+    "Mata katak yang menonjol membuatnya bisa melihat hampir ke segala arah. Tidak ada struk yang luput.",
+    "Katak berganti kulit secara berkala dan sering memakan kulit lamanya. Tidak ada yang terbuang, seperti struk yang tersimpan rapi."],
+  garu:["Dalam mitologi, Garuda adalah tunggangan Dewa Wisnu, lambang kekuatan dan kesetiaan. Investasi juga butuh setia jangka panjang.",
+    "Garuda digambarkan seperti elang, dan penglihatan elang beberapa kali lebih tajam dari manusia. Investasi butuh pandangan jauh ke depan.",
+    "Elang memanfaatkan arus udara naik untuk terbang tinggi tanpa banyak mengepak. Seperti bunga majemuk yang bekerja sendiri seiring waktu."],
+  jamal:["Punuk unta berisi lemak, bukan air. Lemak itu jadi cadangan energi di perjalanan panjang, seperti doa yang jadi bekal.",
+    "Unta bisa berhari-hari tidak minum di gurun, lalu minum sangat banyak sekaligus. Sabar dan tahan uji.",
+    "Al-Qur'an mengajak merenungi penciptaan unta: \"Maka tidakkah mereka memperhatikan unta, bagaimana diciptakan?\" (QS Al-Ghasyiyah: 17)."],
+  kelo:["Kelomang tidak punya cangkang sendiri. Ia memakai cangkang siput kosong dan pindah ke yang lebih besar saat tumbuh, seperti aset yang naik kelas.",
+    "Kelomang kadang antre berdasarkan ukuran lalu bertukar cangkang beramai-ramai. Setiap kelomang dapat rumah yang lebih pas.",
+    "Tanpa cangkang, kelomang rentan, jadi ia menjaganya baik-baik. Rawat asetmu: pajak, servis, dan PBB jangan sampai lupa."],
+  kenzo:["Sekitar 80% kucing oranye berjenis kelamin jantan, karena gen warna oranye ada di kromosom X. Kenzo termasuk mayoritas!",
+    "Kucing menandai wilayahnya dan rajin berpatroli. Kenzo juga berpatroli di batas anggaranmu.",
+    "Kucing bisa tidur 12–16 jam sehari untuk menghemat energi. Hemat energi, hemat uang!"],
+  kuku:["Tempurung kura-kura menyatu dengan tulang belakang dan rusuknya, jadi tidak bisa dilepas. Utang juga melekat sampai dilunasi.",
+    "Beberapa jenis kura-kura darat bisa hidup lebih dari 100 tahun. Yang penting konsisten, bukan cepat.",
+    "Dalam dongeng, kura-kura yang pelan tapi konsisten mengalahkan kelinci. Cicilan rutin, lama-lama lunas."],
+  lala:["Koala bisa tidur 18–22 jam sehari karena daun kayu putih rendah energi. Punya backup membuatmu bisa tidur nyenyak.",
+    "Sidik jari koala sangat mirip sidik jari manusia. Seperti file backup: salinan yang mirip sekali dengan aslinya.",
+    "Anak koala tinggal di kantong induknya sekitar enam bulan, aman tersimpan. Sama seperti datamu di file backup."],
+  lingling:["Saat terancam, trenggiling menggulung tubuhnya jadi bola bersisik. Persis seperti tombol sembunyi kilat.",
+    "Sisik trenggiling terbuat dari keratin, bahan yang sama dengan rambut dan kuku manusia, dan menutupi hampir seluruh tubuhnya.",
+    "Trenggiling Sunda hidup di Indonesia dan termasuk satwa yang dilindungi. Datamu juga dilindungi Lingling!"],
+  lumia:["Cahaya kunang-kunang disebut cahaya dingin: hampir semua energinya jadi cahaya, nyaris tanpa panas. Mode gelap juga lembut di mata.",
+    "Kunang-kunang berkedip dengan pola tertentu untuk saling mengenali di kegelapan.",
+    "Di beberapa tempat, termasuk hutan bakau Asia Tenggara, ribuan kunang-kunang bisa berkedip serempak."],
+  mochi:["Penciuman anjing puluhan ribu kali lebih tajam dari manusia. Mochi bisa mengendus transaksi mana pun.",
+    "Pola guratan di hidung setiap anjing unik, seperti sidik jari manusia.",
+    "Anak anjing belajar dengan mengendus dan menjelajah. Filter membantumu menjelajah catatan dengan cara yang sama."],
+  niko:["Panda menghabiskan 10–16 jam sehari untuk makan bambu. Teliti dan sabar, seperti Niko menjaga brankasmu.",
+    "Panda punya \"ibu jari palsu\", tulang pergelangan yang memanjang untuk menggenggam bambu erat-erat. Niko menggenggam kuncimu sama eratnya.",
+    "Warna hitam-putih panda diduga membantunya tersamar di salju dan hutan yang teduh."],
+  octo:["Gurita punya tiga jantung dan darah berwarna biru.",
+    "Sebagian besar sel saraf gurita ada di lengannya, jadi tiap lengan bisa bergerak cukup mandiri. Seperti mengurus banyak dompet sekaligus.",
+    "Gurita bisa mengubah warna kulitnya dalam hitungan detik, seperti saldo dompet yang terus bergerak."],
+  otto:["Berang-berang laut tidur sambil bergandengan tangan supaya tidak terpisah terbawa arus. Bagi tagihan membuat kalian tetap kompak.",
+    "Berang-berang laut memakai batu untuk memecah kerang, dan sering menyimpan batu favoritnya di kantong kulit di bawah ketiak.",
+    "Bulu berang-berang laut adalah yang paling lebat di dunia hewan, menjaga tubuhnya tetap hangat. Seperti suasana kalau urusan uang adil."],
+  owi:["Burung hantu bisa memutar kepalanya sekitar 270 derajat. Owi bisa menoleh ke hari kemarin dan hari esok di kalender.",
+    "Mata burung hantu berbentuk tabung dan tidak bisa bergerak di rongganya, makanya kepalanya yang berputar.",
+    "Kebanyakan burung hantu aktif di malam hari. Makanya Owi mengingatkan mencatat setiap malam."],
+  piggy:["Kata celengan berasal dari bahasa Jawa celeng, artinya babi hutan, karena dulu wadah tabungan sering dibentuk seperti babi.",
+    "Di Trowulan, bekas ibu kota Majapahit, ditemukan celengan babi dari terakota yang diperkirakan dari abad ke-14.",
+    "Di Eropa, konon nama piggy bank berasal dari pygg, sejenis tanah liat oranye untuk membuat wadah, yang lalu dibentuk jadi babi."],
+  pipo:["Penguin kaisar jantan mengerami telur sekitar dua bulan di musim dingin Antartika tanpa makan. Komitmen yang rutin!",
+    "Penguin kembali ke tempat berbiak yang sama dengan jadwal musiman yang sangat teratur. Seperti tagihan rutin.",
+    "Penguin berkerumun dan bergantian berada di tengah supaya semua kebagian hangat. Semua kebagian, semua tepat waktu."],
+  piyik:["Anak ayam sudah bersuara dari dalam telur sebelum menetas. Impian juga dimulai dari dalam.",
+    "Telur ayam butuh sekitar 21 hari untuk menetas. Impian juga butuh waktu dan kesabaran.",
+    "Induk ayam membalik telurnya berkali-kali sehari supaya menetas sempurna. Seperti setoran rutin yang menjaga tabungan impian."],
+  raku:["Kaki depan rakun sangat peka karena penuh ujung saraf, jadi ia meraba makanan untuk mengenalinya. Teliti, seperti saat menghitung.",
+    "Rakun terkenal cerdas memecahkan teka-teki, bahkan membuka kunci sederhana. Hitungan rumit pun beres.",
+    "Rakun sering terlihat mencuci makanannya. Sebenarnya air membuat indra rabanya makin tajam."],
+  roo:["Kanguru hampir tidak bisa bergerak mundur karena ekor dan kaki belakangnya yang besar. Selalu maju!",
+    "Sekali lompat, kanguru merah bisa melesat sekitar 8 meter. Lompatan kecil tiap hari, lama-lama jauh.",
+    "Konon kanguru dan emu dipilih di lambang negara Australia karena keduanya dikenal selalu bergerak maju."],
+  rubi:["Rubah merah diduga memakai medan magnet bumi untuk membidik mangsa saat melompat. Laporan Rubi membidik pengeluaranmu.",
+    "Pendengaran rubah sangat tajam, bisa mendengar tikus bergerak di bawah salju. Rubi peka pada perubahan kecil.",
+    "Rubah cerdik dan pandai beradaptasi, di hutan maupun kota. Wawasan Rubi juga menyesuaikan kebiasaanmu."],
+  slo:["Kungkang bisa butuh berminggu-minggu untuk mencerna satu kali makan. Sabar menunggu, ya!",
+    "Kungkang turun dari pohon hanya sekitar seminggu sekali untuk buang air.",
+    "Alga tumbuh di bulu kungkang sehingga warnanya kehijauan dan tersamar di pepohonan."],
+  snaily:["Siput bergerak sekitar 1 milimeter per detik. Tidak terburu-buru berarti tidak belanja impulsif.",
+    "Saat cuaca terlalu kering, siput bisa tidur panjang berminggu-minggu sampai kondisinya membaik. Menunggu waktu yang tepat.",
+    "Siput punya ribuan gigi mungil di lidahnya, tapi tetap mengunyah pelan-pelan. Pertimbangkan setiap keinginan dengan tenang."],
+  snowy:["Beruang kutub menimbun lapisan lemak tebal untuk bertahan saat makanan sulit didapat. Persis fungsi dana darurat.",
+    "Kulit beruang kutub sebenarnya hitam, dan bulunya transparan. Terlihat putih karena memantulkan cahaya.",
+    "Beruang kutub bisa berenang sangat jauh, kadang berhari-hari. Siaga menghadapi keadaan apa pun."],
+  tupi:["Tupai menyembunyikan makanan di banyak tempat dan bisa mengingat lokasinya. Tupi juga mengingat setiap transaksi.",
+    "Biji yang lupa diambil tupai bisa tumbuh jadi pohon baru. Catatan kecil hari ini bisa tumbuh jadi kebiasaan baik.",
+    "Tupai kadang pura-pura mengubur makanan untuk mengecoh pencuri yang mengintip."],
+  zee:["Pola belang setiap zebra unik seperti sidik jari. Seperti kode QR yang hanya berlaku untuk satu perangkat.",
+    "Anak zebra mengenali induknya dari pola belang, suara, dan baunya supaya tidak tertukar di kawanan.",
+    "Zebra sering bermigrasi bersama kawanan wildebeest yang sangat besar. Bergerak bersama-sama, seperti perangkat yang tersinkron."]
+};
+const urutanFakta = {};
+function tampilFakta(kartu, maju){
+  const k = kartu.dataset.k, list = FAKTA[k];
+  if (!list) return;
+  if (maju || urutanFakta[k] == null) urutanFakta[k] = urutanFakta[k] == null ? 0 : (urutanFakta[k] + 1) % list.length;
+  const i = urutanFakta[k], el = kartu.querySelector(".geng-fakta");
+  el.innerHTML = '<strong>Tahukah kamu?</strong><span>'+esc(list[i])+'</span><span class="fakta-titik" aria-hidden="true">'+list.map((_, j) => '<i'+(j === i ? ' class="on"' : '')+'></i>').join("")+'</span>';
+  el.hidden = false; kartu.classList.add("fakta-buka"); kartu.setAttribute("aria-expanded", "true");
+}
+function tutupFakta(kartu){
+  const el = kartu.querySelector(".geng-fakta");
+  if (el) el.hidden = true;
+  kartu.classList.remove("fakta-buka"); kartu.setAttribute("aria-expanded", "false");
+}
+function pasangFaktaGeng(){
+  const bisaHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  document.querySelectorAll(".geng-kartu[data-k]").forEach(kartu => {
+    if (bisaHover){
+      kartu.addEventListener("mouseenter", () => tampilFakta(kartu, true));
+      kartu.addEventListener("mouseleave", () => tutupFakta(kartu));
+    }
+    kartu.addEventListener("click", () => {
+      if (bisaHover){ tampilFakta(kartu, true); return; }
+      const buka = kartu.classList.contains("fakta-buka");
+      document.querySelectorAll(".geng-kartu.fakta-buka").forEach(tutupFakta);
+      if (!buka) tampilFakta(kartu, true);
+    });
+    kartu.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); kartu.classList.contains("fakta-buka") && !bisaHover ? tutupFakta(kartu) : tampilFakta(kartu, true); }
+      if (e.key === "Escape") tutupFakta(kartu);
+    });
+    kartu.addEventListener("blur", () => { if (!kartu.matches(":hover")) tutupFakta(kartu); });
+  });
+}
+
+/* ============ Langkah 11: segarkan, kunci cepat, pintasan, panduan Alpha, simulasi utang, valas ============ */
+
+/* ---------- Segarkan tanpa mengunci (Zee) ---------- */
+let ptrEl = null;
+function elPtr(){
+  if (ptrEl && document.body.contains(ptrEl)) return ptrEl;
+  ptrEl = document.createElement("div");
+  ptrEl.className = "ptr"; ptrEl.setAttribute("aria-hidden", "true");
+  ptrEl.innerHTML = maskot("zee", 34)+'<span class="ptr-teks">Tarik untuk menyegarkan</span>';
+  document.body.appendChild(ptrEl);
+  return ptrEl;
+}
+function tampilPtr(teks, geser, putar){
+  const el = elPtr();
+  el.querySelector(".ptr-teks").textContent = teks;
+  el.style.transform = "translate(-50%," + (geser == null ? 70 : geser) + "px)";
+  el.classList.toggle("muter", !!putar);
+  el.classList.add("on");
+}
+function sembunyiPtr(){ if (ptrEl){ ptrEl.classList.remove("on", "muter"); ptrEl.style.transform = ""; } }
+const tunggu = ms => new Promise(r => setTimeout(r, ms));
+async function segarkan(sumber){
+  if (S.menyegarkan || !S.sesi) return;
+  S.menyegarkan = true;
+  tampilPtr("Zee mengambil data terbaru...", 70, true);
+  let ok = null;
+  try {
+    if (awanTersambung()){
+      for (let i = 0; i < 40 && awanSibuk; i++) await tunggu(250);
+      ok = await sinkron("segarkan");
+    } else await tunggu(400);
+  } catch(e){ ok = false; }
+  cekVersiBaru(true);
+  if ("serviceWorker" in navigator) navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {});
+  if (S.sesi && S.layar === "app"){
+    if (!document.querySelector(".backdrop")){ const y = scrollY; render(); scrollTo(0, y); }
+    else S.perluRenderAwan = true;
+  }
+  sembunyiPtr();
+  S.menyegarkan = false;
+  if (ok === null) toast("Tampilan disegarkan. Sinkron awan belum aktif, jadi datanya dari perangkat ini saja.");
+  else toast(ok ? "Zee: data sudah yang terbaru." : "Zee belum bisa menyambung ke awan. Data di perangkat ini tetap aman.");
+}
+/* tarik ke bawah di layar sentuh */
+let ptr = null;
+addEventListener("touchstart", e => {
+  ptr = null;
+  if (S.layar !== "app" || !S.sesi || S.menyegarkan || e.touches.length !== 1) return;
+  if (scrollY > 0 || document.querySelector(".backdrop")) return;
+  if (e.target.closest && e.target.closest("input,textarea,select,.seg-wrap,.kal,.geng-kartu")) return;
+  ptr = {x0:e.touches[0].clientX, y0:e.touches[0].clientY, dy:0, aktif:false};
+}, {passive:true});
+addEventListener("touchmove", e => {
+  if (!ptr) return;
+  const dx = e.touches[0].clientX - ptr.x0, dy = e.touches[0].clientY - ptr.y0;
+  if (!ptr.aktif){
+    if (dy < -4 || Math.abs(dx) > Math.abs(dy) + 6 || scrollY > 0){ ptr = null; return; }
+    if (dy > 12) ptr.aktif = true; else return;
+  }
+  ptr.dy = dy;
+  const geser = Math.min(96, dy * 0.5);
+  tampilPtr(geser >= 64 ? "Lepaskan untuk menyegarkan" : "Tarik untuk menyegarkan", geser - 46);
+  ptrEl.querySelector(".maskot").style.transform = "rotate(" + Math.round(geser * 3) + "deg)";
+}, {passive:true});
+addEventListener("touchend", () => {
+  if (!ptr) return;
+  const siap = ptr.aktif && ptr.dy * 0.5 >= 64;
+  ptr = null;
+  if (ptrEl) ptrEl.querySelector(".maskot").style.transform = "";
+  if (siap) segarkan("tarik"); else sembunyiPtr();
+});
+addEventListener("touchcancel", () => { ptr = null; sembunyiPtr(); });
+
+/* ---------- Pemberitahuan versi baru ---------- */
+let cekVersiTerakhir = 0;
+async function cekVersiBaru(paksa){
+  if (!DI_WEB || !navigator.onLine) return;
+  if (!paksa && Date.now() - cekVersiTerakhir < 10 * 60000) return;
+  cekVersiTerakhir = Date.now();
+  try {
+    const r = await fetch("index.html?cekversi=1", {cache:"no-store"});
+    if (!r.ok) return;
+    const m = (await r.text()).match(/const VERSI_APP = "([^"]+)"/);
+    if (m && m[1] !== VERSI_APP && m[1] !== S.versiDitunda) bannerVersi(m[1]);
+  } catch(e){}
+}
+function bannerVersi(v){
+  if (document.querySelector(".banner-versi")) return;
+  const b = document.createElement("div");
+  b.className = "banner-versi"; b.setAttribute("role", "status");
+  b.innerHTML = maskot("zee", 36)+'<span><strong>Versi baru tersedia ('+esc(v)+')</strong><br><span class="muted">Muat ulang untuk memakainya. Setelah itu masukkan PIN lagi.</span></span>'+
+    '<button type="button" class="btn btn-primary btn-kecil" data-aksi="muat-ulang">Muat ulang</button>'+
+    '<button type="button" class="btn btn-ghost btn-kecil" data-aksi="versi-nanti" data-v="'+esc(v)+'">Nanti</button>';
+  document.body.appendChild(b);
+}
+setInterval(() => { if (document.visibilityState === "visible") cekVersiBaru(); }, 30 * 60000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") cekVersiBaru(); });
+addEventListener("load", () => setTimeout(() => cekVersiBaru(true), 4000));
+
+/* ---------- Kunci cepat & kunci saat pindah aplikasi (Niko) ---------- */
+const OPSI_KUNCI_PINDAH = [[0, "Langsung"], [30, "30 detik"], [60, "1 menit"], [300, "5 menit"], [-1, "Tidak pernah"]];
+function kunciPindahDetik(){
+  const v = S.sesi && S.sesi.data.pengaturan.kunciPindah;
+  return v == null ? 60 : v;
+}
+let waktuTersembunyi = 0, pilihFileSampai = 0;
+document.addEventListener("click", e => { if (e.target.closest && e.target.closest('input[type=file]')) pilihFileSampai = Date.now() + 5 * 60000; }, true);
+document.addEventListener("change", e => { if (e.target.matches && e.target.matches("input[type=file]")) pilihFileSampai = 0; }, true);
+document.addEventListener("visibilitychange", () => {
+  if (!S.sesi){ waktuTersembunyi = 0; return; }
+  const det = kunciPindahDetik(), lagiPilihFile = Date.now() < pilihFileSampai;
+  if (document.visibilityState === "hidden"){
+    waktuTersembunyi = Date.now();
+    if (det === 0 && !lagiPilihFile) kunciAplikasi("Dikunci karena kamu pindah aplikasi.");
+    return;
+  }
+  const lama = waktuTersembunyi ? Date.now() - waktuTersembunyi : 0;
+  waktuTersembunyi = 0;
+  if (det > 0 && lama >= det * 1000 && !lagiPilihFile) kunciAplikasi("Dikunci karena aplikasi ditinggal " + (det >= 60 ? (det / 60) + " menit" : det + " detik") + ".");
+});
+/* tekan lama jam di HP untuk mengunci */
+let timerTekanJam = null;
+document.addEventListener("pointerdown", e => {
+  const jam = e.target.closest && e.target.closest(".topbar-hp .jam-hidup");
+  if (!jam || !S.sesi) return;
+  jam.classList.add("ditekan");
+  timerTekanJam = setTimeout(() => {
+    timerTekanJam = null; jam.classList.remove("ditekan");
+    if (navigator.vibrate) try { navigator.vibrate(30); } catch(e){}
+    kunciAplikasi("Dikunci lewat tekan lama jam.");
+  }, 700);
+});
+["pointerup", "pointercancel", "pointerleave", "scroll"].forEach(ev => addEventListener(ev, () => {
+  if (timerTekanJam){ clearTimeout(timerTekanJam); timerTekanJam = null; }
+  document.querySelectorAll(".jam-hidup.ditekan").forEach(j => j.classList.remove("ditekan"));
+}, true));
+function tombolKunciHP(){
+  return '<button type="button" class="btn-kunci-hp" data-aksi="kunci" aria-label="Kunci aplikasi" title="Kunci aplikasi">'+maskot("niko", 30)+'<span class="gembok">'+ikon("kunci")+'</span></button>';
+}
+function seksiKunciPindah(){
+  const v = kunciPindahDetik();
+  return '<div class="set-row"><label for="in-kpindah"><strong>Kunci saat pindah aplikasi</strong><p class="muted" style="font-size:14px">Kalau kamu pindah ke aplikasi atau tab lain selama ini, Niko mengunci Dompet Kita.</p></label>'+
+    '<select id="in-kpindah" class="pilih-set">'+OPSI_KUNCI_PINDAH.map(o => '<option value="'+o[0]+'"'+(o[0] === v ? " selected" : "")+'>'+o[1]+'</option>').join("")+'</select></div>'+
+    '<p class="muted" style="font-size:14px">Kunci cepat: <kbd>Alt</kbd>+<kbd>L</kbd> di laptop. Di HP, ketuk gembok Niko di pojok atas atau tekan lama jamnya.</p>';
+}
+document.addEventListener("change", async e => {
+  if (e.target.id !== "in-kpindah" || !S.sesi) return;
+  S.sesi.data.pengaturan.kunciPindah = Number(e.target.value);
+  await simpanPribadi();
+  toast("Kunci saat pindah aplikasi: " + OPSI_KUNCI_PINDAH.find(o => o[0] === Number(e.target.value))[1].toLowerCase() + ".");
+});
+
+/* ---------- Pintasan keyboard ---------- */
+function keCari(){
+  if (S.halaman !== "transaksi"){ S.halaman = "transaksi"; render(); scrollTo(0, 0); catatHalaman("transaksi"); }
+  const q = document.getElementById("in-cari");
+  if (q){ q.focus(); q.select(); }
+}
+document.addEventListener("keydown", e => {
+  const diApp = S.layar === "app" && !!S.sesi;
+  const ctrl = e.ctrlKey || e.metaKey;
+  if (e.key === "F5" && !ctrl && !e.shiftKey || (ctrl && !e.shiftKey && !e.altKey && e.code === "KeyR")){
+    if (diApp){ e.preventDefault(); segarkan("keyboard"); }
+    return;
+  }
+  if (!diApp) return;
+  if ((e.altKey && !ctrl && !e.shiftKey && e.code === "KeyL") || (ctrl && e.shiftKey && !e.altKey && e.code === "KeyK")){
+    e.preventDefault(); kunciAplikasi("Aplikasi dikunci."); return;
+  }
+  if (ctrl || e.altKey || e.repeat) return;
+  const el = e.target;
+  if (el && el.closest && el.closest("input,textarea,select,[contenteditable=true]")) return;
+  if (document.querySelector(".backdrop")) return;
+  const k = e.key;
+  if (k === "n" || k === "N"){ e.preventDefault(); bukaFormTx(null); }
+  else if (k === "?" || (k === "/" && e.shiftKey)){ e.preventDefault(); bukaPanduan("pintasan"); }
+  else if (k === "/"){ e.preventDefault(); keCari(); }
+  else if (k === "h" || k === "H"){ e.preventDefault(); AKSI.sembunyi(); }
+});
+
+/* ---------- Pintasan ikon aplikasi (manifest) ---------- */
+S.aksiTunda = (() => { try { const a = new URLSearchParams(location.search).get("aksi"); return ["keluar", "masuk", "saldo"].includes(a) ? a : null; } catch(e){ return null; } })();
+if (S.aksiTunda) S.pesanLogin = {keluar:"Masukkan PIN, lalu Tupi langsung membuka catat pengeluaran.", masuk:"Masukkan PIN, lalu Tupi langsung membuka catat pemasukan.", saldo:"Masukkan PIN, lalu Octo menunjukkan saldo semua dompet."}[S.aksiTunda];
+function jalankanAksiTunda(){
+  const a = S.aksiTunda;
+  if (!a || !S.sesi) return;
+  S.aksiTunda = null;
+  try { history.replaceState(null, "", location.pathname + location.hash); } catch(e){}
+  setTimeout(() => {
+    if (!S.sesi) return;
+    if (a === "saldo"){ tutupModal(); S.halaman = "dompet"; render(); catatHalaman("dompet"); toast("Octo menunjukkan saldo semua dompetmu."); }
+    else bukaFormTx(null, a);
+  }, 350);
+}
+
+/* ---------- Panduan Alpha ---------- */
+const BANTUAN = {
+  beranda:["piggy", "Ringkasan uangmu: saldo, pemasukan, dan pengeluaran periode ini.", ["Tombol + (atau tombol N di laptop) untuk mencatat transaksi.", "Catat cepat dari Tupi menyimpan transaksi favorit, jadi cukup sekali ketuk.", "Ketuk Lingling di atas (atau tombol H) untuk menyembunyikan semua nominal saat ada orang di dekatmu.", "Kartu peringatan muncul kalau anggaran menipis atau ada tagihan yang dekat."]],
+  transaksi:["tupi", "Semua catatan pemasukan, pengeluaran, dan pindah dompet.", ["Kolom nominal bisa menghitung, misalnya 25000+12500 lalu tekan =.", "Cari catatan, kategori, dompet, atau nominal lewat kolom Mochi (tombol / di laptop).", "Belanja dengan mata uang asing? Buka Pakai mata uang asing di form, Octo menghitungkan Rupiahnya.", "Ketuk sebuah transaksi untuk mengubah atau menghapusnya."]],
+  dompet:["octo", "Tempat semua saldo: tunai, rekening bank, dan e-wallet.", ["Pindah saldo antardompet tidak dihitung sebagai pengeluaran.", "Saldo setiap dompet dihitung otomatis dari transaksinya.", "Pintasan ikon aplikasi Lihat saldo langsung membuka halaman ini."]],
+  anggaran:["kenzo", "Batas belanja per kategori untuk setiap periode.", ["Kenzo menegur saat anggaran hampir habis dan saat sudah lewat batas.", "Dova bisa membantu membagi gaji dengan pola 50/30/20.", "Awal periode bisa disamakan dengan tanggal gajian di Pengaturan."]],
+  tabungan:["piyik", "Tabungan impian, dana darurat, dan investasi.", ["Snowy menjaga dana darurat supaya kamu siap saat ada kejadian mendadak.", "Garu mengingatkan update nilai investasi setiap Jumat pukul 19.00, lengkap dengan riwayat naik-turunnya.", "Isi catatan tujuan supaya ingat investasi itu untuk apa."]],
+  aset:["kelo", "Kekayaan bersih: semua saldo, investasi, dan aset dikurangi utang.", ["Catat rumah, kendaraan, atau barang berharga beserta perkiraan nilainya.", "Perbarui nilainya sesekali supaya angkanya tetap realistis."]],
+  tantangan:["roo", "Tantangan menabung untuk membangun kebiasaan.", ["Tandai setiap kali kamu menyetor.", "Tantangan yang selesai menambah XP dan lencana."]],
+  keinginan:["snaily", "Daftar barang yang ingin dibeli, dengan masa tunda.", ["Tunggu masa tunda selesai sebelum membeli. Sering kali keinginannya hilang sendiri.", "Kalau batal beli, uangnya bisa dialihkan ke tabungan."]],
+  bersama:["cici", "Dompet, tabungan impian, dan tagihan berdua dengan pasangan.", ["Isi area Bersama bisa dilihat kalian berdua.", "Otto membantu membagi tagihan secara adil.", "Angka pribadi yang boleh dilihat pasangan diatur Lingling di Pengaturan."]],
+  utang:["kuku", "Catatan siapa meminjam berapa, dan kapan jatuh temponya.", ["Punya beberapa utang? Buka tab Utangku lalu coba Simulasi lunas untuk membandingkan cara melunasinya.", "Kuku mengingatkan saat jatuh tempo sudah dekat.", "Tekan Bayar cicilan setiap kali membayar supaya sisanya selalu tepat."]],
+  rutin:["pipo", "Gaji, kos, cicilan, dan langganan yang berulang.", ["Pipo bisa mencatatnya otomatis setiap jatuh tempo.", "Pengingat muncul saat tagihan mendekati jatuh tempo."]],
+  zakat:["jamal", "Hitung zakat mal dan zakat penghasilan.", ["Nisab mengikuti harga emas yang kamu isi.", "Hasilnya perkiraan. Untuk kepastian, tanyakan ke lembaga amil zakat."]],
+  laporan:["rubi", "Grafik, diagram per kategori, kalender pengeluaran, dan ekspor.", ["Owi menandai hari-hari dengan pengeluaran besar di kalender.", "Bee-bee mengekspor laporan ke Excel dan PDF."]],
+  lencana:["ducky", "Lencana dan level dari kebiasaan baikmu.", ["XP bertambah dari mencatat rutin, menabung, dan menyelesaikan tantangan."]],
+  geng:["alpha", "Kenalan dengan semua maskot Dompet Kita.", ["Arahkan kursor (laptop) atau ketuk (HP) sebuah maskot untuk melihat fun fact-nya."]],
+  pengaturan:["niko", "Profil, kategori, sinkron, privasi, tampilan, backup, dan keamanan.", ["Kunci saat pindah aplikasi diatur di bagian Keamanan.", "Unduh backup secara rutin supaya data tetap aman.", "Sambungkan ke awan supaya data sama di laptop dan HP."]]
+};
+const TUR = [
+  ["piggy", "Selamat datang di Dompet Kita", "Catatan keuangan pribadi dan berdua. Data pribadimu dienkripsi dan hanya terbuka dengan PIN-mu."],
+  ["tupi", "Catat setiap transaksi", "Tekan tombol + (atau N di laptop). Nominal bisa langsung dihitung, misalnya 15000×3."],
+  ["octo", "Dompet dan saldo", "Buat dompet tunai, bank, dan e-wallet. Pindah saldo antardompet tidak dihitung sebagai pengeluaran."],
+  ["kenzo", "Anggaran dan tabungan", "Kenzo menjaga batas belanja. Piyik dan Snowy menemani tabungan impian dan dana darurat."],
+  ["cici", "Berdua dengan pasangan", "Area Bersama untuk dompet dan impian berdua. Lingling mengatur angka mana yang boleh dilihat pasangan."],
+  ["zee", "Sinkron dan segarkan", "Sambungkan ke awan di Pengaturan. Tarik layar ke bawah (HP) atau tekan F5 (laptop) untuk mengambil data terbaru tanpa mengunci aplikasi."],
+  ["niko", "Tetap aman", "Kunci cepat dengan Alt+L atau gembok Niko. Aplikasi juga terkunci sendiri saat lama ditinggal."]
+];
+const FAQ = [
+  ["Kalau lupa PIN bagaimana?", "PIN tidak bisa dilihat atau dipulihkan. Kalau punya file backup dan ingat PIN saat backup dibuat, pulihkan dari backup. Kalau tidak, profil harus dihapus lalu didaftarkan ulang, dan data pribadinya hilang."],
+  ["Apakah pasangan bisa melihat transaksi pribadiku?", "Tidak. Brankas pribadimu terkunci PIN-mu sendiri. Pasangan hanya melihat area Bersama dan ringkasan yang kamu izinkan di Pengaturan, bagian Privasi."],
+  ["Menekan F5 atau menarik layar membuat aplikasi terkunci?", "Tidak. Keduanya hanya mengambil data terbaru. Yang membuat terkunci: Alt+L, gembok Niko, Ctrl+Shift+R (muat ulang penuh), menutup aplikasi, atau kunci otomatis."],
+  ["Datanya disimpan di mana?", "Di perangkat ini dalam keadaan terenkripsi. Kalau sinkron awan aktif, salinan terenkripsinya juga disimpan di server, dan server tidak bisa membaca isinya."],
+  ["Foto struk ikut tersinkron?", "Belum. Foto hanya ada di perangkat tempat ia dilampirkan, tetapi ikut masuk file backup kalau opsinya dicentang."],
+  ["Kurs mata uang asing diambil dari mana?", "Kamu isi sendiri, misalnya dari aplikasi bank atau struk penukaran uang. Octo mengingat kurs terakhir untuk tiap mata uang."],
+  ["Kenapa nominal berubah jadi Rp •••••?", "Sembunyi kilat dari Lingling sedang aktif. Ketuk Lingling atau tekan H untuk menampilkannya lagi."],
+  ["Bagaimana memasang aplikasi di HP atau laptop?", "Buka Pengaturan, bagian Install aplikasi, lalu ikuti petunjuknya."]
+];
+const PINTASAN_KB = [
+  [["N"], "Catat transaksi baru"], [["/"], "Cari transaksi"], [["H"], "Sembunyikan atau tampilkan nominal"], [["?"], "Buka panduan Alpha"],
+  [["Alt", "L"], "Kunci aplikasi (cadangan: Ctrl+Shift+K)"], [["F5"], "Segarkan data tanpa mengunci (juga Ctrl+R)"],
+  [["Ctrl", "Shift", "R"], "Muat ulang penuh, perlu PIN lagi"], [["Esc"], "Tutup jendela yang terbuka"]
+];
+const PINTASAN_HP = [
+  ["Tarik layar ke bawah", "Segarkan data tanpa mengunci"], ["Ketuk gembok Niko", "Kunci aplikasi"], ["Tekan lama jam", "Kunci aplikasi"],
+  ["Tekan lama ikon aplikasi", "Catat pengeluaran, catat pemasukan, atau lihat saldo langsung"]
+];
+function bukaPanduan(tab, i){
+  tab = tab || "halaman";
+  S.panduanAlpha = {tab, i:i || 0};
+  const tb = (t, l) => '<button type="button" role="tab" class="seg'+(tab === t ? " on" : "")+'" aria-selected="'+(tab === t)+'" data-aksi="pa-tab" data-t="'+t+'">'+l+'</button>';
+  let isi = "";
+  if (tab === "halaman"){
+    const h = HALAMAN.find(x => x.id === S.halaman) || HALAMAN[0], b = BANTUAN[h.id] || BANTUAN.beranda;
+    isi = '<div class="pa-hal">'+maskot(b[0], 72)+'<div><span class="eyebrow">Kamu sedang di</span><h3>'+esc(h.label)+'</h3><p>'+esc(b[1])+'</p></div></div>'+
+      '<ul class="list-check">'+b[2].map(t => '<li>'+esc(t)+'</li>').join("")+'</ul>';
+  } else if (tab === "tur"){
+    const n = Math.max(0, Math.min(TUR.length - 1, S.panduanAlpha.i)), x = TUR[n];
+    isi = '<div class="pa-tur">'+maskot(x[0], 110)+'<span class="eyebrow">Langkah '+(n + 1)+' dari '+TUR.length+'</span><h3>'+esc(x[1])+'</h3><p>'+esc(x[2])+'</p>'+
+      '<div class="pa-titik" aria-hidden="true">'+TUR.map((_, j) => '<span class="'+(j === n ? "on" : "")+'"></span>').join("")+'</div>'+
+      '<div class="row-btn" style="justify-content:center">'+
+        (n > 0 ? tombolAksi("pa-tur", "Sebelumnya", "btn-ghost", ' data-i="'+(n - 1)+'"') : '')+
+        (n < TUR.length - 1 ? tombolAksi("pa-tur", "Lanjut", "btn-primary", ' data-i="'+(n + 1)+'"') : tombolAksi("tutup-modal", "Selesai", "btn-primary"))+
+      '</div></div>';
+  } else if (tab === "faq"){
+    isi = '<div class="pa-faq">'+FAQ.map(q => '<details><summary>'+esc(q[0])+'</summary><p>'+esc(q[1])+'</p></details>').join("")+'</div>';
+  } else {
+    const kbd = ks => ks.map(k => '<kbd>'+esc(k)+'</kbd>').join("+");
+    const kb = '<h3 class="pa-sub">Di laptop atau PC</h3><div class="pa-tabel">'+PINTASAN_KB.map(p => '<div>'+kbd(p[0])+'</div><div>'+esc(p[1])+'</div>').join("")+'</div>'+
+      '<p class="muted" style="font-size:13px">Di Mac, pakai Option untuk Alt dan Cmd untuk Ctrl. Pintasan huruf tidak aktif saat sedang mengetik.</p>';
+    const hp = '<h3 class="pa-sub">Di HP</h3><div class="pa-tabel">'+PINTASAN_HP.map(p => '<div><strong>'+esc(p[0])+'</strong></div><div>'+esc(p[1])+'</div>').join("")+'</div>';
+    isi = layarSentuh() ? hp + kb : kb + hp;
+  }
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("alpha", 56)+'<div><h2 id="judul-modal">Panduan Alpha</h2><p class="muted" style="font-size:14px">Bingung? Alpha siap menemani.</p></div></div>'+
+    '<div class="seg-wrap pa-tab" role="tablist" aria-label="Bagian panduan">'+tb("halaman", "Halaman")+tb("tur", "Tur")+tb("faq", "Tanya jawab")+tb("pintasan", "Pintasan")+'</div>'+
+    '<div class="pa-isi">'+isi+'</div>', "modal-panduan");
+}
+function tombolBantuan(){ return '<button type="button" class="fab-bantu" data-aksi="panduan-alpha" aria-label="Panduan Alpha" title="Panduan Alpha (?)">?</button>'; }
+
+/* ---------- E. Simulasi lunas utang (Kuku) ---------- */
+function kartuSimUtang(){
+  return '<section class="card bubble-card">'+maskot("kuku", 64)+'<div class="bubble"><strong>Simulasi lunas</strong><span>Punya beberapa utang? Kuku membandingkan dua cara melunasi: bunga tertinggi dulu atau sisa terkecil dulu.</span>'+
+    '<div class="row-btn" style="justify-content:flex-start;margin-top:8px">'+tombolAksi("sim-utang", "Coba simulasi", "btn-primary btn-kecil")+'</div></div></section>';
+}
+function angkaDesimal(v){
+  let s = String(v == null ? "" : v).replace(/\s|rp/gi, "");
+  if (!s) return NaN;
+  const t = s.lastIndexOf("."), k = s.lastIndexOf(",");
+  if (t >= 0 && k >= 0) s = k > t ? s.replace(/\./g, "").replace(",", ".") : s.replace(/,/g, "");
+  else if (k >= 0) s = /^\d{1,3}(,\d{3}){2,}$/.test(s) ? s.replace(/,/g, "") : s.replace(",", ".");
+  else if (t >= 0 && /^[1-9]\d{0,2}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+  if (!/^\d*\.?\d+$/.test(s)) return NaN;
+  return Number(s);
+}
+function utangAktifSaya(){ return S.sesi.data.utang.filter(u => u.jenis === "utang" && sisaUtang(u) > 0); }
+function simulasiUtang(daftar, anggaran, urut, gulir){
+  const b = daftar.map(x => Object.assign({}, x, {saldo:x.sisa, lunas:null}));
+  let bulan = 0, bunga = 0;
+  while (b.some(x => x.saldo > 0.5) && bulan < 600){
+    bulan++;
+    b.forEach(x => { if (x.saldo > 0){ const i = x.saldo * x.bunga / 1200; x.saldo += i; bunga += i; } });
+    let dana = anggaran;
+    b.forEach(x => { if (x.saldo > 0){ const p = Math.min(x.saldo, x.min, dana); x.saldo -= p; dana -= p; } });
+    if (gulir) for (const x of b.filter(y => y.saldo > 0).sort(urut)){ if (dana <= 0) break; const p = Math.min(x.saldo, dana); x.saldo -= p; dana -= p; }
+    b.forEach(x => { if (x.saldo <= 0.5 && x.lunas == null){ x.saldo = 0; x.lunas = bulan; } });
+  }
+  return {bulan, bunga:Math.round(bunga), selesai:!b.some(x => x.saldo > 0.5), urutan:b.filter(x => x.lunas).sort((p, q) => p.lunas - q.lunas)};
+}
+const URUT_AVALANCHE = (a, b) => b.bunga - a.bunga || a.saldo - b.saldo;
+const URUT_SNOWBALL = (a, b) => a.saldo - b.saldo || b.bunga - a.bunga;
+function teksLama(n){ const t = Math.floor(n / 12), m = n % 12; return (t ? t + " tahun" : "") + (t && m ? " " : "") + (m ? m + " bulan" : (t ? "" : "0 bulan")); }
+function bulanKe(n){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + n); return d.toLocaleDateString("id-ID", {month:"long", year:"numeric"}); }
+function modalSimUtang(){
+  const list = utangAktifSaya(), sim = S.sesi.data.pengaturan.simUtang || {per:{}};
+  if (!list.length){ toast("Belum ada utang aktif untuk disimulasikan."); return; }
+  const baris = list.map(u => {
+    const s = sisaUtang(u), p = sim.per[u.id] || {}, min = p.min != null ? p.min : Math.min(s, Math.max(1000, Math.ceil(s / 12 / 1000) * 1000));
+    return '<div class="sim-baris"><div class="sim-nama"><strong>'+esc(u.nama)+'</strong><span class="muted">Sisa '+rupiah(s)+'</span></div>'+
+      '<div class="dua"><label class="field">Bunga per tahun (%)<input class="in-sim-bunga" data-id="'+u.id+'" inputmode="decimal" autocomplete="off" placeholder="0" value="'+esc(p.bunga != null ? String(p.bunga).replace(".", ",") : "")+'"></label>'+
+      '<label class="field">Cicilan minimum per bulan'+inUang("sim-min-" + u.id, min)+'</label></div></div>';
+  }).join("");
+  const totMin = list.reduce((a, u) => a + (sim.per[u.id] && sim.per[u.id].min != null ? sim.per[u.id].min : Math.min(sisaUtang(u), Math.max(1000, Math.ceil(sisaUtang(u) / 12 / 1000) * 1000))), 0);
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("kuku", 56)+'<div><h2 id="judul-modal">Simulasi lunas</h2><p class="muted" style="font-size:14px">Isi bunga (kosongkan kalau tanpa bunga) dan cicilan minimum tiap utang.</p></div></div>'+
+    '<div class="sim-list">'+baris+'</div>'+
+    '<label class="field">Total dana untuk bayar utang per bulan'+inUang("in-sim-dana", sim.anggaran || totMin)+'</label>'+
+    '<p class="muted" style="font-size:13px">Kelebihan dana di atas cicilan minimum dipakai untuk mempercepat satu utang sesuai urutan cara yang dipilih. Begitu satu utang lunas, cicilannya digulirkan ke utang berikutnya.</p>'+
+    '<p class="err" id="err-sim" role="alert"></p><div id="sim-hasil"></div>'+
+    '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup")+tombolAksi("hitung-sim", "Hitung", "btn-primary")+'</div>', "modal-lebar");
+  document.querySelectorAll(".backdrop .in-uang").forEach(i => { if (i.value) i.dispatchEvent(new Event("input", {bubbles:true})); });
+  if (sim.anggaran) hitungSimUtang(false);
+}
+async function hitungSimUtang(simpan){
+  const err = document.getElementById("err-sim"), out = document.getElementById("sim-hasil");
+  err.textContent = "";
+  const list = utangAktifSaya(), per = {}, data = [];
+  for (const u of list){
+    const rawB = document.querySelector('.in-sim-bunga[data-id="'+u.id+'"]').value.trim();
+    const bunga = rawB ? angkaDesimal(rawB) : 0, min = nilaiUang("sim-min-" + u.id);
+    if (isNaN(bunga) || bunga < 0 || bunga > 100){ err.textContent = "Bunga untuk " + u.nama + " belum benar (0 sampai 100%)."; return; }
+    if (!min || isNaN(min) || min <= 0){ err.textContent = "Isi cicilan minimum untuk " + u.nama + "."; return; }
+    per[u.id] = {bunga, min};
+    data.push({id:u.id, nama:u.nama, sisa:sisaUtang(u), bunga, min});
+  }
+  const dana = nilaiUang("in-sim-dana"), totMin = data.reduce((a, x) => a + x.min, 0);
+  if (!dana || isNaN(dana) || dana <= 0){ err.textContent = "Isi total dana per bulan."; return; }
+  if (dana < totMin){ err.textContent = "Dana per bulan kurang dari total cicilan minimum (" + rupiah(totMin) + ")."; return; }
+  if (simpan !== false){ S.sesi.data.pengaturan.simUtang = {anggaran:dana, per}; await simpanPribadi(); }
+  const av = simulasiUtang(data, dana, URUT_AVALANCHE, true), sb = simulasiUtang(data, dana, URUT_SNOWBALL, true), mn = simulasiUtang(data, totMin, URUT_AVALANCHE, false);
+  if (!av.selesai){ out.innerHTML = '<p class="note">Dengan angka ini utang belum lunas dalam 50 tahun karena bunganya lebih besar dari cicilan. Naikkan dana per bulan atau cicilan minimumnya.</p>'; return; }
+  const kartu = (judul, ket, h, kelas) => '<article class="card sim-kartu '+(kelas || "")+'"><h3>'+judul+'</h3><p class="muted" style="font-size:13px">'+ket+'</p>'+
+    '<div class="sim-angka"><span>Lunas dalam</span><strong>'+teksLama(h.bulan)+'</strong></div>'+
+    '<div class="sim-angka"><span>Perkiraan selesai</span><strong>'+bulanKe(h.bulan)+'</strong></div>'+
+    '<div class="sim-angka"><span>Total bunga</span><strong>'+rupiah(h.bunga)+'</strong></div>'+
+    '<ol class="sim-urut">'+h.urutan.map(x => '<li>'+esc(x.nama)+' <span class="muted">· bulan ke-'+x.lunas+'</span></li>').join("")+'</ol></article>';
+  const hemat = sb.bunga - av.bunga;
+  let saran;
+  if (hemat > 0) saran = "Bunga tertinggi dulu menghemat " + rupiah(hemat) + (sb.bulan > av.bulan ? " dan " + (sb.bulan - av.bulan) + " bulan" : "") + ". Sisa terkecil dulu memberi rasa menang lebih cepat: utang pertama lunas di bulan ke-" + sb.urutan[0].lunas + ".";
+  else saran = "Dua cara ini hasilnya sama untukmu. Pilih sisa terkecil dulu supaya cepat merasakan satu utang lunas (bulan ke-" + sb.urutan[0].lunas + ").";
+  out.innerHTML = '<div class="sim-grid">'+kartu("Bunga tertinggi dulu", "Cara avalanche: paling hemat bunga.", av, hemat > 0 ? "unggul" : "")+kartu("Sisa terkecil dulu", "Cara snowball: cepat merasakan lunas.", sb, hemat > 0 ? "" : "unggul")+'</div>'+
+    '<section class="bubble-card" style="padding:0">'+maskot("kuku", 48)+'<div class="bubble"><strong>Kata Kuku</strong><span>'+esc(saran)+'</span>'+
+    (mn.selesai && mn.bulan > av.bulan ? '<span class="muted" style="font-size:13px">Kalau hanya membayar minimum tanpa digulirkan: '+teksLama(mn.bulan)+', bunga '+rupiah(mn.bunga)+'.</span>' : '')+'</div></section>';
+  if (simpan !== false) out.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* ---------- F. Mata uang asing (Octo) ---------- */
+const VALAS = [["USD", "Dolar Amerika"], ["SGD", "Dolar Singapura"], ["MYR", "Ringgit Malaysia"], ["SAR", "Riyal Saudi"], ["JPY", "Yen Jepang"], ["EUR", "Euro"],
+  ["AUD", "Dolar Australia"], ["CNY", "Yuan Tiongkok"], ["KRW", "Won Korea"], ["THB", "Baht Thailand"], ["GBP", "Pound Inggris"], ["HKD", "Dolar Hong Kong"]];
+const fmtDes = (n, maks) => Number(n).toLocaleString("id-ID", {maximumFractionDigits:maks == null ? 2 : maks});
+function fmtValas(jumlah, kode){ return S.sembunyi && !S.bukaSembunyi ? kode + " •••" : fmtDes(jumlah) + " " + kode; }
+function valasHTML(f){
+  if (f.jenis === "pindah") return "";
+  const kurs = S.sesi.data.pengaturan.kurs || {};
+  const dr = f.valasDraf || (f.valas ? {kode:f.valas.kode, jml:fmtDes(f.valas.jumlah), kurs:fmtDes(f.valas.kurs, 4)} : null);
+  const kode = dr ? dr.kode : (Object.keys(kurs)[0] || "USD");
+  const nilaiKurs = dr ? dr.kurs : (kurs[kode] ? fmtDes(kurs[kode], 4) : "");
+  return '<details class="valas" id="valas-box"'+(f.valasBuka ? " open" : "")+'><summary>'+maskot("octo", 28)+'<span>Pakai mata uang asing</span>'+(f.valas ? '<span class="chip">'+esc(f.valas.kode)+'</span>' : '')+'</summary>'+
+    '<div class="valas-isi"><div class="dua"><label class="field">Mata uang<select id="in-vkode">'+VALAS.map(v => '<option value="'+v[0]+'"'+(v[0] === kode ? " selected" : "")+'>'+v[0]+' · '+v[1]+'</option>').join("")+'</select></label>'+
+      '<label class="field">Jumlah<input id="in-vjml" inputmode="decimal" autocomplete="off" placeholder="Contoh: 12,50" value="'+esc(dr ? dr.jml : "")+'"></label></div>'+
+      '<label class="field"><span>Kurs: Rp untuk 1 <span id="vkode-lbl">'+kode+'</span></span><input id="in-vkurs" inputmode="decimal" autocomplete="off" placeholder="Contoh: 16.250" value="'+esc(nilaiKurs)+'"></label>'+
+      '<p class="valas-hasil" id="valas-hasil" aria-live="polite"></p>'+
+      '<p class="muted" style="font-size:13px">Kurs diisi sendiri, misalnya dari aplikasi bank atau struk penukaran. Octo mengingat kurs terakhir tiap mata uang, dan nominal Rupiah dihitung otomatis.</p></div></details>';
+}
+function pasangValas(){
+  const box = document.getElementById("valas-box");
+  if (!box) return;
+  const g = id => document.getElementById(id);
+  const hitungValas = isi => {
+    const kode = g("in-vkode").value, j = angkaDesimal(g("in-vjml").value), k = angkaDesimal(g("in-vkurs").value), h = g("valas-hasil");
+    g("vkode-lbl").textContent = kode;
+    if (j > 0 && k > 0){
+      const rp = Math.round(j * k);
+      h.textContent = fmtDes(j) + " " + kode + " × Rp " + fmtDes(k, 4) + " = " + FMT_RP.format(rp);
+      if (isi){ g("in-nom").value = String(rp); perbaruiPratinjau(); g("err-tx").textContent = ""; }
+    } else h.textContent = g("in-vjml").value.trim() || g("in-vkurs").value.trim() ? "Isi jumlah dan kurs dengan angka." : "";
+  };
+  g("in-vkode").addEventListener("change", () => {
+    const kurs = S.sesi.data.pengaturan.kurs || {}, k = kurs[g("in-vkode").value];
+    g("in-vkurs").value = k ? fmtDes(k, 4) : "";
+    hitungValas(true);
+  });
+  g("in-vjml").addEventListener("input", () => hitungValas(true));
+  g("in-vkurs").addEventListener("input", () => hitungValas(true));
+  box.addEventListener("toggle", () => {
+    const tadi = !!(S.form && S.form.valasBuka);
+    if (S.form) S.form.valasBuka = box.open;
+    if (box.open && !tadi) setTimeout(() => { const x = g("in-vjml"); if (x) x.focus(); }, 30);
+  });
+  hitungValas(false);
+}
+function bacaValas(f){
+  const g = id => document.getElementById(id), box = g("valas-box");
+  if (!box) return;
+  f.valasBuka = box.open;
+  f.valasDraf = {kode:g("in-vkode").value, jml:g("in-vjml").value, kurs:g("in-vkurs").value};
+  const j = angkaDesimal(f.valasDraf.jml), k = angkaDesimal(f.valasDraf.kurs);
+  f.valas = box.open && j > 0 && k > 0 ? {kode:f.valasDraf.kode, jumlah:j, kurs:k} : null;
+}
+
+Object.assign(AKSI, {
+  "panduan-alpha": () => bukaPanduan("halaman"),
+  "pa-tab": t => bukaPanduan(t.dataset.t),
+  "pa-tur": t => bukaPanduan("tur", Number(t.dataset.i)),
+  "sim-utang": () => modalSimUtang(),
+  "hitung-sim": () => hitungSimUtang(true),
+  "muat-ulang": () => location.reload(),
+  "versi-nanti": t => { S.versiDitunda = t.dataset.v; const b = document.querySelector(".banner-versi"); if (b) b.remove(); }
 });
 
 document.addEventListener("click", e => {
