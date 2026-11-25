@@ -1,5 +1,5 @@
 /* Service worker Dompet Kita: aplikasi tetap bisa dibuka tanpa internet */
-const VERSI = "dompet-kita-44f28c12df";
+const VERSI = "dompet-kita-2c2204a3cb";
 const INTI = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSI).then(c => c.addAll(INTI))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
