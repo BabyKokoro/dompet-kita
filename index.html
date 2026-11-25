@@ -972,7 +972,7 @@ html[data-tema=gelap] .langit[data-waktu=malam] .langit-warna{background:linear-
 .langit[data-waktu=malam] .lg-bulan,.langit[data-waktu=malam] .lg-bintang,.langit[data-waktu=malam] .lg-kunang{display:block}
 .langit[data-waktu=pagi] .lg-awan,.langit[data-waktu=siang] .lg-awan,.langit[data-waktu=sore] .lg-awan{display:block}
 .langit[data-waktu=pagi] .lg-burung{display:block}
-.lg-matahari{width:120px;height:120px;right:9%;top:7%;--d:4;translate:calc(var(--px,0)*var(--d)*1px) calc(var(--py,0)*var(--d)*1px)}
+.lg-matahari{width:120px;height:120px;right:9%;top:7%;}
 .lg-matahari .lg-sinar{transform-box:view-box;transform-origin:50px 50px;animation:iw-putar 40s linear infinite}
 .lg-matahari .lg-sinar rect{fill:#FFD66B;opacity:.7}
 .lg-matahari .lg-cahaya{fill:#FFE79A;opacity:.45}
@@ -985,14 +985,17 @@ html[data-tema=gelap] .langit[data-waktu=malam] .langit-warna{background:linear-
 .langit[data-waktu=sore] .lg-sinar rect{fill:#FFA06E}
 @keyframes lg-terbit{from{transform:translateY(10px)}to{transform:translateY(-6px)}}
 @keyframes lg-terbenam{from{transform:translateY(-4px)}to{transform:translateY(10px)}}
-.lg-bulan{width:104px;height:104px;right:10%;top:7%;--d:4;translate:calc(var(--px,0)*var(--d)*1px) calc(var(--py,0)*var(--d)*1px);animation:iw-goyang 9s ease-in-out infinite}
+.lg-bulan{width:104px;height:104px;right:10%;top:7%;animation:iw-goyang 9s ease-in-out infinite}
 .lg-bulan .lg-cahaya{fill:#FFF3C4;opacity:.18}
 .lg-bulan .lg-sabit{fill:#F6E7B0}
 .lg-bulan .lg-kawah{fill:#E3CF8B}
-.lg-awan{height:auto;--d:7;translate:calc(var(--px,0)*var(--d)*1px) calc(var(--py,0)*var(--d)*1px);animation:lg-awan 70s linear infinite}
-.lg-awan path{fill:#FFFFFF;opacity:.85}
-html[data-tema=gelap] .lg-awan path{fill:#F3E6D8;opacity:.12}
-.langit[data-waktu=sore] .lg-awan path{fill:#FFE1D2}
+.lg-awan{height:auto;animation:lg-awan 70s linear infinite}
+.lg-awan .aw-badan{fill:#FFFFFF}.lg-awan{opacity:.9}.lg-awan .aw-kilap{stroke:#FFFFFF;opacity:0}
+html[data-tema=gelap] .lg-awan .aw-badan{fill:#5E5048}html[data-tema=gelap] .lg-awan{opacity:.75}
+html[data-tema=gelap] .lg-awan .aw-kilap{stroke:#9C8B7E;opacity:.9}
+.langit[data-waktu=sore] .lg-awan .aw-badan{fill:#FFE1D2}
+html[data-tema=gelap] .langit[data-waktu=sore] .lg-awan .aw-badan{fill:#6A4740}
+html[data-tema=gelap] .langit[data-waktu=siang] .lg-awan .aw-badan{fill:#4F5A60}html[data-tema=gelap] .langit[data-waktu=siang] .lg-awan .aw-kilap{stroke:#8797A0}
 .lg-awan.aw2{animation-duration:95s;animation-delay:-30s}.lg-awan.aw3{animation-duration:80s;animation-delay:-55s}
 @keyframes lg-awan{0%{transform:translateX(-30vw)}100%{transform:translateX(70vw)}}
 .lg-burung{width:26px;animation:lg-burung 26s linear infinite}
@@ -1010,7 +1013,6 @@ html[data-tema=gelap] .lg-burung path{stroke:#D9BFA6}
 .lg-kunang.k5{left:90%;top:84%;animation-delay:-8s;animation-duration:12s}.lg-kunang.k6{left:6%;top:86%;animation-delay:-6s}
 @keyframes lg-kunang{0%,100%{transform:translate(0,0);opacity:.2}25%{transform:translate(18px,-22px);opacity:1}50%{transform:translate(-10px,-40px);opacity:.5}75%{transform:translate(-24px,-12px);opacity:1}}
 /* hiasan lama ikut bergerak */
-.dekor .dk{--d:10;translate:calc(var(--px,0)*var(--d)*1px) calc(var(--py,0)*var(--d)*1px)}
 .dekor .dk-koin{--d:14;animation:dk-koin 7s ease-in-out infinite}
 .dekor .dk-hati{--d:9;animation:dk-detak 3.2s ease-in-out infinite}
 .dekor .dk-bintang{--d:7;animation:dk-kelip 4.2s ease-in-out infinite}
@@ -1020,7 +1022,7 @@ html[data-tema=gelap] .lg-burung path{stroke:#D9BFA6}
 @keyframes dk-detak{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.16)}20%{transform:scale(1)}28%{transform:scale(1.09)}}
 @keyframes dk-kelip{0%,100%{opacity:.55;transform:scale(.88) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(12deg)}}
 @keyframes dk-kilau{0%,100%{opacity:.4;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(45deg)}}
-.dekor .blob{--d:18;translate:calc(var(--px,0)*var(--d)*-1px) calc(var(--py,0)*var(--d)*-1px);animation:blob-cair 22s ease-in-out infinite alternate}
+.dekor .blob{animation:blob-cair 22s ease-in-out infinite alternate}
 .dekor .blob-2{animation-duration:26s;animation-delay:-8s}
 @keyframes blob-cair{0%{border-radius:50%;transform:translate(0,0) rotate(0)}33%{border-radius:58% 42% 55% 45%/48% 60% 40% 52%;transform:translate(16px,10px) rotate(20deg)}66%{border-radius:44% 56% 40% 60%/58% 42% 58% 42%;transform:translate(-10px,18px) rotate(-12deg)}100%{border-radius:52% 48% 60% 40%/42% 56% 44% 58%;transform:translate(8px,-12px) rotate(8deg)}}
 .login-grid{position:relative;z-index:1}
@@ -1028,8 +1030,7 @@ html[data-tema=gelap] .lg-burung path{stroke:#D9BFA6}
 .maskot.r-geleng svg{animation:m-geleng .9s ease-in-out}
 @keyframes m-geleng{0%,100%{transform:rotate(0)}15%{transform:rotate(-12deg)}35%{transform:rotate(11deg)}55%{transform:rotate(-9deg)}75%{transform:rotate(6deg)}}
 html[data-animasi=mati] .dekor *,html[data-animasi=mati] .langit *,html[data-animasi=mati] .ikon-waktu *{animation:none!important}
-html[data-animasi=mati] .dekor .dk,html[data-animasi=mati] .dekor .blob,html[data-animasi=mati] .langit *{translate:none!important}
-@media (prefers-reduced-motion:reduce){.dekor *,.langit *,.ikon-waktu *{animation:none!important;translate:none!important}}
+@media (prefers-reduced-motion:reduce){.dekor *,.langit *,.ikon-waktu *{animation:none!important}}
 
 /* langit di dalam kartu sambutan */
 .login-hero{position:relative;overflow:hidden;isolation:isolate}
@@ -1042,8 +1043,6 @@ html[data-tema=gelap] .langit-kartu .langit-warna{opacity:.8}
 .langit[data-waktu=pagi].langit-kartu .lg-matahari{top:28%}
 .langit[data-waktu=sore].langit-kartu .lg-matahari{top:31%;right:6%;width:124px;height:124px}
 .langit-kartu .lg-awan.aw1{top:15%!important}.langit-kartu .lg-awan.aw2{top:40%!important}.langit-kartu .lg-awan.aw3{top:6%!important}
-.langit-kartu .lg-awan path{opacity:.95}
-html[data-tema=gelap] .langit-kartu .lg-awan path{opacity:.16}
 .langit-kartu .lg-burung{top:22%!important}
 .langit-kartu .lg-burung.b2{top:18%!important}.langit-kartu .lg-burung.b3{top:27%!important}
 .langit-kartu .lg-kunang{opacity:0}
@@ -1059,6 +1058,18 @@ html[data-tema=terang] .lg-bulan .lg-sabit{fill:#F2D97E}
   .langit-kartu .lg-awan.aw1{top:30%!important;width:96px!important}.langit-kartu .lg-awan.aw2{top:4%!important;width:72px!important}.langit-kartu .lg-awan.aw3{top:44%!important;width:60px!important}
   .langit-kartu .lg-burung{top:34%!important}.langit-kartu .lg-burung.b2{top:30%!important}.langit-kartu .lg-burung.b3{top:38%!important}
 }
+
+/* riak air */
+:root{--riak:rgba(139,94,67,.42);--riak-isi:rgba(139,94,67,.06)}
+html[data-tema=gelap]{--riak:rgba(240,222,200,.46);--riak-isi:rgba(240,222,200,.04)}
+.riak{position:absolute;width:74px;height:74px;margin:-37px 0 0 -37px;border-radius:50%;border:2px solid var(--riak);background:radial-gradient(circle,transparent 55%,var(--riak-isi) 70%,transparent 72%);pointer-events:none;z-index:0;transform:scale(.08);opacity:0;animation:riak 1.1s cubic-bezier(.2,.6,.3,1) forwards}
+.riak::after{content:"";position:absolute;inset:16px;border-radius:50%;border:1.5px solid var(--riak);opacity:.6}
+.riak-besar{width:170px;height:170px;margin:-85px 0 0 -85px;border-width:2.5px;animation-duration:1.5s}
+.riak-besar::after{inset:30px}
+@keyframes riak{0%{transform:scale(.08);opacity:0}12%{opacity:1}100%{transform:scale(1);opacity:0}}
+.riak-tetes{position:absolute;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--riak);pointer-events:none;z-index:0;animation:riak-tetes .75s ease-out forwards}
+@keyframes riak-tetes{0%{transform:translate(0,0) scale(1);opacity:1}70%{opacity:.8}100%{transform:translate(var(--tx),calc(var(--ty) + 22px)) scale(.4);opacity:0}}
+html[data-animasi=mati] .riak,html[data-animasi=mati] .riak-tetes{display:none}
 </style>
 </head>
 <body>
@@ -1725,13 +1736,13 @@ function halPengaturan(){
         '<select id="in-menit" class="pilih-set">'+menitOpsi+'</select></div>'+seksiKunciPindah()+seksiLokasi()+'</div>'+
     '</section>'+
     seksiPemulihan()+
-    '<section class="card set-sec" aria-labelledby="set-pengguna"><div class="card-head" style="margin:0">'+maskot("cici", 48)+'<h2 id="set-pengguna">Pengguna di laptop ini</h2></div>'+
+    '<section class="card set-sec" aria-labelledby="set-pengguna"><div class="card-head" style="margin:0">'+maskot("cici", 48)+'<h2 id="set-pengguna">Pengguna Dompet Kita</h2></div>'+
       '<div>'+anggota+'</div>'+
       (S.meta.pengguna.length < 2 ? '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("undang-pasangan", ikon("plus") + "Undang pasangan ke HP-nya", "btn-primary")+'<button type="button" class="btn btn-ghost" data-aksi="daftar-pasangan">Daftarkan di perangkat ini</button></div>' : '<p class="muted" style="font-size:14px">Dompet Kita dibuat untuk dua orang, jadi slot pengguna sudah penuh.</p>')+
       (S.meta.pengguna.length >= 2 ? '<label class="pilih-cek"><input type="checkbox" id="in-statusaktif"'+(S.sesi.data.pengaturan.sembunyiStatus ? "" : " checked")+'> Tampilkan kapan aku terakhir aktif ke pasangan</label>' : '')+
     '</section>'+
     '<section class="card set-sec danger" aria-labelledby="set-bahaya"><h2 id="set-bahaya" style="color:var(--red)">Zona bahaya</h2>'+
-      '<div class="set-row"><div><strong>Hapus semua data</strong><p class="muted" style="font-size:14px">Menghapus semua pengguna, transaksi, dan area Bersama di laptop ini. Tidak bisa dibatalkan.</p></div>'+
+      '<div class="set-row"><div><strong>Hapus semua data</strong><p class="muted" style="font-size:14px">Menghapus semua pengguna, transaksi, dan area Bersama di perangkat ini. Tidak bisa dibatalkan.</p></div>'+
       '<button type="button" class="btn btn-danger" data-aksi="hapus-semua">Hapus semua</button></div>'+
     '</section>';
 }
@@ -1806,7 +1817,7 @@ function modalGantiPin(){
 }
 function modalHapusSemua(){
   bukaModal(maskot("niko", 76)+'<h2 id="judul-modal">Hapus semua data?</h2>'+
-    '<p class="muted">Semua pengguna, transaksi, dan area Bersama di laptop ini akan hilang permanen.</p>'+
+    '<p class="muted">Semua pengguna, transaksi, dan area Bersama di perangkat ini akan hilang permanen.</p>'+
     '<label class="field" style="width:100%;text-align:left">Ketik <strong>HAPUS</strong> untuk melanjutkan<input id="in-hapus" autocomplete="off"></label>'+
     '<p class="err" id="err-hapus" role="alert"></p>'+
     '<div class="row-btn"><button class="btn btn-ghost" data-aksi="tutup-modal">Batal</button><button class="btn btn-danger" data-aksi="konfirmasi-hapus-semua">Hapus semua</button></div>', "center");
@@ -6129,7 +6140,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.6.0";
+const VERSI_APP = "1.6.1";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -9166,7 +9177,7 @@ function langitHTML(lapis){
   const bintangKecil = [[8,10],[16,26],[24,6],[33,18],[44,9],[52,24],[61,5],[69,16],[78,28],[86,7],[93,20],[12,40],[40,36],[72,40],[96,34]]
     .map(([x, y], i) => '<span class="lg-bintang" style="left:'+x+'%;top:'+y+'%;animation-delay:-'+(i * 0.37 % 3).toFixed(2)+'s"></span>').join("");
   const kunang = [0,1,2,3,4,5,6].map(i => '<span class="lg-kunang k'+i+'"></span>').join("");
-  const awan = (c, x, y, s) => '<svg class="lg-awan '+c+'" style="left:'+x+';top:'+y+';width:'+s+'px" viewBox="0 0 120 50" aria-hidden="true"><path d="M20 44h80a18 18 0 0 0 0-36 26 26 0 0 0-48-6 20 20 0 0 0-32 42z"/></svg>';
+  const awan = (c, x, y, s) => '<svg class="lg-awan '+c+'" style="left:'+x+';top:'+y+';width:'+s+'px" viewBox="0 0 120 56" aria-hidden="true"><g class="aw-badan"><circle cx="40" cy="30" r="17"/><circle cx="64" cy="22" r="21"/><circle cx="88" cy="33" r="13"/><circle cx="24" cy="38" r="10"/><rect x="14" y="32" width="92" height="17" rx="8.5"/></g><path class="aw-kilap" d="M50 14a18 18 0 0 1 22-6" fill="none" stroke-width="3" stroke-linecap="round"/></svg>';
   const burung = (c, x, y) => '<svg class="lg-burung '+c+'" style="left:'+x+';top:'+y+'" viewBox="0 0 40 16" aria-hidden="true"><path d="M2 10q8-8 18 2q10-10 18-2"/></svg>';
   const sinar = '<g class="lg-sinar">'+[0,30,60,90,120,150,180,210,240,270,300,330].map(a => '<rect x="48" y="2" width="4" height="13" rx="2" transform="rotate('+a+' 50 50)"/>').join("")+'</g>';
   if (!kartu) return '<div class="langit langit-latar" data-waktu="'+w+'" aria-hidden="true"><div class="langit-warna"></div>'+bintangKecil+kunang+'</div>';
@@ -9177,18 +9188,51 @@ function langitHTML(lapis){
     burung("b1", "18%", "14%") + burung("b2", "26%", "10%") + burung("b3", "22%", "19%") +
     bintangKecil + kunang + '</div>';
 }
-/* parallax kursor (laptop) */
-let rafParalaks = 0;
+/* riak air mengikuti kursor di latar (laptop saja; tidak di atas kartu) */
+const RIAK_JARAK = 26, RIAK_MAKS = 28;
+let riakAkhir = null;
+function wadahRiak(t){
+  const w = t && t.closest ? t.closest(".login-wrap") : null;
+  if (!w || t.closest(".login-hero, .login-card, .card, button, a, input, select, textarea, .panggung-maskot")) return null;
+  return w;
+}
+function buatRiak(w, x, y, besar){
+  if (w.querySelectorAll(".riak").length > RIAK_MAKS) return;
+  const r = w.getBoundingClientRect();
+  const el = document.createElement("span");
+  el.className = "riak" + (besar ? " riak-besar" : "");
+  el.style.left = (x - r.left) + "px"; el.style.top = (y - r.top) + "px";
+  if (besar) el.style.animationDelay = besar + "ms";
+  el.setAttribute("aria-hidden", "true");
+  w.appendChild(el);
+  el.addEventListener("animationend", () => el.remove(), {once:true});
+  setTimeout(() => el.remove(), 2600);
+}
 document.addEventListener("pointermove", e => {
-  if (e.pointerType !== "mouse" || rafParalaks) return;
-  const wadah = document.querySelector(".login-wrap");
-  if (!wadah || !animasiNyala()) return;
-  rafParalaks = requestAnimationFrame(() => {
-    rafParalaks = 0;
-    wadah.style.setProperty("--px", ((e.clientX / innerWidth) * 2 - 1).toFixed(3));
-    wadah.style.setProperty("--py", ((e.clientY / innerHeight) * 2 - 1).toFixed(3));
-  });
+  if (e.pointerType !== "mouse" || !animasiNyala()) return;
+  const w = wadahRiak(e.target);
+  if (!w){ riakAkhir = null; return; }
+  if (riakAkhir && Math.hypot(e.clientX - riakAkhir.x, e.clientY - riakAkhir.y) < RIAK_JARAK) return;
+  riakAkhir = {x:e.clientX, y:e.clientY};
+  buatRiak(w, e.clientX, e.clientY, 0);
 }, {passive:true});
+/* klik di latar: cipratan besar */
+document.addEventListener("pointerdown", e => {
+  if (e.pointerType !== "mouse" || !animasiNyala()) return;
+  const w = wadahRiak(e.target);
+  if (!w) return;
+  [1, 160, 320].forEach(t => buatRiak(w, e.clientX, e.clientY, t));
+  const r = w.getBoundingClientRect();
+  for (let i = 0; i < 7; i++){
+    const d = document.createElement("span"), sudut = i / 7 * Math.PI * 2 + Math.random() * .5, jauh = 26 + Math.random() * 22;
+    d.className = "riak-tetes"; d.setAttribute("aria-hidden", "true");
+    d.style.left = (e.clientX - r.left) + "px"; d.style.top = (e.clientY - r.top) + "px";
+    d.style.setProperty("--tx", (Math.cos(sudut) * jauh).toFixed(1) + "px");
+    d.style.setProperty("--ty", (Math.sin(sudut) * jauh - 14).toFixed(1) + "px");
+    w.appendChild(d);
+    setTimeout(() => d.remove(), 800);
+  }
+});
 /* ganti langit kalau waktu berpindah saat layar login terbuka */
 setInterval(() => {
   const l = document.querySelector(".login-wrap .langit-latar");
