@@ -1173,6 +1173,7 @@ html.kb-terbuka{overflow:hidden}
 .kb-panggung h1,.kb-panggung h2,.kb-panggung h3,.kb-panggung p,.kb-panggung strong,.kb-panggung span,.kb-panggung label{color:inherit}
 .kb-panggung .kb-gelar{color:transparent}
 .kb-panggung .kb-no{color:var(--kb-a)}
+.kb-panggung .kb-label-pratinjau{color:var(--kb-a)}
 .kb-teks,.kb-maskot{position:relative;z-index:2}.kb-konfeti{z-index:0}
 .kb-tombol .btn{width:100%;justify-content:center}
 .kb-tombol .btn-primary{background:#4A2E1F;color:#FFF3E3;border-color:#4A2E1F}
@@ -1189,6 +1190,29 @@ html[data-tema=gelap] .kb-tahun{background:radial-gradient(120% 90% at 0% 0%,#5A
 .kb-banner{background:linear-gradient(110deg,#FBE3B0,#F3C77E);color:#3B2418}
 html[data-tema=gelap] .kb-banner{background:linear-gradient(110deg,#5A3A1E,#3B2418);color:#FFE9B8}
 .kb-banner p{margin:4px 0 10px}
+
+/* 1.7.1: obrolan seperti aplikasi chat (kepala & kolom tulis diam, hanya kolom chat yang bergulir) */
+.shell:has(.ob-tulis){height:100vh;height:100dvh;min-height:0;align-items:stretch}
+.shell:has(.ob-tulis) .content{min-height:0;height:100%;padding-bottom:0;gap:10px;overflow:hidden}
+.content:has(.ob-tulis) > .ob-kepala{flex:none;margin:0}
+.content:has(.ob-tulis) > .ob-wadah{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:0;position:relative;overflow:hidden}
+.content:has(.ob-tulis) .ob-daftar{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 14px 14px;scrollbar-width:thin}
+.content:has(.ob-tulis) > .ob-tulis{position:relative;bottom:auto;flex:none;padding:0 0 2px}
+.ob-wadah .ob-penjaga{flex:none;margin:0;border-radius:0;width:100%;max-width:none;justify-content:center;padding:7px 12px;font-size:12.5px;border-bottom:2px solid var(--line);text-align:left}
+.ob-hari-melayang{position:absolute;top:46px;left:50%;transform:translateX(-50%);z-index:3;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;background:var(--surface);color:var(--text);border:2px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.12);pointer-events:none}
+.ob-hari-melayang[hidden]{display:none}
+.ob-tulis .ob-baru{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:4}
+@media (min-width:901px){
+  .shell:has(.ob-tulis) .fab-bantu{top:24px;bottom:auto;right:24px}
+  .content:has(.ob-tulis) > .ob-kepala{padding-right:70px}
+}
+@media (max-width:900px){
+  .shell:has(.ob-tulis){grid-template-rows:auto minmax(0,1fr);padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow:hidden}
+  html.ob-mengetik .shell:has(.ob-tulis){padding-bottom:8px}
+  html.ob-mengetik .shell:has(.ob-tulis) .bottomnav{display:none}
+  .content:has(.ob-tulis) > .ob-kepala h1{font-size:22px}
+  .content:has(.ob-tulis) > .ob-kepala .maskot{width:38px!important;height:38px!important}
+}
 </style>
 </head>
 <body>
@@ -1857,6 +1881,7 @@ function halPengaturan(){
     seksiPemulihan()+
     '<section class="card set-sec" aria-labelledby="set-pengguna"><div class="card-head" style="margin:0">'+maskot("cici", 48)+'<h2 id="set-pengguna">Pengguna Dompet Kita</h2></div>'+
       '<div>'+anggota+'</div>'+
+      (S.meta.pengguna.length < 2 && DI_WEB ? '<div class="set-row"><div><strong>Punya undangan dari pasangan?</strong><p class="muted" style="font-size:14px">Scan QR undangannya langsung dari sini, tidak perlu aplikasi kamera.</p></div>'+tombolAksi("scan-qr", "Scan QR", "btn-ghost")+'</div>' : '')+
       (S.meta.pengguna.length < 2 ? '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("undang-pasangan", ikon("plus") + "Undang pasangan ke HP-nya", "btn-primary")+'<button type="button" class="btn btn-ghost" data-aksi="daftar-pasangan">Daftarkan di perangkat ini</button></div>' : '<p class="muted" style="font-size:14px">Dompet Kita dibuat untuk dua orang, jadi slot pengguna sudah penuh.</p>')+
       (S.meta.pengguna.length >= 2 ? '<label class="pilih-cek"><input type="checkbox" id="in-statusaktif"'+(S.sesi.data.pengaturan.sembunyiStatus ? "" : " checked")+'> Tampilkan kapan aku terakhir aktif ke pasangan</label>' : '')+
     '</section>'+
@@ -6259,7 +6284,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.7.0";
+const VERSI_APP = "1.7.1";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -6784,8 +6809,10 @@ async function gabungPakaiKode(kode){
       const s = await awanFetch("/auth/v1/signup", {method:"POST", body:JSON.stringify({data:{}})}, false);
       c.sesi = rapikanSesi(s); delete c.putus; simpanAwanCfg(c);
     }
+    const rumahLama = c.rumah;
     const rumah = await rpc("pakai_kode_pasang", {p_kode:kode, p_label:labelPerangkat(c.sesi.user.anonim ? "scan QR" : "Google")});
     c = awanCfg(); c.rumah = rumah; simpanAwanCfg(c);
+    if (rumahLama && rumahLama === rumah){ toast(S.undanganTunda ? "Cici: membuka undangan..." : "Zee: perangkat ini sudah tersambung ke Dompet Kita yang sama."); await sinkron("scan-qr"); return; }
     toast("Zee: perangkat ini sudah bergabung! Mengambil data...");
     await mulaiSinkronPertama();
   } catch(e){ toast("Zee: " + e.message); perbaruiStatusAwan(); }
@@ -6962,7 +6989,7 @@ function seksiAwan(){
     isi = '<div class="set-row"><div><strong class="awan-'+st.kode+'"><span class="awan-titik"></span> '+esc(st.teks)+'</strong>'+
         '<p class="muted" style="font-size:14px">'+(c.sesi.user.anonim ? "Bergabung lewat scan QR" : "Akun Google " + esc(c.sesi.user.email))+'. Foto struk tetap tersimpan di perangkat tempat difoto.</p></div>'+
         tombolAksi("sinkron-sekarang", "Sinkron sekarang", "btn-ghost")+'</div>'+
-      '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("tampil-qr", "Tampilkan QR untuk perangkat baru", "btn-primary")+
+      '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("tampil-qr", "Tampilkan QR untuk perangkat baru", "btn-primary")+tombolAksi("scan-qr", "Scan QR", "btn-ghost")+
         tombolAksi("daftar-perangkat", "Perangkat tersambung", "btn-ghost")+tombolAksi("putus-awan", "Putuskan perangkat ini", "btn-ghost")+'</div>';
   }
   return '<section class="card set-sec" id="awan-box" aria-labelledby="set-awan"><div class="card-head" style="margin:0">'+maskot("zee", 48)+'<h2 id="set-awan">Sinkron antarperangkat</h2></div>'+isi+'</section>';
@@ -8996,7 +9023,10 @@ function labelHariOb(iso){
   const d = new Date(iso), t = tglLokal(), k = tglLokal(d);
   if (k === t) return "Hari ini";
   if (k === tambahHari(t, -1)) return "Kemarin";
-  return d.toLocaleDateString("id-ID", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+  const sela = hariAntara(k, t);
+  if (sela > 1 && sela < 7) return d.toLocaleDateString("id-ID", {weekday:"long"});
+  if (k.slice(0, 4) === t.slice(0, 4)) return d.toLocaleDateString("id-ID", {day:"numeric", month:"long"});
+  return d.toLocaleDateString("id-ID", {day:"numeric", month:"long", year:"numeric"});
 }
 function halObrolan(){
   const lain = obPasangan();
@@ -9007,7 +9037,9 @@ function halObrolan(){
   if (!DI_WEB || !awanTersambung()) return kepala + kosongKartu("boo", "Sambungkan sinkron awan dulu", "Obrolan butuh sinkron awan supaya pesan sampai ke HP pasanganmu. Sambungkan di Pengaturan → Sinkron antarperangkat.", tombolAksi("nav", "Buka Pengaturan", "btn-primary", ' data-h="pengaturan"'));
   if (!OB.sql) return kepala + kosongKartu("boo", "Server obrolan belum disiapkan", "Jalankan dompet-kita-supabase-5.sql di Supabase (SQL Editor), lalu buka halaman ini lagi.", "");
   return kepala+
-    '<section class="card ob-wadah"><div class="ob-daftar" id="ob-daftar" aria-live="polite"><p class="muted ob-memuat">Boo membuka pesan...</p></div></section>'+
+    '<section class="card ob-wadah"><div class="ob-penjaga">'+maskot("boo", 26)+'<span>🔒 Boo menjaga obrolan kalian. Hanya kalian berdua yang bisa membacanya.</span></div>'+
+      '<span class="ob-hari-melayang" id="ob-hari-melayang" aria-hidden="true" hidden></span>'+
+      '<div class="ob-daftar" id="ob-daftar" aria-live="polite"><p class="muted ob-memuat">Boo membuka pesan...</p></div></section>'+
     '<div class="ob-tulis" id="ob-tulis">'+
       '<button type="button" class="ob-baru" id="ob-baru" data-aksi="ob-ke-bawah" hidden>'+maskot("boo", 26)+'<span></span></button>'+
       '<div id="ob-ketik" class="ob-ketik-boo" hidden>'+maskot("boo", 30)+'<span>'+esc(lain.nama)+' sedang mengetik</span><span class="ob-titik"><i></i><i></i><i></i></span></div>'+
@@ -9026,14 +9058,14 @@ async function obTampilkanUlang(keBawah){
   if (lamp) lamp.innerHTML = S.obLampiran ? '<div class="ob-lampiran">'+kartuHTML(S.obLampiran)+'<button type="button" class="x-kecil" data-aksi="ob-lepas" aria-label="Batalkan lampiran">&times;</button></div>' : "";
   if (!wadah || !S.sesi) return;
   const ke = ++obRenderKe, me = S.sesi.user.id;
-  const dekatBawah = window.innerHeight + window.scrollY >= document.body.scrollHeight - 160;
+  const dekatBawah = obDekatBawah();
   const antreIds = new Set(OB.antre.map(a => a.id));
   const semua = [...OB.rows.values()].concat(OB.antre.filter(a => !OB.rows.has(a.id)).map(a => Object.assign({antre:true}, a))).sort((a, b) => a.dibuat.localeCompare(b.dibuat));
   const isi = await Promise.all(semua.map(obIsi));
   if (ke !== obRenderKe) return;
   if (!semua.length){ wadah.innerHTML = '<div class="empty" style="padding:24px">'+maskot("boo", 96)+'<h2>Belum ada obrolan</h2><p class="muted">Mulai dengan sapa '+esc((obPasangan() || {}).nama || "pasanganmu")+'! Boo siap mengantar pesan kalian.</p></div>'; return; }
   const bacaLain = OB.bacaLain[(obPasangan() || {}).id] || "";
-  let html = '<div class="ob-penjaga">'+maskot("boo", 30)+'<span>🔒 Boo menjaga obrolan kalian. Hanya kalian berdua yang bisa membacanya.</span></div>', hariLalu = "";
+  let html = '', hariLalu = "";
   semua.forEach((r, i) => {
     const v = isi[i], milik = r.dari === me, hari = labelHariOb(r.dibuat);
     if (hari !== hariLalu){ html += '<div class="ob-hari"><span>'+hari+'</span></div>'; hariLalu = hari; }
@@ -9049,7 +9081,7 @@ async function obTampilkanUlang(keBawah){
   });
   wadah.innerHTML = html;
   const terakhir = semua.length ? semua[semua.length - 1].dibuat : "";
-  if (keBawah || dekatBawah || !wadah.dataset.siap){ wadah.dataset.siap = "1"; S.obTerlihat = terakhir; requestAnimationFrame(() => scrollTo(0, document.body.scrollHeight)); }
+  if (keBawah || dekatBawah || !wadah.dataset.siap){ wadah.dataset.siap = "1"; S.obTerlihat = terakhir; requestAnimationFrame(() => obKeBawah(false)); }
   obPenunjukBaru(semua);
   obTandaiDibaca(); obTampilKetik();
 }
@@ -9061,13 +9093,30 @@ function obPenunjukBaru(semua){
   el.hidden = !n;
   if (n) el.querySelector("span").textContent = n + " pesan baru ↓";
 }
-addEventListener("scroll", () => {
+/* kolom chat punya scroll sendiri; kepala & kolom tulis tetap di tempat */
+function obDekatBawah(){ const el = document.getElementById("ob-daftar"); return !el || el.scrollTop + el.clientHeight >= el.scrollHeight - 160; }
+function obKeBawah(halus){ const el = document.getElementById("ob-daftar"); if (el) el.scrollTo({top:el.scrollHeight, behavior:halus ? "smooth" : "auto"}); }
+let obTimerHari = 0;
+function obHariMelayang(){
+  const el = document.getElementById("ob-daftar"), lbl = document.getElementById("ob-hari-melayang");
+  if (!el || !lbl) return;
+  let kini = null;
+  el.querySelectorAll(".ob-hari").forEach(h => { if (h.offsetTop - el.offsetTop <= el.scrollTop + 4) kini = h; });
+  if (!kini || el.scrollTop < 8){ lbl.hidden = true; return; }
+  const pj = document.querySelector(".ob-wadah .ob-penjaga");
+  lbl.style.top = ((pj ? pj.offsetHeight : 0) + 8) + "px";
+  lbl.textContent = kini.textContent; lbl.hidden = false;
+  clearTimeout(obTimerHari); obTimerHari = setTimeout(() => { lbl.hidden = true; }, 1400);
+}
+document.addEventListener("scroll", e => {
+  if (!e.target || e.target.id !== "ob-daftar") return;
+  obHariMelayang();
   if (S.halaman !== "obrolan" || !document.getElementById("ob-baru")) return;
-  if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 160){
+  if (obDekatBawah()){
     const semua = [...OB.rows.values()];
     if (semua.length){ S.obTerlihat = semua.reduce((m, r) => r.dibuat > m ? r.dibuat : m, ""); obPenunjukBaru(); }
   }
-}, {passive:true});
+}, {passive:true, capture:true});
 function pasangObrolan(){
   const t = document.getElementById("ob-teks");
   if (!t) return;
@@ -9076,6 +9125,8 @@ function pasangObrolan(){
   tinggi();
   t.addEventListener("input", () => { S.obDraf = t.value; tinggi(); obSedangMengetik(); });
   t.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !layarSentuh()){ e.preventDefault(); obKirimDariForm(); } });
+  t.addEventListener("focus", () => { document.documentElement.classList.add("ob-mengetik"); setTimeout(() => obKeBawah(false), 300); });
+  t.addEventListener("blur", () => setTimeout(() => { if (document.activeElement !== t) document.documentElement.classList.remove("ob-mengetik"); }, 200));
   obTampilkanUlang(true);
   rtSambung(); obAmbil();
 }
@@ -9094,7 +9145,7 @@ function tombolObrolanHP(){
 
 Object.assign(AKSI, {
   "ob-kirim": () => obKirimDariForm(),
-  "ob-ke-bawah": () => scrollTo({top:document.body.scrollHeight, behavior:"smooth"}),
+  "ob-ke-bawah": () => obKeBawah(true),
   "ob-kartu": () => modalPilihKartu("tagihan"),
   "ob-kartu-tab": t => modalPilihKartu(t.dataset.t),
   "ob-pilih": t => obLampirkan(t.dataset.k === "tagihan" ? kartuDariTagihan(t.dataset.id) : t.dataset.k === "acara" ? kartuDariAcara(t.dataset.id, t.dataset.b === "1") : kartuDariTx(t.dataset.id)),
@@ -9757,7 +9808,8 @@ function kbSlide(r){
     '</div>'+
     '<p>Semoga '+(th + 1)+' rezekimu makin berkah dan impianmu makin dekat. Sampai jumpa di Kilas Balik berikutnya!</p>'+
     '<div class="kb-tombol"><label class="pilih-cek kb-cek"><input type="checkbox" id="kb-nominal"> Sertakan nominal di gambar</label>'+
-      '<button type="button" class="btn btn-primary" data-aksi="kb-bagikan">Bagikan gambar</button>'+
+      (kbBisaBagikan() ? '<button type="button" class="btn btn-primary" data-aksi="kb-bagikan">Bagikan gambar</button><button type="button" class="btn btn-ghost" data-aksi="kb-simpan">Simpan ke perangkat</button>'
+        : '<button type="button" class="btn btn-primary" data-aksi="kb-simpan">Simpan gambar</button>')+
       '<button type="button" class="btn btn-ghost" data-aksi="kb-ulang">Tonton ulang</button></div>'});
   return s;
 }
@@ -9812,6 +9864,7 @@ function kbKe(i){
   const mk = isi.querySelector(".kb-maskot .maskot");
   setTimeout(() => mainkanMaskot(mk), 350);
   kbHitungNaik(isi);
+  if (sl.penutup){ kbSiapkanGambar(); const cb = isi.querySelector("#kb-nominal"); if (cb) cb.addEventListener("change", kbSiapkanGambar); }
   KB.sisa = sl.penutup ? 0 : KB.lama; KB.jeda = false; kbJalan();
 }
 function kbJalan(){
@@ -9892,19 +9945,39 @@ async function kbBuatGambar(nominal){
   g.fillStyle = "#FFF6E6"; g.font = "700 34px " + huruf; g.fillText("Dompet Kita · catat bareng, hemat bareng", W / 2, 1270);
   return new Promise(res => c.toBlob(res, "image/png"));
 }
-async function kbBagikan(){
-  const nominal = (document.getElementById("kb-nominal") || {}).checked;
-  if (nominal && S.sembunyi && !S.bukaSembunyi){ toast("Lingling sedang menyembunyikan nominal. Buka dulu kalau mau menyertakannya."); return; }
-  const blob = await kbBuatGambar(nominal); if (!blob) { toast("Gambar belum bisa dibuat di perangkat ini."); return; }
-  const nama = "kilas-balik-" + KB.r.Y + ".png", file = new File([blob], nama, {type:"image/png"});
-  try {
-    if (navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:"Kilas Balik " + KB.r.Y}); return; }
-  } catch(e){ if (e && e.name === "AbortError") return; }
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nama; document.body.appendChild(a); a.click();
-  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-  toast("Gambar Kilas Balik tersimpan.");
+/* HP: menu Bagikan bawaan; laptop: langsung simpan file. Gambar dibuat lebih dulu supaya klik tidak kedaluwarsa. */
+const kbDiHP = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || !!(navigator.userAgentData && navigator.userAgentData.mobile);
+function kbBisaBagikan(){
+  try { return kbDiHP() && !!navigator.canShare && navigator.canShare({files:[new File(["x"], "x.png", {type:"image/png"})]}); } catch(e){ return false; }
 }
-
+function kbSiapkanGambar(){
+  const nominal = !!(document.getElementById("kb-nominal") || {}).checked;
+  KB.blob = null; KB.blobNominal = nominal;
+  KB.janjiGambar = kbBuatGambar(nominal).then(b => { if (KB.blobNominal === nominal) KB.blob = b; return b; });
+  return KB.janjiGambar;
+}
+function kbCekNominal(){
+  const nominal = !!(document.getElementById("kb-nominal") || {}).checked;
+  if (nominal && S.sembunyi && !S.bukaSembunyi){ toast("Lingling sedang menyembunyikan nominal. Buka dulu kalau mau menyertakannya."); return false; }
+  return true;
+}
+function kbUnduh(blob){
+  const nama = "kilas-balik-" + KB.r.Y + ".png", a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = nama; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+  toast("Gambar tersimpan sebagai " + nama + " (folder Unduhan).");
+}
+function kbSimpan(){
+  if (!kbCekNominal()) return;
+  if (KB.blob) kbUnduh(KB.blob);
+  else (KB.janjiGambar || kbSiapkanGambar()).then(b => b ? kbUnduh(b) : toast("Gambar belum bisa dibuat di perangkat ini."));
+}
+function kbBagikan(){
+  if (!kbCekNominal()) return;
+  if (!KB.blob){ toast("King masih menyiapkan gambarnya. Coba sekali lagi, ya."); kbSiapkanGambar(); return; }
+  const file = new File([KB.blob], "kilas-balik-" + KB.r.Y + ".png", {type:"image/png"});
+  navigator.share({files:[file], title:"Kilas Balik " + KB.r.Y}).catch(e => { if (!e || e.name !== "AbortError") kbUnduh(KB.blob); });
+}
 /* ---------- halaman & kartu Beranda ---------- */
 function kbHitungMundur(){
   const n = new Date(), buka = new Date(n.getFullYear(), 11, 1);
@@ -9950,12 +10023,69 @@ Object.assign(AKSI, {
   "kb-maju": () => kbKe(KB.i + 1),
   "kb-mundur": () => kbKe(KB.i - 1),
   "kb-ulang": () => kbKe(0),
-  "kb-bagikan": () => kbBagikan()
+  "kb-bagikan": () => kbBagikan(),
+  "kb-simpan": () => kbSimpan()
 });
 /* lencana */
 LENCANA.push(L("kilasbalik", "Spesial", "Menengok ke Belakang", "king", [1, 3, 5], m => m.kilasDitonton, t => "Tonton Kilas Balik " + t + " tahun berbeda"));
 const _hitungMetrik170 = hitungMetrik;
 hitungMetrik = function(){ const m = _hitungMetrik170.apply(this, arguments); m.kilasDitonton = (statistik().kilas || []).length; return m; };
+
+/* ============ langkah 22 (1.7.1): Owi mengingatkan mencatat lewat notifikasi, walau aplikasi tertutup ============ */
+/* Jadwal 14 hari ke depan pada jam pilihan (bawaan 21:00). Hari ini dilewati kalau sudah ada catatan
+   atau sudah ditandai "tidak ada transaksi". Setiap kali data disimpan, jadwal dihitung ulang. */
+const OWI_HARI = 14;
+const OWI_PESAN = [
+  "Hu-huu! Sudah jam {jam}. Ada pengeluaran hari ini yang belum dicatat?",
+  "Sebelum tidur, catat dulu belanja hari ini. Satu menit saja, kok.",
+  "Owi belum melihat catatan hari ini. Kalau memang tidak belanja, tandai saja di aplikasi.",
+  "Catatan kecil malam ini, laporan rapi di akhir bulan. Yuk, catat sebentar!",
+  "Buka Dompet Kita sebentar: catat belanja hari ini, streak Jago-mu ikut terjaga."
+];
+const owiPushAktif = () => { const ic = S.sesi.data.pengaturan.ingatCatat; return ic.aktif && ic.push !== false; };
+function jadwalOwi(){
+  if (!S.sesi || !owiPushAktif()) return [];
+  const ic = S.sesi.data.pengaturan.ingatCatat, hari = hariIni(), out = [];
+  for (let k = 0; k < OWI_HARI; k++){
+    const t = tambahHari(hari, k);
+    if (k === 0 && sudahCatatHariIni()) continue;
+    const waktu = new Date(t + "T" + ic.jam + ":00");
+    if (waktu.getTime() < Date.now() + 60000) continue;
+    const no = Math.abs(hariNo(t)) % OWI_PESAN.length;
+    out.push({waktu:waktu.toISOString(), judul:"Owi: sudah catat hari ini?", isi:OWI_PESAN[no].replace("{jam}", ic.jam.replace(":", ".")), tag:"dompet-kita-catat"});
+  }
+  return out;
+}
+const _hitungJadwalPush171 = hitungJadwalPush;
+hitungJadwalPush = function(){
+  const tagihan = _hitungJadwalPush171.apply(this, arguments);
+  return tagihan.slice(0, 180).concat(jadwalOwi()).sort((a, b) => a.waktu.localeCompare(b.waktu));
+};
+/* "Hari ini tidak ada transaksi" juga membatalkan notifikasi malam ini */
+const _tanpaCatat171 = AKSI["tanpa-catat"];
+AKSI["tanpa-catat"] = async function(...a){ const r = await _tanpaCatat171.apply(this, a); if (pushSaya().aktif) jadwalkanPush(); return r; };
+/* pengaturan: kirim lewat notifikasi */
+const _seksiPengingat171 = seksiPengingat;
+seksiPengingat = function(){
+  const h = _seksiPengingat171.apply(this, arguments), ic = S.sesi.data.pengaturan.ingatCatat, aktif = statusPush() === "aktif";
+  const baris = '<div class="set-row owi-push"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-ic-push"'+(ic.push !== false ? " checked" : "")+(ic.aktif ? "" : " disabled")+'> <span><strong>Kirim juga lewat notifikasi</strong><br>'+
+    '<span class="muted" style="font-size:14px;font-weight:600">'+(aktif ? "Owi tetap mengingatkan walau aplikasi tertutup. Kalau hari itu sudah ada catatan, Owi diam." : "Aktifkan dulu notifikasi di bawah supaya Owi bisa mengingatkan walau aplikasi tertutup.")+'</span></span></label></div>';
+  const tanda = barisIngatInv();
+  return h.includes(tanda) ? h.replace(tanda, baris + tanda) : h;
+};
+const _barisPush171 = barisPush;
+barisPush = function(){
+  const h = _barisPush171.apply(this, arguments), ic = S.sesi.data.pengaturan.ingatCatat;
+  return owiPushAktif() ? h.replace(", dan Boo memberi tahu", ", Owi mengingatkan mencatat pukul " + ic.jam + " kalau belum ada catatan, dan Boo memberi tahu") : h;
+};
+document.addEventListener("change", async e => {
+  if (!S.sesi) return;
+  if (e.target.id === "in-ic-push"){
+    S.sesi.data.pengaturan.ingatCatat.push = e.target.checked;
+    await simpanPribadi(); if (pushSaya().aktif) kirimJadwalPush(true);
+    toast(e.target.checked ? "Owi akan mengirim notifikasi kalau sampai jam " + S.sesi.data.pengaturan.ingatCatat.jam + " belum ada catatan." : "Owi hanya mengingatkan di dalam aplikasi.");
+  }
+});
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-aksi]");

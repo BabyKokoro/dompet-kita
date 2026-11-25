@@ -1,5 +1,5 @@
 /* Service worker Dompet Kita: aplikasi tetap bisa dibuka tanpa internet */
-const VERSI = "dompet-kita-2627b92f01";
+const VERSI = "dompet-kita-b15a2d31fc";
 const INTI = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSI).then(c => c.addAll(INTI))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
@@ -43,8 +43,9 @@ self.addEventListener("fetch", e => {
 self.addEventListener("push", e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch(err){ d = {isi:e.data ? e.data.text() : ""}; }
-  const obrolan = String(d.tag || "").startsWith("dompet-kita-obrolan");
+  const obrolan = String(d.tag || "").startsWith("dompet-kita-obrolan"), catat = String(d.tag || "").startsWith("dompet-kita-catat");
   e.waitUntil(self.clients.matchAll({type:"window", includeUncontrolled:true}).then(ws => {
+    if (catat && ws.some(w => w.visibilityState === "visible")) return;   /* aplikasi sedang dibuka: Owi mengingatkan di dalam aplikasi */
     if (obrolan){
       const tampil = ws.filter(w => w.visibilityState === "visible");
       ws.forEach(w => w.postMessage({jenis:"obrolan-baru"}));
@@ -52,7 +53,7 @@ self.addEventListener("push", e => {
     }
     return self.registration.showNotification(d.judul || "Dompet Kita", {
       body:d.isi || "Ada pengingat baru dari Dompet Kita.", icon:"icons/icon-192.png", badge:"icons/icon-192.png",
-      tag:d.tag || "dompet-kita", renotify:true, data:{url:obrolan ? "./?aksi=obrolan" : "./?aksi=tagihan", jenis:obrolan ? "obrolan" : "tagihan"}});
+      tag:d.tag || "dompet-kita", renotify:true, data:{url:obrolan ? "./?aksi=obrolan" : catat ? "./?aksi=keluar" : "./?aksi=tagihan", jenis:obrolan ? "obrolan" : catat ? "keluar" : "tagihan"}});
   }));
 });
 self.addEventListener("notificationclick", e => {
