@@ -1359,6 +1359,116 @@ html[data-tema=gelap] .hj-chip.sudah{color:#F5A3BC}
 .hj-mundur.hari-h{background:linear-gradient(90deg,#FFD6E2,#FFE9B8)}
 html[data-tema=gelap] .hj-mundur.hari-h{background:linear-gradient(90deg,#5A2E3E,#5A4520)}
 @media (max-width:600px){.hj-lama{font-size:23px}.hj-angka strong{font-size:32px}.hj-angka{min-width:60px}}
+/* ===== 1.8.0: foto & voice note di Obrolan ===== */
+.ob-gelembung.ob-g-foto{padding:4px 4px 6px;max-width:min(72%,340px)}
+.ob-gelembung.ob-g-foto .ob-teks-isi{padding:2px 8px 0}
+.ob-gelembung.ob-g-foto .ob-waktu{padding:0 8px}
+.ob-foto{position:relative;width:min(300px,62vw);aspect-ratio:1/var(--rasio,1);max-height:380px;border-radius:14px;overflow:hidden;background:#3a2a20;display:block}
+.ob-foto-thumb{width:100%;height:100%;object-fit:cover;display:block;filter:blur(10px) saturate(1.1);transform:scale(1.12);transition:filter .3s}
+.ob-foto.jernih .ob-foto-thumb{filter:none;transform:none;cursor:zoom-in}
+.ob-foto.habis .ob-foto-thumb{filter:blur(2px) grayscale(.7) brightness(.7);transform:scale(1.03)}
+.ob-foto.buram .ob-foto-thumb{filter:blur(12px) brightness(.85)}
+.ob-foto-muat,.ob-foto-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center}
+.ob-foto-label{color:#fff;font-weight:800;font-size:13px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.ob-foto-unduh{border:0;border-radius:999px;padding:9px 16px;background:rgba(30,20,14,.72);color:#fff;font:inherit;font-weight:800;font-size:14px;cursor:pointer;backdrop-filter:blur(4px)}
+.ob-foto-unduh:hover{background:rgba(30,20,14,.88)}
+.ob-foto-progres{color:#fff;font-weight:800;font-size:13px;background:rgba(30,20,14,.6);padding:8px 14px;border-radius:999px}
+.ob-foto.jernih:focus-visible{outline:3px solid var(--focus,#F2C94C);outline-offset:2px}
+.ob-suara{display:flex;align-items:center;gap:10px;min-width:min(250px,60vw);padding:2px 0}
+.ob-suara .sr-main{flex:0 0 38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#5A3A26;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ob-baris.dia .ob-suara .sr-main{background:var(--primary);color:var(--on-primary)}
+.ob-suara .sr-gel{flex:1;display:flex;align-items:center;gap:2px;height:30px}
+.ob-suara .sr-gel i{flex:1;min-width:2px;border-radius:2px;background:currentColor;opacity:.38;min-height:12%}
+.ob-suara .sr-gel i.lewat{opacity:1}
+.ob-suara .sr-waktu{font-size:12px;font-weight:800;min-width:32px;font-variant-numeric:tabular-nums}
+.ob-suara .sr-laju{flex:0 0 auto;white-space:nowrap;border:0;border-radius:999px;padding:3px 7px;font:inherit;font-size:11px;font-weight:900;background:rgba(0,0,0,.14);color:inherit;cursor:pointer}
+.ob-suara.hilang{opacity:.5}
+.ob-mik{flex:0 0 48px;height:48px}
+.ob-mik svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ob-tulis.kosong .ob-kirim{display:none}
+.ob-tulis:not(.kosong) .ob-mik{display:none}
+.ob-rekam{display:none;align-items:center;gap:10px;padding:6px 6px 6px 4px;border-radius:24px;background:var(--surface);border:2px solid var(--line)}
+.ob-tulis.merekam .ob-rekam{display:flex}
+.ob-tulis.merekam .ob-tulis-baris{display:none}
+.rk-titik{width:10px;height:10px;border-radius:50%;background:#E0574B;animation:rk-kedip 1s infinite}
+@keyframes rk-kedip{50%{opacity:.25}}
+.rk-waktu{font-weight:900;font-variant-numeric:tabular-nums;min-width:38px}
+.rk-gelombang{flex:1;display:flex;align-items:center;gap:2px;height:28px;color:var(--primary);overflow:hidden}
+.rk-gelombang i{flex:0 0 3px;border-radius:2px;background:currentColor}
+.rk-batas{font-size:12px}
+.rk-batal{flex:0 0 42px;height:42px}
+.ob-tambah{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.ob-tambah-opsi{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:16px 8px;border-radius:18px;border:2px solid var(--line);background:var(--surface);color:var(--text);font:inherit;cursor:pointer}
+.ob-tambah-opsi:hover{border-color:var(--primary)}
+.ob-tambah-opsi .muted{font-size:12px}
+.ob-tambah-ikon{font-size:30px;line-height:1.2}
+@media (max-width:480px){.ob-tambah{grid-template-columns:1fr}.ob-tambah-opsi{flex-direction:row;text-align:left;gap:12px;padding:12px 14px}.ob-tambah-opsi strong{flex:1}}
+/* penampil foto, kamera & editor: layar penuh gelap */
+.foto-layar,.kam-layar,.fe-layar{position:fixed;inset:0;z-index:320;background:#150e0a;color:#fff;display:flex;flex-direction:column}
+.foto-layar{background:#0d0907}
+body:has(.fe-layar,.kam-layar,.foto-layar) .toast{z-index:400}
+body:has(.fe-layar,.kam-layar,.foto-layar) .backdrop{z-index:360}
+.foto-atas,.kam-atas,.fe-atas{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;font-weight:800}
+.foto-atas span{font-size:14px;opacity:.85}
+.kam-atas{justify-content:space-between}
+.foto-x{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:28px;line-height:1;cursor:pointer;flex:0 0 44px}
+.foto-x:hover{background:rgba(255,255,255,.22)}
+.foto-layar img{flex:1;min-height:0;width:100%;object-fit:contain;padding:0 10px}
+.foto-ket{margin:8px auto 0;max-width:720px;padding:0 18px;text-align:center;font-size:15px}
+.foto-bawah{display:flex;justify-content:center;padding:14px 14px calc(16px + env(safe-area-inset-bottom))}
+.kam-panggung{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;background:#000}
+.kam-panggung video{max-width:100%;max-height:100%;object-fit:contain}
+.kam-panggung video.cermin{transform:scaleX(-1)}
+.kam-pesan{position:absolute;inset:auto 20px 50%;text-align:center;font-weight:700}
+.kam-bawah{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:16px 20px calc(20px + env(safe-area-inset-bottom))}
+.kam-jepret{width:74px;height:74px;border-radius:50%;border:5px solid #fff;background:transparent;padding:5px;cursor:pointer}
+.kam-jepret i{display:block;width:100%;height:100%;border-radius:50%;background:#fff;transition:transform .12s}
+.kam-jepret:active i{transform:scale(.88)}
+.kam-balik{justify-self:end;width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:22px;cursor:pointer}
+.fe-atas{justify-content:space-between}
+.fe-atas-kanan{display:flex;gap:8px}
+.fe-ikon{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:20px;cursor:pointer}
+.fe-ikon:disabled{opacity:.3;cursor:default}
+.fe-panggung{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px 12px;touch-action:none}
+.fe-panggung canvas{max-width:100%;max-height:100%;border-radius:6px;touch-action:none;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.fe-panggung[data-alat=coret] canvas,.fe-panggung[data-alat=sensor] canvas{cursor:crosshair}
+.fe-panggung[data-alat=potong] canvas,.fe-panggung[data-alat=teks] canvas,.fe-panggung[data-alat=stiker] canvas{cursor:move}
+.fe-opsi{padding:8px 14px 0;min-height:58px;display:flex;flex-direction:column;gap:8px;max-width:760px;width:100%;margin:0 auto;box-sizing:border-box}
+.fe-baris{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fe-gulir{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.fe-pil{border:2px solid rgba(255,255,255,.22);background:transparent;color:#fff;border-radius:999px;padding:7px 13px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap}
+.fe-pil.on{background:#fff;color:#3B271B;border-color:#fff}
+.fe-petunjuk{font-size:12.5px;opacity:.72;margin:0}
+.fe-geser{display:grid;grid-template-columns:90px 1fr 38px;align-items:center;gap:10px;font-size:13px;font-weight:800}
+.fe-geser input{width:100%;accent-color:#E8B98A}
+.fe-geser b{text-align:right;font-variant-numeric:tabular-nums}
+.fe-warna{display:flex;gap:8px;flex-wrap:wrap}
+.fe-titik{width:30px;height:30px;border-radius:50%;border:3px solid rgba(255,255,255,.35);background:var(--w);cursor:pointer;padding:0}
+.fe-titik.on{border-color:#fff;box-shadow:0 0 0 2px #E8B98A}
+.fe-filter{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:transparent;color:#fff;font:inherit;font-size:11.5px;font-weight:800;cursor:pointer;padding:0}
+.fe-filter img{width:64px;height:64px;object-fit:cover;border-radius:12px;border:3px solid transparent}
+.fe-filter.on img{border-color:#E8B98A}
+.fe-stiker{flex:0 0 auto;border:0;background:rgba(255,255,255,.08);border-radius:14px;padding:4px;cursor:pointer}
+.fe-stiker:hover{background:rgba(255,255,255,.18)}
+.fe-teks-isi{flex:1;min-width:140px;height:38px;border-radius:12px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-weight:700;padding:0 12px}
+.fe-alat{display:flex;justify-content:safe center;gap:2px;padding:8px 6px 4px;overflow-x:auto;scrollbar-width:none}
+@media (max-width:420px){.fe-alat .fe-alat-btn{padding:6px 2px;font-size:10.5px}}
+body:has(.fe-layar,.kam-layar) .toast{bottom:auto;top:calc(70px + env(safe-area-inset-top))}
+.fe-alat-btn{flex:1 1 0;max-width:76px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;border:0;background:transparent;color:rgba(255,255,255,.7);font:inherit;font-size:11.5px;font-weight:800;padding:6px 6px;border-radius:12px;cursor:pointer}
+.fe-alat-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.fe-alat-btn.on{color:#fff;background:rgba(232,185,138,.22)}
+.fe-strip{display:flex;gap:8px;padding:6px 14px;overflow-x:auto;justify-content:center}
+.fe-strip[hidden]{display:none}
+.fe-thumb{flex:0 0 52px;height:52px;border-radius:10px;border:3px solid transparent;padding:0;overflow:hidden;background:#2a1d16;cursor:pointer;color:#fff;font-size:24px}
+.fe-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.fe-thumb.on{border-color:#E8B98A}
+.fe-tambah{border:2px dashed rgba(255,255,255,.35)}
+.fe-bawah{display:flex;gap:10px;padding:8px 14px calc(12px + env(safe-area-inset-bottom));max-width:760px;width:100%;margin:0 auto;box-sizing:border-box}
+.fe-bawah input{flex:1;min-width:0;height:48px;border-radius:24px;border:0;background:rgba(255,255,255,.12);color:#fff;font:inherit;padding:0 18px}
+.fe-bawah input::placeholder{color:rgba(255,255,255,.55)}
+.fe-kirim{height:48px;white-space:nowrap}
+.ob-meter{margin-top:14px;padding-top:14px;border-top:2px dashed var(--line);display:flex;flex-direction:column;gap:6px}
+@media (min-width:900px){.fe-panggung{padding:10px 40px}}
 </style>
 </head>
 <body>
@@ -6431,7 +6541,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.7.4";
+const VERSI_APP = "1.8.0";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -7548,7 +7658,7 @@ function jalankanAksiTunda(){
 
 /* ---------- Panduan Alpha ---------- */
 const BANTUAN = {
-  obrolan:["boo", "Ngobrol berdua dengan pasangan, terenkripsi dengan kunci area Bersama.", ["Tekan + untuk mengirim kartu keuangan: tagihan berdua, anggaran acara, atau transaksi yang mau ditanyakan.", "Tanda ✓ berarti terkirim, ✓✓ berarti sudah dibaca pasanganmu.", "Ketuk pesanmu sendiri untuk menghapusnya dari kedua HP.", "Aktifkan notifikasi di Pengaturan supaya pesan baru tetap muncul saat aplikasi tertutup."]],
+  obrolan:["boo", "Ngobrol berdua dengan pasangan, terenkripsi dengan kunci area Bersama.", ["Tekan + untuk mengirim foto (dari galeri atau potret langsung) atau kartu keuangan: tagihan berdua, anggaran acara, atau transaksi.", "Sebelum dikirim, foto bisa dipotong, diatur cahayanya, diberi filter, coretan, teks, stiker maskot, atau sensor untuk menyamarkan nomor rekening.", "Foto dari pasangan tampil buram dulu. Ketuk Unduh untuk melihatnya. Foto tersimpan di server 3 bulan, atau 15 hari setelah ada yang menyimpannya ke galeri.", "Saat kolom tulis kosong, ketuk tombol mikrofon untuk merekam voice note (maks 2 menit).", "Tanda ✓ berarti terkirim, ✓✓ berarti sudah dibaca pasanganmu.", "Ketuk pesanmu sendiri untuk menghapusnya dari kedua HP.", "Aktifkan notifikasi di Pengaturan supaya pesan baru tetap muncul saat aplikasi tertutup."]],
   beranda:["piggy", "Ringkasan uangmu: saldo, pemasukan, dan pengeluaran periode ini.", ["Tombol + (atau tombol N di laptop) untuk mencatat transaksi.", "Catat cepat dari Tupi menyimpan transaksi favorit, jadi cukup sekali ketuk.", "Ketuk Lingling di atas (atau tombol H) untuk menyembunyikan semua nominal saat ada orang di dekatmu.", "Kartu peringatan muncul kalau anggaran menipis atau ada tagihan yang dekat."]],
   transaksi:["tupi", "Semua catatan pemasukan, pengeluaran, dan pindah dompet.", ["Tekan Pilih untuk menghapus beberapa transaksi sekaligus. Masih bisa dibatalkan selama 10 detik.", "Di Android, bagikan screenshot bukti transfer dari m-banking ke Dompet Kita: Froggy langsung melampirkannya.", "Kolom nominal bisa menghitung, misalnya 25000+12500 lalu tekan =.", "Cari catatan, kategori, dompet, atau nominal lewat kolom Mochi (tombol / di laptop).", "Belanja dengan mata uang asing? Buka Pakai mata uang asing di form, Octo menghitungkan Rupiahnya.", "Ketuk sebuah transaksi untuk mengubah atau menghapusnya."]],
   dompet:["octo", "Tempat semua saldo: tunai, rekening bank, dan e-wallet.", ["Pindah saldo antardompet tidak dihitung sebagai pengeluaran.", "Saldo setiap dompet dihitung otomatis dari transaksinya.", "Pintasan ikon aplikasi Lihat saldo langsung membuka halaman ini."]],
@@ -8952,8 +9062,12 @@ function obMuatLokal(){
   OB.kursor = r.kursor || ""; OB.bacaLain = r.bacaLain || {}; OB.bacaSaya = r.bacaSaya || {}; OB.antre = r.antre || [];
 }
 function obSimpanLokal(){
-  const rows = [...OB.rows.values()].sort((a, b) => a.dibuat.localeCompare(b.dibuat)).slice(-800);
-  localStorage.setItem(K_OBROLAN, JSON.stringify({rows, kursor:OB.kursor, bacaLain:OB.bacaLain, bacaSaya:OB.bacaSaya, antre:OB.antre}));
+  /* 1.8.0: pesan foto membawa pratinjau ±9 KB, jadi simpanan lokal dibatasi ukurannya (±2 MB), bukan hanya jumlahnya */
+  const semua = [...OB.rows.values()].sort((a, b) => a.dibuat.localeCompare(b.dibuat)).slice(-800), rows = [];
+  let total = 0;
+  for (let i = semua.length - 1; i >= 0; i--){ total += JSON.stringify(semua[i].isi || "").length + 200; if (total > 2e6 && rows.length > 50) break; rows.unshift(semua[i]); }
+  const tulis = r => localStorage.setItem(K_OBROLAN, JSON.stringify({rows:r, kursor:OB.kursor, bacaLain:OB.bacaLain, bacaSaya:OB.bacaSaya, antre:OB.antre}));
+  try { tulis(rows); } catch(e){ try { tulis(rows.slice(-Math.ceil(rows.length / 3))); } catch(x){} }
 }
 obMuatLokal();
 const obSiap = () => !!(S.sesi && S.sesi.kunciBersama && DI_WEB && awanTersambung() && obPasangan());
@@ -9242,10 +9356,10 @@ async function obTampilkanUlang(keBawah){
     let badan;
     if (v.jenis === "hapus") badan = '<span class="ob-dihapus">Pesan ini dihapus</span>';
     else if (v.jenis === "rusak") badan = '<span class="ob-dihapus">Pesan tidak bisa dibuka</span>';
-    else badan = (v.kartu ? kartuHTML(v.kartu) : '') + (v.teks ? '<span class="ob-teks-isi">'+esc(v.teks).replace(/\n/g, "<br>")+'</span>' : '');
+    else badan = badanMediaOb(r, v) + (v.kartu ? kartuHTML(v.kartu) : '') + (v.teks ? '<span class="ob-teks-isi">'+esc(v.teks).replace(/\n/g, "<br>")+'</span>' : '');
     const status = !milik ? "" : (r.antre || antreIds.has(r.id)) ? '<span class="ob-centang tunggu" title="Menunggu terkirim">◷</span>'
       : (bacaLain && r.dibuat <= bacaLain) ? '<span class="ob-centang dibaca" title="Dibaca">✓✓</span>' : '<span class="ob-centang" title="Terkirim">✓</span>';
-    html += '<div class="ob-baris '+(milik ? "saya" : "dia")+'"><div class="ob-gelembung" '+(milik && v.jenis !== "hapus" && !r.antre ? 'data-aksi="ob-menu" data-id="'+r.id+'" tabindex="0"' : '')+'>'+badan+
+    html += '<div class="ob-baris '+(milik ? "saya" : "dia")+'"><div class="ob-gelembung'+(v.foto ? ' ob-g-foto' : v.suara ? ' ob-g-suara' : '')+'" '+(milik && v.jenis !== "hapus" && !r.antre ? 'data-aksi="ob-menu" data-id="'+r.id+'" tabindex="0"' : '')+'>'+badan+
       '<span class="ob-waktu">'+fmtJamOb(r.dibuat)+status+'</span></div>'+
       (milik && S.obMenu === r.id ? '<div class="ob-menu">'+tombolAksi("ob-hapus", "Hapus untuk semua", "btn-ghost btn-kecil btn-hapus", ' data-id="'+r.id+'"')+'</div>' : '')+'</div>';
   });
@@ -11115,6 +11229,987 @@ modalCantik = function(){
   _modalCantik174.apply(this, arguments);
   const l = document.getElementById("in-jadian"); if (l && l.parentElement) l.parentElement.firstChild.textContent = "Bersama sejak (tanggal jadian)";
 };
+
+/* ============ langkah 27 (1.8.0): foto & voice note di Obrolan — inti media ============ */
+/* Berkas dikunci (AES-GCM, kunci Bersama) sebelum diunggah ke Storage "obrolan/<rumah>/<id>".
+   Pratinjau kecil (±8 KB) ikut di dalam pesan terenkripsi, jadi tetap terlihat walau berkas sudah kedaluwarsa.
+   Foto: 3 bulan; setelah disimpan ke galeri: 15 hari. Voice note: selamanya. */
+const MEDIA_BUCKET = "obrolan", MEDIA_KUOTA = 1024 * 1024 * 1024, K_MEDIA = PFX + "obMedia";
+const MEDIA = {rows:new Map(), kursor:"", muat:false, url:new Map(), unduh:new Map(), pakai:null};
+(function(){ const r = bacaJson(K_MEDIA) || {}; MEDIA.rows = new Map((r.rows || []).map(x => [x.id, x])); MEDIA.kursor = r.kursor || ""; MEDIA.bersihTerakhir = r.bersih || 0; MEDIA.pakai = r.pakai || null; })();
+function mediaSimpanLokal(){
+  localStorage.setItem(K_MEDIA, JSON.stringify({rows:[...MEDIA.rows.values()].slice(-1500), kursor:MEDIA.kursor, bersih:MEDIA.bersihTerakhir || 0, pakai:MEDIA.pakai}));
+}
+/* ---------- IndexedDB: salinan berkas yang sudah terbuka di perangkat ini ---------- */
+let idbJanji = null;
+function idbBuka(){
+  if (!idbJanji) idbJanji = new Promise((res, rej) => {
+    const r = indexedDB.open("dompetKitaMedia", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("berkas");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+  return idbJanji;
+}
+async function idbOp(mode, fn){
+  const db = await idbBuka();
+  return new Promise((res, rej) => { const tx = db.transaction("berkas", mode), st = tx.objectStore("berkas"), q = fn(st); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); });
+}
+const idbAmbil = k => idbOp("readonly", st => st.get(k)).catch(() => null);
+const idbSimpan = (k, v) => idbOp("readwrite", st => st.put(v, k)).catch(() => null);
+const idbHapus = k => idbOp("readwrite", st => st.delete(k)).catch(() => null);
+const idbKunci = () => idbOp("readonly", st => st.getAllKeys()).catch(() => []);
+/* ---------- kunci & server ---------- */
+async function enkripsiBerkas(blob){
+  const bytes = new Uint8Array(await blob.arrayBuffer()), iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM", iv}, S.sesi.kunciBersama, bytes));
+  const out = new Uint8Array(12 + ct.length); out.set(iv); out.set(ct, 12);
+  return out;
+}
+async function dekripsiBerkas(buf, mime){
+  const u = new Uint8Array(buf);
+  const pt = await crypto.subtle.decrypt({name:"AES-GCM", iv:u.slice(0, 12)}, S.sesi.kunciBersama, u.slice(12));
+  return new Blob([pt], {type:mime || "application/octet-stream"});
+}
+async function storageFetch(path, opsi){
+  const s = await sesiAwanValid();
+  if (!s){ const e = new Error("Perlu masuk lagi ke awan"); e.status = 401; throw e; }
+  opsi = opsi || {};
+  const h = Object.assign({apikey:AWAN.key, Authorization:"Bearer " + s.access_token}, opsi.headers || {});
+  let r;
+  try { r = await fetch(AWAN.url + "/storage/v1" + path, Object.assign({}, opsi, {headers:h})); }
+  catch(e){ const x = new Error("Tidak ada koneksi internet"); x.offline = true; throw x; }
+  if (!r.ok){ let m = ""; try { const j = await r.json(); m = j.message || j.error || ""; } catch(e){} const x = new Error(m || ("HTTP " + r.status)); x.status = r.status; throw x; }
+  return r;
+}
+const mediaPath = id => awanCfg().rumah + "/" + id;
+async function mediaUnggah(id, jenis, blob){
+  const data = await enkripsiBerkas(blob);
+  await storageFetch("/object/" + MEDIA_BUCKET + "/" + mediaPath(id), {method:"POST", headers:{"Content-Type":"application/octet-stream", "x-upsert":"false", "cache-control":"3600"}, body:data});
+  const baris = await awanFetch("/rest/v1/obrolan_media", {method:"POST", headers:{Prefer:"return=representation"}, body:JSON.stringify({id, rumah_id:awanCfg().rumah, dari:S.sesi.user.id, jenis, ukuran:data.length})});
+  if (Array.isArray(baris) && baris[0]) MEDIA.rows.set(id, baris[0]);
+  await idbSimpan(id, {mime:blob.type, data});
+  if (MEDIA.pakai) MEDIA.pakai.waktu = 0;
+  mediaSimpanLokal();
+  return data.length;
+}
+async function mediaBlob(id, mime, unduhKalauPerlu){
+  const ada = await idbAmbil(id);
+  if (ada && ada.data){ try { return await dekripsiBerkas(ada.data, ada.mime || mime); } catch(e){ await idbHapus(id); } }
+  if (!unduhKalauPerlu) return null;
+  if (MEDIA.unduh.has(id)) return MEDIA.unduh.get(id);
+  const janji = (async () => {
+    const r = await storageFetch("/object/authenticated/" + MEDIA_BUCKET + "/" + mediaPath(id));
+    const buf = await r.arrayBuffer(), blob = await dekripsiBerkas(buf, mime);
+    await idbSimpan(id, {mime, data:new Uint8Array(buf)});
+    return blob;
+  })();
+  MEDIA.unduh.set(id, janji);
+  try { return await janji; } finally { MEDIA.unduh.delete(id); }
+}
+async function mediaURL(id, mime, unduh){
+  if (MEDIA.url.has(id)) return MEDIA.url.get(id);
+  const b = await mediaBlob(id, mime, unduh);
+  if (!b) return null;
+  const u = URL.createObjectURL(b); MEDIA.url.set(id, u); return u;
+}
+function mediaLepasURL(id){ const u = MEDIA.url.get(id); if (u){ URL.revokeObjectURL(u); MEDIA.url.delete(id); } }
+async function mediaAmbilStatus(){
+  if (!obSiap() || MEDIA.muat) return false;
+  MEDIA.muat = true;
+  try {
+    const rumah = awanCfg().rumah;
+    const list = await awanFetch("/rest/v1/obrolan_media?select=id,dari,jenis,ukuran,dibuat,kedaluwarsa,galeri,dihapus,diubah&rumah_id=eq." + encodeURIComponent(rumah) +
+      (MEDIA.kursor ? "&diubah=gt." + encodeURIComponent(new Date(Date.parse(MEDIA.kursor) - 15000).toISOString()) : "") + "&order=diubah.asc&limit=1000");
+    let baru = false;
+    list.forEach(m => { const l = MEDIA.rows.get(m.id); if (!l || l.diubah !== m.diubah){ MEDIA.rows.set(m.id, m); baru = true; } if (m.diubah > MEDIA.kursor) MEDIA.kursor = m.diubah; });
+    MEDIA.siap = true; mediaSimpanLokal();
+    if (Date.now() - (MEDIA.bersihTerakhir || 0) > 6 * 3600e3) mediaBersihkan();
+    if (!MEDIA.pakai || Date.now() - MEDIA.pakai.waktu > 12 * 3600e3) mediaPemakaian();
+    return baru;
+  } catch(e){ if (e.status === 404) MEDIA.siap = false; return false; }
+  finally { MEDIA.muat = false; }
+}
+/* status satu berkas untuk pengguna ini */
+function mediaKedaluwarsa(m, dibuatPesan, jenis){
+  if (jenis === "suara") return !!(m && m.dihapus);
+  if (m) return m.dihapus || (m.kedaluwarsa && Date.parse(m.kedaluwarsa) < Date.now());
+  return Date.parse(dibuatPesan) + 92 * 864e5 < Date.now();
+}
+const mediaDisimpanSaya = m => !!(m && m.galeri && S.sesi && m.galeri[S.sesi.user.id]);
+/* hapus berkas kedaluwarsa dari Storage (siapa pun anggota yang membuka aplikasi lebih dulu) */
+async function mediaBersihkan(){
+  MEDIA.bersihTerakhir = Date.now(); mediaSimpanLokal();
+  const kini = Date.now();
+  const lewat = [...MEDIA.rows.values()].filter(m => !m.dihapus && m.kedaluwarsa && Date.parse(m.kedaluwarsa) < kini);
+  for (const m of [...MEDIA.rows.values()].filter(m => m.dihapus || (m.kedaluwarsa && Date.parse(m.kedaluwarsa) < kini))){ idbHapus(m.id); mediaLepasURL(m.id); }
+  if (!lewat.length) return 0;
+  try {
+    for (let i = 0; i < lewat.length; i += 100){
+      const potong = lewat.slice(i, i + 100);
+      await storageFetch("/object/" + MEDIA_BUCKET, {method:"DELETE", headers:{"Content-Type":"application/json"}, body:JSON.stringify({prefixes:potong.map(m => awanCfg().rumah + "/" + m.id)})});
+      await awanFetch("/rest/v1/rpc/media_tandai_hapus", {method:"POST", body:JSON.stringify({p_ids:potong.map(m => m.id)})});
+      potong.forEach(m => { m.dihapus = true; });
+    }
+    if (MEDIA.pakai) MEDIA.pakai.waktu = 0;
+    mediaSimpanLokal();
+    return lewat.length;
+  } catch(e){ return 0; }
+}
+async function mediaHapusPaksa(ids){
+  if (!ids.length) return;
+  try {
+    await storageFetch("/object/" + MEDIA_BUCKET, {method:"DELETE", headers:{"Content-Type":"application/json"}, body:JSON.stringify({prefixes:ids.map(id => awanCfg().rumah + "/" + id)})});
+    await awanFetch("/rest/v1/rpc/media_tandai_hapus", {method:"POST", body:JSON.stringify({p_ids:ids})});
+  } catch(e){}
+  ids.forEach(id => { const m = MEDIA.rows.get(id); if (m) m.dihapus = true; idbHapus(id); mediaLepasURL(id); });
+  if (MEDIA.pakai) MEDIA.pakai.waktu = 0;
+  mediaSimpanLokal();
+}
+async function mediaPemakaian(){
+  try { MEDIA.pakai = {byte:Number(await awanFetch("/rest/v1/rpc/media_pemakaian", {method:"POST", body:JSON.stringify({p_rumah:awanCfg().rumah})})) || 0, waktu:Date.now()}; mediaSimpanLokal(); obPeringatanPenuh(); }
+  catch(e){}
+  return MEDIA.pakai;
+}
+/* sinkron status media ikut alur obrolan */
+const _obAmbil180 = obAmbil;
+obAmbil = async function(...a){
+  const r = await _obAmbil180.apply(this, a);
+  const m = await mediaAmbilStatus();
+  if (m && !r) obTampilkanUlang();
+  return r;
+};
+/* hapus pesan berisi media: berkasnya ikut dihapus dari server */
+const _obHapus180 = obHapus;
+obHapus = async function(id){
+  const v = OB.cache.get(id) || {};
+  const ids = [v.foto && v.foto.id, v.suara && v.suara.id].filter(Boolean);
+  await _obHapus180.apply(this, arguments);
+  if (ids.length && OB.rows.get(id) && OB.rows.get(id).dihapus) mediaHapusPaksa(ids);
+};
+
+/* ---------- gambar: kompres & pratinjau ---------- */
+function kanvasKeBlob(c, kualitas){ return new Promise(res => c.toBlob(res, "image/jpeg", kualitas)); }
+async function kompresFotoOb(kanvas){
+  /* target 200–400 KB, sisi terpanjang maks 1600 px */
+  let c = kanvas, maks = 1600;
+  const kecilkan = (src, sisi) => { const s = Math.min(1, sisi / Math.max(src.width, src.height)); if (s >= 1) return src; const o = document.createElement("canvas"); o.width = Math.round(src.width * s); o.height = Math.round(src.height * s); o.getContext("2d").drawImage(src, 0, 0, o.width, o.height); return o; };
+  c = kecilkan(c, maks);
+  let q = 0.86, b = await kanvasKeBlob(c, q);
+  while (b.size > 400 * 1024 && q > 0.5){ q -= 0.08; b = await kanvasKeBlob(c, q); }
+  while (b.size > 420 * 1024 && maks > 800){ maks -= 200; c = kecilkan(kanvas, maks); b = await kanvasKeBlob(c, 0.78); }
+  return {blob:b, w:c.width, h:c.height};
+}
+async function pratinjauKecil(kanvas){
+  let sisi = 200, q = 0.55, url = "";
+  for (let i = 0; i < 6; i++){
+    const s = Math.min(1, sisi / Math.max(kanvas.width, kanvas.height)), o = document.createElement("canvas");
+    o.width = Math.max(1, Math.round(kanvas.width * s)); o.height = Math.max(1, Math.round(kanvas.height * s));
+    o.getContext("2d").drawImage(kanvas, 0, 0, o.width, o.height);
+    url = o.toDataURL("image/jpeg", q);
+    if (url.length <= 11000) break;
+    sisi -= 30; q -= 0.06;
+  }
+  return url;
+}
+/* kirim satu foto (sudah diedit) sebagai satu pesan */
+async function kirimFotoOb(kanvas, teks){
+  const id = uid(), {blob, w, h} = await kompresFotoOb(kanvas), thumb = await pratinjauKecil(kanvas);
+  const ukuran = await mediaUnggah(id, "foto", blob);
+  await obKirim({jenis:"foto", foto:{id, mime:"image/jpeg", w, h, ukuran, thumb}, teks:teks || ""});
+}
+
+/* ---------- tampilan foto di gelembung ---------- */
+function fotoHTML(r, f){
+  const m = MEDIA.rows.get(f.id), milik = r.dari === S.sesi.user.id, habis = mediaKedaluwarsa(m, r.dibuat, "foto"), galeri = mediaDisimpanSaya(m);
+  const rasio = f.w && f.h ? Math.max(0.6, Math.min(1.6, f.h / f.w)) : 1;
+  const ukuran = f.ukuran ? (f.ukuran > 1048576 ? (f.ukuran / 1048576).toFixed(1) + " MB" : Math.round(f.ukuran / 1024) + " KB") : "";
+  let lapis = "", kelas = "";
+  const jernih = !habis && !galeri && MEDIA.url.get(f.id);
+  if (habis){ kelas = "habis"; lapis = '<span class="ob-foto-label">⏳ Kedaluwarsa</span>'; }
+  else if (galeri){ kelas = "buram"; lapis = '<span class="ob-foto-label">✓ Tersimpan di galeri</span>'; }
+  else if (jernih) return '<div class="ob-foto jernih" style="--rasio:'+rasio.toFixed(3)+'" data-foto="'+f.id+'" data-r="'+r.id+'" data-aksi="ob-foto-buka" tabindex="0" role="button" aria-label="Buka foto"><img class="ob-foto-thumb" src="'+jernih+'" alt="Foto" draggable="false"></div>';
+  else lapis = '<span class="ob-foto-muat" data-foto-tunggu="'+f.id+'">'+
+    '<button type="button" class="ob-foto-unduh" data-aksi="ob-foto-unduh" data-id="'+f.id+'" data-r="'+r.id+'">⬇ Unduh'+(ukuran ? ' · '+ukuran : '')+'</button></span>';
+  return '<div class="ob-foto '+kelas+'" style="--rasio:'+rasio.toFixed(3)+'" data-foto="'+f.id+'" data-r="'+r.id+'">'+
+    '<img class="ob-foto-thumb" src="'+f.thumb+'" alt="Foto" draggable="false">'+lapis+'</div>';
+}
+/* setelah render: tempelkan versi jernih kalau sudah ada di perangkat ini */
+async function fotoTempelJernih(wadah){
+  const els = [...wadah.querySelectorAll(".ob-foto:not(.habis):not(.buram)")];
+  for (const el of els){
+    const id = el.dataset.foto, r = OB.rows.get(el.dataset.r) || OB.antre.find(a => a.id === el.dataset.r);
+    const u = await mediaURL(id, "image/jpeg", false);
+    if (!u) continue;
+    const img = el.querySelector(".ob-foto-thumb"); img.src = u; el.classList.remove("buram"); el.classList.add("jernih");
+    const lab = el.querySelector(".ob-foto-muat"); if (lab) lab.remove();
+    el.setAttribute("data-aksi", "ob-foto-buka"); el.setAttribute("tabindex", "0"); el.setAttribute("role", "button"); el.setAttribute("aria-label", "Buka foto");
+  }
+}
+async function fotoUnduh(id, rid){
+  const el = document.querySelector('.ob-foto[data-foto="'+id+'"]');
+  const lab = el && el.querySelector(".ob-foto-muat"); if (lab) lab.innerHTML = '<span class="ob-foto-progres">Mengunduh...</span>';
+  try { await mediaURL(id, "image/jpeg", true); obTampilkanUlang(); }
+  catch(e){ toast(e.status === 400 || e.status === 404 ? "Boo: foto ini sudah tidak ada di server." : "Boo: foto belum bisa diunduh. Cek koneksi internet."); obTampilkanUlang(); }
+}
+function bukaPenampilFoto(id, rid){
+  const u = MEDIA.url.get(id); if (!u) return;
+  const r = OB.rows.get(rid) || {}, v = OB.cache.get(rid) || {};
+  const el = document.createElement("div");
+  el.className = "foto-layar"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", "Foto");
+  el.innerHTML = '<div class="foto-atas"><button type="button" class="foto-x" data-aksi="foto-tutup" aria-label="Tutup">×</button>'+
+      '<span>'+esc(namaPengguna(r.dari) || "")+' · '+(r.dibuat ? fmtJamOb(r.dibuat) + ", " + labelHariOb(r.dibuat) : "")+'</span></div>'+
+    '<img src="'+u+'" alt="Foto">'+(v.teks ? '<p class="foto-ket">'+esc(v.teks)+'</p>' : '')+
+    '<div class="foto-bawah"><button type="button" class="btn btn-primary" data-aksi="foto-galeri" data-id="'+id+'">⬇ Simpan ke galeri</button></div>';
+  document.body.appendChild(el);
+  document.documentElement.classList.add("kb-terbuka");
+}
+function tutupPenampilFoto(){ document.querySelectorAll(".foto-layar").forEach(x => x.remove()); document.documentElement.classList.remove("kb-terbuka"); }
+async function fotoSimpanGaleri(id){
+  const b = await mediaBlob(id, "image/jpeg", false); if (!b) return;
+  const nama = "dompet-kita-" + id.slice(0, 8) + ".jpg";
+  const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = nama; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+  try {
+    const sampai = await awanFetch("/rest/v1/rpc/media_simpan_galeri", {method:"POST", body:JSON.stringify({p_id:id, p_profil:S.sesi.user.id})});
+    const m = MEDIA.rows.get(id) || {id, jenis:"foto"};
+    m.galeri = Object.assign({}, m.galeri, {[S.sesi.user.id]:new Date().toISOString()}); if (sampai) m.kedaluwarsa = sampai;
+    MEDIA.rows.set(id, m); mediaSimpanLokal();
+  } catch(e){}
+  await idbHapus(id); mediaLepasURL(id);
+  tutupPenampilFoto(); obTampilkanUlang();
+  toast("Foto tersimpan (folder Unduhan/Galeri). Di obrolan foto ini buram lagi dan tersimpan di server 15 hari.");
+}
+
+/* ---------- voice note: rekam (maks 2 menit) ---------- */
+const SUARA_MAKS = 120;
+const REKAM = {aktif:false};
+function suaraMime(){
+  for (const m of ["audio/webm;codecs=opus", "audio/ogg;codecs=opus", "audio/mp4", "audio/webm"]) if (window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) return m;
+  return "";
+}
+async function rekamMulai(){
+  if (REKAM.aktif) return;
+  if (!window.MediaRecorder || !navigator.mediaDevices){ toast("Browser ini belum bisa merekam suara."); return; }
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); }
+  catch(e){ toast("Izin mikrofon belum diberikan. Izinkan mikrofon untuk situs ini, lalu coba lagi."); return; }
+  const mime = suaraMime(), rec = new MediaRecorder(stream, mime ? {mimeType:mime, audioBitsPerSecond:32000} : {audioBitsPerSecond:32000});
+  const ac = new (window.AudioContext || window.webkitAudioContext)(), src = ac.createMediaStreamSource(stream), an = ac.createAnalyser();
+  an.fftSize = 512; src.connect(an);
+  Object.assign(REKAM, {aktif:true, rec, stream, ac, an, potong:[], level:[], mulai:Date.now(), mime:rec.mimeType || mime || "audio/webm", batal:false});
+  rec.ondataavailable = e => { if (e.data && e.data.size) REKAM.potong.push(e.data); };
+  rec.onstop = rekamSelesai;
+  rec.start(250);
+  const buf = new Uint8Array(an.fftSize);
+  REKAM.timer = setInterval(() => {
+    an.getByteTimeDomainData(buf);
+    let s = 0; for (const v of buf){ const x = (v - 128) / 128; s += x * x; }
+    REKAM.level.push(Math.min(1, Math.sqrt(s / buf.length) * 3.2));
+    const dt = (Date.now() - REKAM.mulai) / 1000;
+    rekamTampil(dt);
+    if (dt >= SUARA_MAKS){ toast("Voice note maksimal 2 menit. Boo mengirimnya sekarang."); rekamBerhenti(false); }
+  }, 100);
+  document.getElementById("ob-tulis") && document.getElementById("ob-tulis").classList.add("merekam");
+  rekamTampil(0);
+}
+function rekamTampil(dt){
+  const el = document.getElementById("ob-rekam"); if (!el) return;
+  const t = Math.floor(dt), bar = REKAM.level.slice(-36);
+  el.querySelector(".rk-waktu").textContent = Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
+  el.querySelector(".rk-gelombang").innerHTML = bar.map(v => '<i style="height:'+Math.max(8, Math.round(v * 100))+'%"></i>').join("");
+}
+function rekamBerhenti(batal){
+  if (!REKAM.aktif) return;
+  REKAM.batal = !!batal;
+  clearInterval(REKAM.timer);
+  try { REKAM.rec.stop(); } catch(e){ rekamSelesai(); }
+}
+async function rekamSelesai(){
+  const r = Object.assign({}, REKAM);
+  REKAM.aktif = false;
+  try { r.stream.getTracks().forEach(t => t.stop()); r.ac.close(); } catch(e){}
+  const t = document.getElementById("ob-tulis"); if (t) t.classList.remove("merekam");
+  if (r.batal) return;
+  const durasi = Math.round((Date.now() - r.mulai) / 100) / 10;
+  if (durasi < 0.8){ toast("Tahan sedikit lebih lama. Voice note terlalu pendek."); return; }
+  const blob = new Blob(r.potong, {type:r.mime.split(";")[0]});
+  /* gelombang: 40 batang */
+  const n = 40, lv = r.level.length ? r.level : [0.2], gel = [];
+  for (let i = 0; i < n; i++){ const a = Math.floor(i * lv.length / n), b = Math.max(a + 1, Math.floor((i + 1) * lv.length / n)); gel.push(Math.round(Math.max(...lv.slice(a, b)) * 100) / 100); }
+  const maks = Math.max(0.05, ...gel);
+  const gelombang = gel.map(v => Math.round(Math.max(0.08, v / maks) * 100) / 100);
+  toast("Boo mengirim voice note...");
+  try {
+    const id = uid(), ukuran = await mediaUnggah(id, "suara", blob);
+    await obKirim({jenis:"suara", suara:{id, mime:blob.type, durasi:Math.min(SUARA_MAKS, durasi), gelombang, ukuran}});
+  } catch(e){ toast(e.status === 404 || e.status === 400 ? "Tempat penyimpanan Obrolan belum disiapkan. Jalankan dompet-kita-supabase-6.sql." : "Voice note belum terkirim. Cek koneksi internet, lalu coba lagi."); }
+}
+/* ---------- voice note: putar ---------- */
+const PUTAR_SR = {audio:null, id:null, laju:1};
+const fmtDurasi = d => { d = Math.max(0, Math.round(d)); return Math.floor(d / 60) + ":" + String(d % 60).padStart(2, "0"); };
+function suaraHTML(r, s){
+  const m = MEDIA.rows.get(s.id), hilang = mediaKedaluwarsa(m, r.dibuat, "suara"), main = PUTAR_SR.id === s.id && PUTAR_SR.audio && !PUTAR_SR.audio.paused;
+  return '<div class="ob-suara'+(hilang ? " hilang" : "")+'" data-suara="'+s.id+'" data-durasi="'+(+s.durasi || 0)+'">'+
+    '<button type="button" class="sr-main" '+(hilang ? "disabled" : 'data-aksi="sr-putar" data-id="'+s.id+'" data-mime="'+esc(s.mime || "")+'"')+' aria-label="'+(main ? "Jeda" : "Putar")+' voice note">'+(main ? "❚❚" : "▶")+'</button>'+
+    '<div class="sr-gel" aria-hidden="true">'+(s.gelombang || []).map(v => '<i style="height:'+Math.round(v * 100)+'%"></i>').join("")+'</div>'+
+    '<span class="sr-waktu">'+fmtDurasi(s.durasi)+'</span>'+
+    '<button type="button" class="sr-laju" data-aksi="sr-laju" aria-label="Kecepatan putar">'+PUTAR_SR.laju+'×</button></div>';
+}
+async function suaraPutar(id, mime){
+  if (PUTAR_SR.id === id && PUTAR_SR.audio){ if (PUTAR_SR.audio.paused) PUTAR_SR.audio.play(); else PUTAR_SR.audio.pause(); return; }
+  if (PUTAR_SR.audio){ PUTAR_SR.audio.pause(); }
+  const tombol = document.querySelector('.ob-suara[data-suara="'+id+'"] .sr-main'); if (tombol) tombol.textContent = "…";
+  let u;
+  try { u = await mediaURL(id, mime, true); } catch(e){ toast("Boo: voice note belum bisa diputar. Cek koneksi internet."); suaraSegarkan(); return; }
+  const a = new Audio(u); a.playbackRate = PUTAR_SR.laju;
+  PUTAR_SR.audio = a; PUTAR_SR.id = id;
+  a.onplay = a.onpause = suaraSegarkan;
+  a.onended = () => { PUTAR_SR.id = null; suaraSegarkan(); };
+  a.ontimeupdate = suaraSegarkan;
+  try { await a.play(); } catch(e){ toast("Voice note belum bisa diputar di browser ini."); }
+}
+function suaraSegarkan(){
+  document.querySelectorAll(".ob-suara").forEach(el => {
+    const id = el.dataset.suara, aktif = PUTAR_SR.id === id && PUTAR_SR.audio, main = aktif && !PUTAR_SR.audio.paused;
+    const b = el.querySelector(".sr-main"); if (b && !b.disabled){ b.textContent = main ? "❚❚" : "▶"; b.setAttribute("aria-label", (main ? "Jeda" : "Putar") + " voice note"); }
+    const bars = el.querySelectorAll(".sr-gel i"), dur = aktif ? (isFinite(PUTAR_SR.audio.duration) && PUTAR_SR.audio.duration > 0 ? PUTAR_SR.audio.duration : +el.dataset.durasi || 0) : 0;
+    const p = aktif && dur ? PUTAR_SR.audio.currentTime / dur : 0;
+    bars.forEach((x, i) => x.classList.toggle("lewat", i / bars.length < p));
+    if (aktif){ const w = el.querySelector(".sr-waktu"); if (w) w.textContent = fmtDurasi(PUTAR_SR.audio.currentTime); }
+    el.querySelector(".sr-laju").textContent = PUTAR_SR.laju + "×";
+  });
+}
+
+/* ---------- pasang ke gelembung obrolan ---------- */
+const _obTampilkanUlang180 = obTampilkanUlang;
+obTampilkanUlang = async function(...a){
+  const r = await _obTampilkanUlang180.apply(this, a);
+  const w = document.getElementById("ob-daftar");
+  if (w){ await fotoTempelJernih(w); suaraSegarkan(); }
+  obPerbaruiTombolTulis();
+  return r;
+};
+function obPerbaruiTombolTulis(){
+  const t = document.getElementById("ob-teks"), w = document.getElementById("ob-tulis");
+  if (!t || !w) return;
+  w.classList.toggle("kosong", !t.value.trim() && !S.obLampiran);
+}
+document.addEventListener("input", e => { if (e.target && e.target.id === "ob-teks") obPerbaruiTombolTulis(); });
+/* menu + : foto, kamera, kartu */
+function modalTambahOb(){
+  bukaModal('<div class="card-head" style="margin:0">'+maskot("boo", 56)+'<div><h2 id="judul-modal">Kirim apa?</h2><p class="muted" style="font-size:14px">Foto dan suara dikunci dulu di perangkatmu sebelum dikirim.</p></div></div>'+
+    '<div class="ob-tambah">'+
+      '<button type="button" class="ob-tambah-opsi" data-aksi="ob-foto-galeri"><span class="ob-tambah-ikon">🖼</span><strong>Foto dari galeri</strong><span class="muted">Pilih sampai 10 foto</span></button>'+
+      '<button type="button" class="ob-tambah-opsi" data-aksi="ob-foto-kamera"><span class="ob-tambah-ikon">📷</span><strong>Potret langsung</strong><span class="muted">Buka kamera</span></button>'+
+      '<button type="button" class="ob-tambah-opsi" data-aksi="ob-kartu"><span class="ob-tambah-ikon">💳</span><strong>Kartu keuangan</strong><span class="muted">Tagihan, acara, transaksi</span></button>'+
+    '</div>', "modal-pulih");
+}
+const _halObrolan180 = halObrolan;
+halObrolan = function(){
+  let h = _halObrolan180.apply(this, arguments);
+  h = h.replace('class="btn-ikon ob-plus" data-aksi="ob-kartu" aria-label="Kirim kartu keuangan" title="Kirim kartu keuangan"', 'class="btn-ikon ob-plus" data-aksi="ob-tambah" aria-label="Kirim foto, kartu, atau lainnya" title="Kirim foto, kartu, atau lainnya"');
+  h = h.replace('<button type="button" class="btn btn-primary ob-kirim"', '<button type="button" class="btn-ikon ob-mik" data-aksi="ob-rekam" aria-label="Rekam voice note" title="Rekam voice note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></button><button type="button" class="btn btn-primary ob-kirim"');
+  h = h.replace('<div class="ob-tulis-baris">', '<div class="ob-rekam" id="ob-rekam"><button type="button" class="btn-ikon rk-batal" data-aksi="rk-batal" aria-label="Batalkan rekaman">🗑</button><span class="rk-titik" aria-hidden="true"></span><span class="rk-waktu">0:00</span><div class="rk-gelombang" aria-hidden="true"></div><span class="muted rk-batas">maks 2:00</span><button type="button" class="btn btn-primary rk-kirim" data-aksi="rk-kirim">Kirim</button></div><div class="ob-tulis-baris">');
+  return h;
+};
+/* pakai tampilan jernih untuk pesan foto/suara */
+function badanMediaOb(r, v){ return (v.foto ? fotoHTML(r, v.foto) : '') + (v.suara ? suaraHTML(r, v.suara) : ''); }
+Object.assign(AKSI, {
+  "ob-tambah": () => modalTambahOb(),
+  "ob-foto-unduh": t => fotoUnduh(t.dataset.id, t.dataset.r),
+  "ob-foto-buka": t => bukaPenampilFoto(t.dataset.foto, t.dataset.r),
+  "foto-tutup": () => tutupPenampilFoto(),
+  "foto-galeri": t => {
+    const id = t.dataset.id;
+    bukaModal('<div class="card-head" style="margin:0">'+maskot("boo", 56)+'<div><h2 id="judul-modal">Simpan ke galeri?</h2></div></div>'+
+      '<p>Foto akan tersimpan di HP atau laptopmu. Setelah itu, di obrolan foto ini <strong>buram lagi</strong> dan hanya bertahan <strong>15 hari</strong> di server untuk kalian berdua.</p>'+
+      '<div class="row-btn">'+tombolAksi("tutup-modal", "Batal")+tombolAksi("foto-galeri-ya", "Simpan", "btn-primary", ' data-id="'+id+'"')+'</div>');
+  },
+  "foto-galeri-ya": t => { tutupModal(); fotoSimpanGaleri(t.dataset.id); },
+  "ob-rekam": () => rekamMulai(),
+  "rk-batal": () => rekamBerhenti(true),
+  "rk-kirim": () => rekamBerhenti(false),
+  "sr-putar": t => suaraPutar(t.dataset.id, t.dataset.mime),
+  "sr-laju": () => { PUTAR_SR.laju = PUTAR_SR.laju === 1 ? 1.5 : PUTAR_SR.laju === 1.5 ? 2 : 1; if (PUTAR_SR.audio) PUTAR_SR.audio.playbackRate = PUTAR_SR.laju; suaraSegarkan(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.querySelector(".foto-layar")) tutupPenampilFoto(); });
+
+const _kunciAplikasi180 = kunciAplikasi;
+kunciAplikasi = function(...a){
+  try {
+    if (REKAM.aktif) rekamBerhenti(true);
+    if (PUTAR_SR.audio){ PUTAR_SR.audio.pause(); PUTAR_SR.audio = null; PUTAR_SR.id = null; }
+    document.querySelectorAll(".foto-layar").forEach(x => x.remove());
+    if (typeof feTutup === "function" && document.querySelector(".fe-layar")) feTutup();
+    if (typeof kameraMati === "function") kameraMati();
+    [...MEDIA.url.keys()].forEach(mediaLepasURL);
+    if (!document.querySelector(".kb-layar")) document.documentElement.classList.remove("kb-terbuka");
+  } catch(e){}
+  return _kunciAplikasi180.apply(this, a);
+};
+/* ---------- meteran penyimpanan (Pengaturan) & peringatan Boo ---------- */
+const fmtByte = b => b >= 1073741824 ? (b / 1073741824).toFixed(2) + " GB" : b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.round(b / 1024) + " KB";
+function barisPenyimpananOb(){
+  if (!obSiap()) return "";
+  const p = MEDIA.pakai, b = p ? p.byte : null, pct = b != null ? b / MEDIA_KUOTA * 100 : 0;
+  const aktif = [...MEDIA.rows.values()].filter(m => !m.dihapus), foto = aktif.filter(m => m.jenis === "foto"), suara = aktif.filter(m => m.jenis === "suara");
+  return '<div class="ob-meter"><div class="mini-baris"><span><strong>Penyimpanan Obrolan</strong> (foto &amp; voice note)</span><strong>'+(b != null ? fmtByte(b) + " / 1 GB" : "…")+'</strong></div>'+
+    bar(Math.max(1, pct), pct >= 80 ? "#C4574B" : pct >= 60 ? "#E3A857" : "#6F8F5E")+
+    '<p class="muted" style="font-size:13px;margin:6px 0 0">'+foto.length+' foto · '+suara.length+' voice note di server. Foto otomatis terhapus setelah 3 bulan (atau 15 hari setelah disimpan ke galeri). Voice note disimpan selamanya.</p>'+
+    (pct >= 80 ? '<p class="note" style="font-size:13px">Boo: penyimpanan hampir penuh. Simpan foto penting ke galeri supaya cepat dibersihkan.</p>' : '')+
+    '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("ob-meter-segar", "Perbarui", "btn-ghost btn-kecil")+tombolAksi("ob-cache-hapus", "Hapus salinan di perangkat ini", "btn-ghost btn-kecil")+'</div></div>';
+}
+const _seksiAwan180 = seksiAwan;
+seksiAwan = function(){
+  const h = _seksiAwan180.apply(this, arguments), x = barisPenyimpananOb();
+  if (!x) return h;
+  if (!MEDIA.pakai || Date.now() - MEDIA.pakai.waktu > 60000) setTimeout(() => mediaPemakaian().then(() => { if (S.halaman === "pengaturan") render(); }), 50);
+  return h.replace(/<\/section>\s*$/, x + "</section>");
+};
+function obPeringatanPenuh(){
+  const p = MEDIA.pakai; if (!p || p.byte / MEDIA_KUOTA < 0.8) return;
+  if (localStorage.getItem(PFX + "obPenuh") === tglLokal()) return;
+  localStorage.setItem(PFX + "obPenuh", tglLokal());
+  setTimeout(() => reaksiMaskot("boo", {teks:"Penyimpanan Obrolan " + Math.round(p.byte / MEDIA_KUOTA * 100) + "% terisi", lama:3200}), 800);
+}
+Object.assign(AKSI, {
+  "ob-meter-segar": async () => { await mediaPemakaian(); render(); },
+  "ob-cache-hapus": async () => {
+    const k = await idbKunci(), saya = new Set([...MEDIA.rows.values()].filter(m => m.dari === S.sesi.user.id && m.jenis === "foto").map(m => m.id));
+    for (const id of k){ if (!saya.has(id)){ await idbHapus(id); mediaLepasURL(id); } }
+    toast("Salinan foto & suara di perangkat ini dihapus. Kalau masih ada di server, bisa diunduh lagi."); render();
+  }
+});
+
+
+/* ============ langkah 28 (1.8.0): pilih foto, potret langsung & editor foto ============ */
+const FOTO_MAKS = 10, FE_SISI = 2560;
+/* ---------- warna: matriks seperti filter CSS (jalan sama di semua browser) ---------- */
+const MX_I = [1,0,0,0, 0,1,0,0, 0,0,1,0];
+function mxGabung(b, a){ /* hasil = b ∘ a (a dulu) */
+  const o = [];
+  for (let r = 0; r < 3; r++){
+    for (let c = 0; c < 3; c++) o[r*4+c] = b[r*4]*a[c] + b[r*4+1]*a[4+c] + b[r*4+2]*a[8+c];
+    o[r*4+3] = b[r*4]*a[3] + b[r*4+1]*a[7] + b[r*4+2]*a[11] + b[r*4+3];
+  }
+  return o;
+}
+function mxOp(jenis, n){
+  if (jenis === "cerah") return [n,0,0,0, 0,n,0,0, 0,0,n,0];
+  if (jenis === "kontras"){ const o = (0.5 - 0.5 * n) * 255; return [n,0,0,o, 0,n,0,o, 0,0,n,o]; }
+  if (jenis === "saturasi") return [0.213+0.787*n, 0.715-0.715*n, 0.072-0.072*n, 0, 0.213-0.213*n, 0.715+0.285*n, 0.072-0.072*n, 0, 0.213-0.213*n, 0.715-0.715*n, 0.072+0.928*n, 0];
+  if (jenis === "sepia"){ const a = n, b = 1 - n; return [b+a*0.393, a*0.769, a*0.189, 0, a*0.349, b+a*0.686, a*0.168, 0, a*0.272, a*0.534, b+a*0.131, 0]; }
+  if (jenis === "abu"){ const t = 1 - n; return [0.2126+0.7874*t, 0.7152-0.7152*t, 0.0722-0.0722*t, 0, 0.2126-0.2126*t, 0.7152+0.2848*t, 0.0722-0.0722*t, 0, 0.2126-0.2126*t, 0.7152-0.7152*t, 0.0722+0.9278*t, 0]; }
+  if (jenis === "rona"){ const r = n * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);
+    return [0.213+c*0.787-s*0.213, 0.715-c*0.715-s*0.715, 0.072-c*0.072+s*0.928, 0,
+            0.213-c*0.213+s*0.143, 0.715+c*0.285+s*0.140, 0.072-c*0.072-s*0.283, 0,
+            0.213-c*0.213-s*0.787, 0.715-c*0.715+s*0.715, 0.072+c*0.928+s*0.072, 0]; }
+  if (jenis === "hangat") return [1,0,0,n*255, 0,1,0,n*110, 0,0,1,-n*120];
+  return MX_I.slice();
+}
+const FE_FILTER = [
+  {id:"asli", nama:"Asli", op:[]},
+  {id:"susu", nama:"Cokelat Susu", op:[["sepia",0.42],["kontras",0.94],["cerah",1.05]]},
+  {id:"hangat", nama:"Hangat", op:[["hangat",0.08],["saturasi",1.15]]},
+  {id:"sejuk", nama:"Sejuk", op:[["hangat",-0.07],["saturasi",0.92],["cerah",1.03]]},
+  {id:"ceria", nama:"Ceria", op:[["cerah",1.1],["saturasi",1.3],["kontras",1.05]]},
+  {id:"kenangan", nama:"Kenangan", op:[["sepia",0.3],["kontras",0.85],["cerah",1.08],["saturasi",0.8]]},
+  {id:"dramatis", nama:"Dramatis", op:[["kontras",1.35],["saturasi",1.1],["cerah",0.94]]},
+  {id:"hitamputih", nama:"Hitam Putih", op:[["abu",1],["kontras",1.12]]}
+];
+function feMatriks(f){
+  let m = MX_I.slice();
+  m = mxGabung(mxOp("cerah", f.atur.cerah / 100), m);
+  m = mxGabung(mxOp("kontras", f.atur.kontras / 100), m);
+  m = mxGabung(mxOp("saturasi", f.atur.saturasi / 100), m);
+  const p = FE_FILTER.find(x => x.id === f.filter) || FE_FILTER[0];
+  p.op.forEach(([j, n]) => { m = mxGabung(mxOp(j, n), m); });
+  return m;
+}
+const mxSama = m => m.every((v, i) => Math.abs(v - MX_I[i]) < 1e-6);
+function terapkanMatriks(c, m){
+  if (mxSama(m)) return;
+  const ctx = c.getContext("2d"), d = ctx.getImageData(0, 0, c.width, c.height), p = d.data;
+  for (let i = 0; i < p.length; i += 4){
+    const r = p[i], g = p[i+1], b = p[i+2];
+    p[i]   = m[0]*r + m[1]*g + m[2]*b + m[3];
+    p[i+1] = m[4]*r + m[5]*g + m[6]*b + m[7];
+    p[i+2] = m[8]*r + m[9]*g + m[10]*b + m[11];
+  }
+  ctx.putImageData(d, 0, 0);
+}
+const kanvasBaru = (w, h) => { const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; };
+
+/* ---------- memuat berkas foto ---------- */
+async function muatGambar(file){
+  let src;
+  try { src = await createImageBitmap(file, {imageOrientation:"from-image"}); }
+  catch(e){
+    src = await new Promise((res, rej) => { const u = URL.createObjectURL(file), im = new Image(); im.onload = () => { res(im); URL.revokeObjectURL(u); }; im.onerror = () => { rej(new Error("format")); URL.revokeObjectURL(u); }; im.src = u; });
+  }
+  const w = src.width || src.naturalWidth, h = src.height || src.naturalHeight, s = Math.min(1, FE_SISI / Math.max(w, h));
+  const c = kanvasBaru(w * s, h * s); c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
+  if (src.close) src.close();
+  return c;
+}
+function pilihBerkasFoto(kamera){
+  const i = document.createElement("input");
+  i.type = "file"; i.accept = "image/*";
+  if (kamera) i.setAttribute("capture", "environment"); else i.multiple = true;
+  i.style.display = "none";
+  i.addEventListener("change", async () => {
+    let files = [...(i.files || [])].filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(f.name));
+    i.remove();
+    if (!files.length) return;
+    if (files.length > FOTO_MAKS){ toast("Maksimal " + FOTO_MAKS + " foto sekali kirim. Boo ambil " + FOTO_MAKS + " yang pertama."); files = files.slice(0, FOTO_MAKS); }
+    toast("Boo menyiapkan foto...");
+    const kanvas = [];
+    for (const f of files){ try { kanvas.push(await muatGambar(f)); } catch(e){} }
+    if (!kanvas.length){ toast("Foto ini belum bisa dibuka di browser ini. Coba format JPG atau PNG."); return; }
+    if (kanvas.length < files.length) toast((files.length - kanvas.length) + " foto dilewati karena formatnya belum didukung.");
+    feBuka(kanvas);
+  });
+  document.body.appendChild(i);
+  i.click();
+}
+
+/* ---------- potret langsung lewat webcam (laptop) ---------- */
+const KAM = {stream:null, hadap:"user", jumlah:0};
+async function kameraBuka(){
+  if (kbDiHP() || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ pilihBerkasFoto(true); return; }
+  tutupModal();
+  const el = document.createElement("div");
+  el.className = "kam-layar"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", "Kamera");
+  el.innerHTML = '<div class="kam-atas"><button type="button" class="foto-x" data-aksi="kam-tutup" aria-label="Tutup kamera">×</button><span>Potret langsung</span><span></span></div>'+
+    '<div class="kam-panggung"><video id="kam-video" autoplay playsinline muted></video><p class="kam-pesan" id="kam-pesan">Boo menyalakan kamera...</p></div>'+
+    '<div class="kam-bawah"><span></span><button type="button" class="kam-jepret" data-aksi="kam-jepret" aria-label="Ambil foto"><i></i></button>'+
+    '<button type="button" class="kam-balik" data-aksi="kam-balik" aria-label="Ganti kamera" hidden>⟲</button></div>';
+  document.body.appendChild(el);
+  document.documentElement.classList.add("kb-terbuka");
+  await kameraNyala();
+}
+async function kameraNyala(){
+  kameraMati(true);
+  const v = document.getElementById("kam-video"), pesan = document.getElementById("kam-pesan");
+  try {
+    KAM.stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:KAM.hadap, width:{ideal:1920}, height:{ideal:1080}}, audio:false});
+    v.srcObject = KAM.stream; v.classList.toggle("cermin", KAM.hadap === "user");
+    if (pesan) pesan.hidden = true;
+    const dev = await navigator.mediaDevices.enumerateDevices();
+    KAM.jumlah = dev.filter(d => d.kind === "videoinput").length;
+    const b = document.querySelector(".kam-balik"); if (b) b.hidden = KAM.jumlah < 2;
+  } catch(e){
+    if (pesan){ pesan.hidden = false; pesan.innerHTML = 'Kamera belum bisa dibuka. Izinkan kamera untuk situs ini, atau <button type="button" class="btn btn-ghost btn-kecil" data-aksi="ob-foto-galeri">pilih foto dari galeri</button>'; }
+  }
+}
+function kameraMati(tetapBuka){
+  if (KAM.stream){ KAM.stream.getTracks().forEach(t => t.stop()); KAM.stream = null; }
+  if (!tetapBuka){ document.querySelectorAll(".kam-layar").forEach(x => x.remove()); if (!document.querySelector(".fe-layar, .foto-layar")) document.documentElement.classList.remove("kb-terbuka"); }
+}
+function kameraJepret(){
+  const v = document.getElementById("kam-video");
+  if (!v || !v.videoWidth){ toast("Kamera belum siap."); return; }
+  const s = Math.min(1, FE_SISI / Math.max(v.videoWidth, v.videoHeight)), c = kanvasBaru(v.videoWidth * s, v.videoHeight * s), ctx = c.getContext("2d");
+  if (KAM.hadap === "user"){ ctx.translate(c.width, 0); ctx.scale(-1, 1); }
+  ctx.drawImage(v, 0, 0, c.width, c.height);
+  kameraMati();
+  feBuka([c]);
+}
+
+/* ---------- editor ---------- */
+const FE = {foto:[], aktif:0, alat:"potong", pilih:null, warna:"#FFFFFF", tebal:0.012, gaya:"kotak", rasio:"bebas", ket:"", kirim:false};
+const FE_WARNA = ["#FFFFFF", "#2B1D14", "#E0574B", "#F2C94C", "#7CC48A", "#6FA8DC", "#F28CA5", "#B07A4F"];
+const FE_STIKER = ["piggy", "boo", "cici", "otto", "pipo", "kenzo", "roo", "tupi", "zee", "kilat", "cantik", "croc", "doli", "gori", "jago", "mika", "doma", "hipo", "wallz", "quoki"];
+const FE_ALAT = [["potong", "Potong", "M7 3v14h14M3 7h14v14"], ["atur", "Atur", "M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"],
+  ["filter", "Filter", "M9 4a5 5 0 1 0 0 10a5 5 0 1 0 0-10M15 4a5 5 0 1 0 0 10a5 5 0 1 0 0-10M12 10a5 5 0 1 0 0 10a5 5 0 1 0 0-10"], ["coret", "Coret", "M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3"],
+  ["teks", "Teks", "M5 6V4h14v2M12 4v16M9 20h6"], ["stiker", "Stiker", "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M8.5 14.5c1.8 2 5.2 2 7 0M9 9.5v1M15 9.5v1"], ["sensor", "Sensor", "M4 4h5v5H4zM9 9h6v6H9zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z"]];
+const STIKER_IMG = new Map();
+function stikerGambar(m){
+  if (STIKER_IMG.has(m)) return STIKER_IMG.get(m);
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="360" height="360">' + (MASKOT[m] || "") + '</svg>';
+  const im = new Image(); im.onload = () => feGambar(); im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  STIKER_IMG.set(m, im); return im;
+}
+function feFotoBaru(kanvas){
+  return {asal:kanvas, rot:0, putar:{}, crop:{x:0, y:0, w:1, h:1}, atur:{cerah:100, kontras:100, saturasi:100}, filter:"asli", lapis:[], riwayat:[], pratinjau:null};
+}
+const feKini = () => FE.foto[FE.aktif];
+function feDiputar(f){
+  if (f.putar[f.rot]) return f.putar[f.rot];
+  const a = f.asal, tegak = f.rot % 2 === 1, c = kanvasBaru(tegak ? a.height : a.width, tegak ? a.width : a.height), ctx = c.getContext("2d");
+  ctx.translate(c.width / 2, c.height / 2); ctx.rotate(f.rot * Math.PI / 2); ctx.drawImage(a, -a.width / 2, -a.height / 2);
+  f.putar = {[f.rot]:c};
+  return c;
+}
+/* pratinjau: versi kecil yang sudah diwarnai, disimpan supaya mencoret tetap lancar */
+function fePratinjau(f){
+  const kunci = f.rot + "|" + f.atur.cerah + "|" + f.atur.kontras + "|" + f.atur.saturasi + "|" + f.filter;
+  if (f.pratinjau && f.pratinjau.kunci === kunci) return f.pratinjau.c;
+  const b = feDiputar(f), s = Math.min(1, 1280 / Math.max(b.width, b.height)), c = kanvasBaru(b.width * s, b.height * s);
+  c.getContext("2d").drawImage(b, 0, 0, c.width, c.height);
+  terapkanMatriks(c, feMatriks(f));
+  f.pratinjau = {kunci, c};
+  return c;
+}
+function feSnapshot(f){ return JSON.stringify({rot:f.rot, crop:f.crop, atur:f.atur, filter:f.filter, lapis:f.lapis}); }
+function feSimpanRiwayat(){ const f = feKini(); f.riwayat.push(feSnapshot(f)); if (f.riwayat.length > 40) f.riwayat.shift(); feTombolUndo(); }
+function feUrungkan(){
+  const f = feKini(), s = f.riwayat.pop(); if (!s) return;
+  Object.assign(f, JSON.parse(s)); FE.pilih = null; feTombolUndo(); feTampilAlat(); feGambar();
+}
+function feTombolUndo(){ const b = document.querySelector(".fe-undo"); if (b) b.disabled = !feKini() || !feKini().riwayat.length; }
+
+/* gambar lapisan (coretan, teks, stiker, sensor) ke kanvas. reg = area (0..1) yang digambar, W/H = ukuran foto penuh, s = skala */
+function feLukisLapis(ctx, f, reg, W, H, s){
+  const X = u => (u - reg.x) * W * s, Y = v => (v - reg.y) * H * s, U = Math.min(W, H) * s;
+  f.lapis.forEach((l, idx) => {
+    ctx.save();
+    if (l.jenis === "coret" && l.titik.length){
+      ctx.strokeStyle = l.warna; ctx.lineWidth = Math.max(1, l.tebal * U); ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); ctx.moveTo(X(l.titik[0][0]), Y(l.titik[0][1]));
+      if (l.titik.length === 1) ctx.lineTo(X(l.titik[0][0]) + 0.01, Y(l.titik[0][1]));
+      l.titik.forEach(p => ctx.lineTo(X(p[0]), Y(p[1])));
+      ctx.stroke();
+    } else if (l.jenis === "sensor"){
+      const x = X(l.x), y = Y(l.y), w = l.w * W * s, h = l.h * H * s;
+      if (w >= 2 && h >= 2){
+        const blok = Math.max(5, Math.min(Math.max(w, h) / (l.gaya === "buram" ? 10 : 18), Math.min(w, h) / (l.gaya === "buram" ? 2.5 : 3.5))), t = kanvasBaru(Math.max(1, w / blok), Math.max(1, h / blok)), tc = t.getContext("2d");
+        tc.imageSmoothingEnabled = true; tc.drawImage(ctx.canvas, x, y, w, h, 0, 0, t.width, t.height);
+        ctx.imageSmoothingEnabled = l.gaya === "buram"; if (l.gaya === "buram") ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(t, 0, 0, t.width, t.height, x, y, w, h);
+      }
+    } else if (l.jenis === "teks" && l.teks){
+      const uk = l.ukuran * U;
+      ctx.font = "700 " + uk + 'px "Fredoka","Nunito",system-ui,sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      const baris = l.teks.split("\n"), lebar = Math.max(...baris.map(b => ctx.measureText(b).width)), tinggi = baris.length * uk * 1.2;
+      const cx = X(l.x), cy = Y(l.y);
+      if (l.latar){
+        ctx.fillStyle = l.warna === "#FFFFFF" || l.warna === "#F2C94C" ? "rgba(43,29,20,.82)" : "rgba(255,250,244,.92)";
+        const p = uk * 0.35; feKotakBulat(ctx, cx - lebar / 2 - p, cy - tinggi / 2 - p * 0.6, lebar + p * 2, tinggi + p * 1.2, uk * 0.35); ctx.fill();
+      } else { ctx.shadowColor = "rgba(0,0,0,.45)"; ctx.shadowBlur = uk * 0.12; ctx.shadowOffsetY = uk * 0.04; }
+      ctx.fillStyle = l.warna;
+      baris.forEach((b, i) => ctx.fillText(b, cx, cy - tinggi / 2 + uk * 0.6 + i * uk * 1.2));
+      l._kotak = {w:(lebar + uk * 0.7) / (W * s), h:(tinggi + uk * 0.7) / (H * s)};
+    } else if (l.jenis === "stiker"){
+      const im = stikerGambar(l.m), uk = l.ukuran * U;
+      if (im.complete && im.naturalWidth){ ctx.translate(X(l.x), Y(l.y)); ctx.drawImage(im, -uk / 2, -uk / 2, uk, uk); }
+      l._kotak = {w:uk / (W * s), h:uk / (H * s)};
+    }
+    ctx.restore();
+    if (FE.pilih === idx && ctx.canvas.id === "fe-kanvas" && l._kotak){
+      ctx.save(); ctx.strokeStyle = "#fff"; ctx.setLineDash([6, 5]); ctx.lineWidth = 2;
+      ctx.strokeRect(X(l.x - l._kotak.w / 2), Y(l.y - l._kotak.h / 2), l._kotak.w * W * s, l._kotak.h * H * s); ctx.restore();
+    }
+  });
+}
+function feKotakBulat(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+/* area yang tampil di panggung: penuh saat memotong, selain itu hasil potongan */
+const feArea = f => FE.alat === "potong" ? {x:0, y:0, w:1, h:1} : f.crop;
+function feGambar(){
+  const c = document.getElementById("fe-kanvas"), f = feKini();
+  if (!c || !f) return;
+  const p = fePratinjau(f), reg = feArea(f), b = feDiputar(f);
+  const s = p.width / b.width, W = b.width, H = b.height;
+  const w = Math.max(1, Math.round(reg.w * p.width)), h = Math.max(1, Math.round(reg.h * p.height));
+  if (c.width !== w || c.height !== h){ c.width = w; c.height = h; }
+  const ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, w, h);
+  ctx.drawImage(p, reg.x * p.width, reg.y * p.height, reg.w * p.width, reg.h * p.height, 0, 0, w, h);
+  feLukisLapis(ctx, f, reg, W, H, s);
+  if (FE.alat === "potong"){
+    const k = f.crop, x = k.x * w, y = k.y * h, cw = k.w * w, ch = k.h * h;
+    ctx.save(); ctx.fillStyle = "rgba(20,12,8,.58)";
+    ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.rect(x, y, cw, ch); ctx.fill("evenodd");
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.strokeRect(x, y, cw, ch);
+    ctx.strokeStyle = "rgba(255,255,255,.45)"; ctx.lineWidth = 1;
+    for (let i = 1; i < 3; i++){ ctx.beginPath(); ctx.moveTo(x + cw * i / 3, y); ctx.lineTo(x + cw * i / 3, y + ch); ctx.moveTo(x, y + ch * i / 3); ctx.lineTo(x + cw, y + ch * i / 3); ctx.stroke(); }
+    const u = Math.max(14, Math.min(w, h) * 0.05); ctx.strokeStyle = "#fff"; ctx.lineWidth = 5; ctx.lineCap = "round";
+    [[x, y, 1, 1], [x + cw, y, -1, 1], [x, y + ch, 1, -1], [x + cw, y + ch, -1, -1]].forEach(([a, b2, dx, dy]) => { ctx.beginPath(); ctx.moveTo(a + dx * u, b2); ctx.lineTo(a, b2); ctx.lineTo(a, b2 + dy * u); ctx.stroke(); });
+    ctx.restore();
+  }
+  const n = document.querySelector(".fe-hitung"); if (n) n.textContent = FE.foto.length > 1 ? "Foto " + (FE.aktif + 1) + " dari " + FE.foto.length : "Edit foto";
+}
+/* hasil akhir: potong dulu (sisi terpanjang ≤ 1600 px), lalu warna, lalu lapisan */
+function feEkspor(f){
+  const b = feDiputar(f), W = b.width, H = b.height, k = f.crop;
+  const s = Math.min(1, 1600 / Math.max(k.w * W, k.h * H)), c = kanvasBaru(k.w * W * s, k.h * H * s), ctx = c.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(b, k.x * W, k.y * H, k.w * W, k.h * H, 0, 0, c.width, c.height);
+  terapkanMatriks(c, feMatriks(f));
+  const pilih = FE.pilih; FE.pilih = null;
+  feLukisLapis(ctx, f, k, W, H, s);
+  FE.pilih = pilih;
+  return c;
+}
+
+/* ---------- tampilan editor ---------- */
+function feBuka(kanvas){
+  tutupModal();
+  const tt = document.getElementById("toast"); if (tt && /menyiapkan foto/.test(tt.textContent)) tt.classList.remove("show");
+  Object.assign(FE, {foto:kanvas.map(feFotoBaru), aktif:0, alat:"potong", pilih:null, ket:(document.getElementById("ob-teks") || {}).value || "", kirim:false});
+  document.querySelectorAll(".fe-layar").forEach(x => x.remove());
+  const el = document.createElement("div");
+  el.className = "fe-layar"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", "Edit foto");
+  el.innerHTML = '<div class="fe-atas"><button type="button" class="foto-x" data-aksi="fe-batal" aria-label="Batal">×</button>'+
+      '<strong class="fe-hitung">Edit foto</strong>'+
+      '<div class="fe-atas-kanan"><button type="button" class="fe-ikon fe-hapus-foto" data-aksi="fe-hapus-foto" aria-label="Buang foto ini" title="Buang foto ini">🗑</button><button type="button" class="fe-ikon fe-undo" data-aksi="fe-undo" aria-label="Urungkan" title="Urungkan" disabled>↶</button></div></div>'+
+    '<div class="fe-panggung" id="fe-panggung"><canvas id="fe-kanvas"></canvas></div>'+
+    '<div class="fe-opsi" id="fe-opsi"></div>'+
+    '<div class="fe-alat" role="toolbar" aria-label="Alat edit">'+FE_ALAT.map(([id, nama, ik]) => '<button type="button" class="fe-alat-btn" data-aksi="fe-alat" data-alat="'+id+'" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+ik+'"/></svg>'+nama+'</button>').join("")+'</div>'+
+    '<div class="fe-strip" id="fe-strip"></div>'+
+    '<div class="fe-bawah"><input id="fe-ket" maxlength="500" placeholder="Tambah keterangan..." aria-label="Keterangan foto" value="'+esc(FE.ket)+'">'+
+      '<button type="button" class="btn btn-primary fe-kirim" data-aksi="fe-kirim">Kirim</button></div>';
+  document.body.appendChild(el);
+  document.documentElement.classList.add("kb-terbuka");
+  fePasangPanggung();
+  feTampilAlat(); feStrip(); feGambar();
+}
+function feTutup(){
+  document.querySelectorAll(".fe-layar").forEach(x => x.remove());
+  FE.foto = [];
+  if (!document.querySelector(".kam-layar, .foto-layar")) document.documentElement.classList.remove("kb-terbuka");
+}
+function feStrip(){
+  const el = document.getElementById("fe-strip"); if (!el) return;
+  const k = document.querySelector(".fe-kirim"); if (k) k.textContent = FE.foto.length > 1 ? "Kirim " + FE.foto.length + " foto" : "Kirim";
+  const hf = document.querySelector(".fe-hapus-foto"); if (hf) hf.hidden = FE.foto.length < 2;
+  if (FE.foto.length < 2){ el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = FE.foto.map((f, i) => {
+    const b = feDiputar(f), t = kanvasBaru(96, 96 * b.height / b.width); t.getContext("2d").drawImage(b, 0, 0, t.width, t.height);
+    return '<button type="button" class="fe-thumb'+(i === FE.aktif ? " on" : "")+'" data-aksi="fe-ke" data-i="'+i+'" aria-label="Foto '+(i + 1)+'"><img src="'+t.toDataURL("image/jpeg", 0.6)+'" alt=""></button>';
+  }).join("") + (FE.foto.length < FOTO_MAKS ? '<button type="button" class="fe-thumb fe-tambah" data-aksi="fe-tambah" aria-label="Tambah foto">+</button>' : '');
+}
+const feSlider = (id, label, nilai) => '<label class="fe-geser"><span>'+label+'</span><input type="range" min="40" max="160" value="'+nilai+'" data-atur="'+id+'" aria-label="'+label+'"><b>'+(nilai - 100 > 0 ? "+" : "")+(nilai - 100)+'</b></label>';
+const feWarnaHTML = aktif => '<div class="fe-warna">'+FE_WARNA.map(w => '<button type="button" class="fe-titik'+(w === aktif ? " on" : "")+'" style="--w:'+w+'" data-aksi="fe-warna" data-w="'+w+'" aria-label="Warna '+w+'"></button>').join("")+'</div>';
+function feTampilAlat(){
+  const f = feKini(), el = document.getElementById("fe-opsi"); if (!el || !f) return;
+  document.querySelectorAll(".fe-alat-btn").forEach(b => { const on = b.dataset.alat === FE.alat; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  const pan = document.getElementById("fe-panggung"); if (pan) pan.dataset.alat = FE.alat;
+  let h = "";
+  if (FE.alat === "potong"){
+    h = '<div class="fe-baris">'+[["bebas", "Bebas"], ["1", "1:1"], ["0.75", "4:3"], ["1.3333", "3:4"], ["0.5625", "16:9"]].map(([r, l]) => '<button type="button" class="fe-pil'+(FE.rasio === r ? " on" : "")+'" data-aksi="fe-rasio" data-r="'+r+'">'+l+'</button>').join("")+
+      '<button type="button" class="fe-pil" data-aksi="fe-putar">⟳ Putar</button><button type="button" class="fe-pil" data-aksi="fe-reset-potong">Reset</button></div><p class="fe-petunjuk">Tarik sudut kotak untuk memotong, geser bagian tengah untuk memindah.</p>';
+  } else if (FE.alat === "atur"){
+    h = feSlider("cerah", "Kecerahan", f.atur.cerah) + feSlider("kontras", "Kontras", f.atur.kontras) + feSlider("saturasi", "Saturasi", f.atur.saturasi);
+  } else if (FE.alat === "filter"){
+    const b = feDiputar(f), t = kanvasBaru(72, 72 * Math.min(1.4, b.height / b.width));
+    h = '<div class="fe-baris fe-gulir">'+FE_FILTER.map(p => {
+      const c = kanvasBaru(t.width, t.height); c.getContext("2d").drawImage(b, 0, 0, c.width, c.height);
+      terapkanMatriks(c, feMatriks(Object.assign({}, f, {filter:p.id})));
+      return '<button type="button" class="fe-filter'+(f.filter === p.id ? " on" : "")+'" data-aksi="fe-filter" data-f="'+p.id+'"><img src="'+c.toDataURL("image/jpeg", 0.7)+'" alt=""><span>'+p.nama+'</span></button>';
+    }).join("")+'</div>';
+  } else if (FE.alat === "coret"){
+    h = feWarnaHTML(FE.warna)+'<div class="fe-baris">'+[[0.006, "Tipis"], [0.012, "Sedang"], [0.024, "Tebal"]].map(([t, l]) => '<button type="button" class="fe-pil'+(FE.tebal === t ? " on" : "")+'" data-aksi="fe-tebal" data-t="'+t+'">'+l+'</button>').join("")+'<span class="fe-petunjuk">Gores langsung di foto</span></div>';
+  } else if (FE.alat === "teks"){
+    const l = FE.pilih != null && f.lapis[FE.pilih] && f.lapis[FE.pilih].jenis === "teks" ? f.lapis[FE.pilih] : null;
+    h = l ? '<div class="fe-baris"><input id="fe-teks-isi" class="fe-teks-isi" maxlength="80" value="'+esc(l.teks)+'" aria-label="Isi teks"><button type="button" class="fe-pil'+(l.latar ? " on" : "")+'" data-aksi="fe-teks-latar">Latar</button><button type="button" class="fe-pil" data-aksi="fe-lapis-hapus">Hapus</button></div>'+
+        feWarnaHTML(l.warna)+'<label class="fe-geser"><span>Ukuran</span><input type="range" min="3" max="22" value="'+Math.round(l.ukuran * 100)+'" data-ukuran="1" aria-label="Ukuran teks"><b></b></label>'
+      : '<div class="fe-baris"><button type="button" class="btn btn-primary btn-kecil" data-aksi="fe-teks-baru">+ Tambah teks</button><span class="fe-petunjuk">Ketuk teks di foto untuk mengubah, geser untuk memindah</span></div>';
+  } else if (FE.alat === "stiker"){
+    const l = FE.pilih != null && f.lapis[FE.pilih] && f.lapis[FE.pilih].jenis === "stiker" ? f.lapis[FE.pilih] : null;
+    h = (l ? '<div class="fe-baris"><label class="fe-geser" style="flex:1"><span>Ukuran</span><input type="range" min="8" max="70" value="'+Math.round(l.ukuran * 100)+'" data-ukuran="1" aria-label="Ukuran stiker"><b></b></label><button type="button" class="fe-pil" data-aksi="fe-lapis-hapus">Hapus</button></div>' : '')+
+      '<div class="fe-baris fe-gulir">'+FE_STIKER.filter(m => MASKOT[m]).map(m => '<button type="button" class="fe-stiker" data-aksi="fe-stiker" data-m="'+m+'" aria-label="Stiker '+m+'">'+maskot(m, 44)+'</button>').join("")+'</div>';
+  } else if (FE.alat === "sensor"){
+    h = '<div class="fe-baris"><button type="button" class="fe-pil'+(FE.gaya === "kotak" ? " on" : "")+'" data-aksi="fe-gaya" data-g="kotak">▦ Kotak-kotak</button><button type="button" class="fe-pil'+(FE.gaya === "buram" ? " on" : "")+'" data-aksi="fe-gaya" data-g="buram">◌ Buram</button>'+
+      (f.lapis.some(l => l.jenis === "sensor") ? '<button type="button" class="fe-pil" data-aksi="fe-sensor-hapus">Hapus semua sensor</button>' : '')+'</div><p class="fe-petunjuk">Tarik kotak di bagian yang mau disamarkan, misalnya nomor rekening atau wajah.</p>';
+  }
+  el.innerHTML = h;
+  el.querySelectorAll("input[type=range]").forEach(r => {
+    r.addEventListener("pointerdown", () => feSimpanRiwayat());
+    r.addEventListener("keydown", () => { if (!r._k){ r._k = 1; feSimpanRiwayat(); } });
+    r.addEventListener("input", () => {
+      const f2 = feKini();
+      if (r.dataset.atur){ f2.atur[r.dataset.atur] = +r.value; r.nextElementSibling.textContent = (r.value - 100 > 0 ? "+" : "") + (r.value - 100); }
+      else if (FE.pilih != null && f2.lapis[FE.pilih]) f2.lapis[FE.pilih].ukuran = r.value / 100;
+      feGambar();
+    });
+  });
+  const ti = document.getElementById("fe-teks-isi");
+  if (ti){
+    ti.addEventListener("focus", () => feSimpanRiwayat(), {once:true});
+    ti.addEventListener("input", () => { const l = feKini().lapis[FE.pilih]; if (l){ l.teks = ti.value; feGambar(); } });
+  }
+  feTombolUndo();
+}
+
+/* ---------- sentuhan di panggung ---------- */
+function fePasangPanggung(){
+  const c = document.getElementById("fe-kanvas");
+  let geser = null;
+  const titik = e => { const r = c.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
+  const keFoto = (p, f) => { const a = feArea(f); return [a.x + p[0] * a.w, a.y + p[1] * a.h]; };
+  c.addEventListener("pointerdown", e => {
+    const f = feKini(); if (!f) return;
+    e.preventDefault(); c.setPointerCapture(e.pointerId);
+    const p = titik(e), u = keFoto(p, f);
+    if (FE.alat === "potong"){
+      const k = f.crop, r = c.getBoundingClientRect(), tol = 26 / Math.min(r.width, r.height);
+      const dekat = (a, b) => Math.abs(a - b) < tol * 1.4;
+      const sudut = [["kiri-atas", k.x, k.y], ["kanan-atas", k.x + k.w, k.y], ["kiri-bawah", k.x, k.y + k.h], ["kanan-bawah", k.x + k.w, k.y + k.h]].find(s => dekat(u[0], s[1]) && dekat(u[1], s[2]));
+      const dalam = u[0] > k.x && u[0] < k.x + k.w && u[1] > k.y && u[1] < k.y + k.h;
+      if (!sudut && !dalam) return;
+      feSimpanRiwayat();
+      geser = {jenis:sudut ? sudut[0] : "pindah", awal:u, crop:Object.assign({}, k)};
+    } else if (FE.alat === "coret"){
+      feSimpanRiwayat();
+      f.lapis.push({jenis:"coret", warna:FE.warna, tebal:FE.tebal, titik:[u]});
+      geser = {jenis:"coret"};
+    } else if (FE.alat === "sensor"){
+      feSimpanRiwayat();
+      f.lapis.push({jenis:"sensor", gaya:FE.gaya, x:u[0], y:u[1], w:0, h:0});
+      geser = {jenis:"sensor", awal:u};
+    } else if (FE.alat === "teks" || FE.alat === "stiker"){
+      let kena = null;
+      for (let i = f.lapis.length - 1; i >= 0; i--){ const l = f.lapis[i]; if ((l.jenis === "teks" || l.jenis === "stiker") && l._kotak && Math.abs(u[0] - l.x) <= l._kotak.w / 2 && Math.abs(u[1] - l.y) <= l._kotak.h / 2){ kena = i; break; } }
+      if (kena == null){ if (FE.pilih != null){ FE.pilih = null; feTampilAlat(); feGambar(); } return; }
+      const l = f.lapis[kena];
+      if (FE.alat !== (l.jenis === "teks" ? "teks" : "stiker")) FE.alat = l.jenis === "teks" ? "teks" : "stiker";
+      FE.pilih = kena; feSimpanRiwayat();
+      geser = {jenis:"lapis", awal:u, x:l.x, y:l.y};
+      feTampilAlat(); feGambar();
+    }
+  });
+  c.addEventListener("pointermove", e => {
+    if (!geser) return;
+    const f = feKini(), u = keFoto(titik(e), f), jepit = v => Math.max(0, Math.min(1, v));
+    if (geser.jenis === "coret"){ f.lapis[f.lapis.length - 1].titik.push([u[0], u[1]]); }
+    else if (geser.jenis === "sensor"){ const l = f.lapis[f.lapis.length - 1], a = geser.awal; l.x = Math.min(a[0], jepit(u[0])); l.y = Math.min(a[1], jepit(u[1])); l.w = Math.abs(jepit(u[0]) - a[0]); l.h = Math.abs(jepit(u[1]) - a[1]); }
+    else if (geser.jenis === "lapis"){ const l = f.lapis[FE.pilih]; l.x = jepit(geser.x + u[0] - geser.awal[0]); l.y = jepit(geser.y + u[1] - geser.awal[1]); }
+    else feGeserPotong(f, geser, u);
+    feGambar();
+  });
+  const lepas = () => {
+    if (!geser) return;
+    const f = feKini();
+    if (geser.jenis === "sensor"){ const l = f.lapis[f.lapis.length - 1]; if (l.w < 0.01 || l.h < 0.01){ f.lapis.pop(); f.riwayat.pop(); } feTampilAlat(); }
+    geser = null; feGambar(); feTombolUndo();
+  };
+  c.addEventListener("pointerup", lepas); c.addEventListener("pointercancel", lepas);
+}
+function feGeserPotong(f, g, u){
+  const b = feDiputar(f), asp = b.width / b.height, k = Object.assign({}, g.crop), min = 0.08;
+  const dx = u[0] - g.awal[0], dy = u[1] - g.awal[1];
+  if (g.jenis === "pindah"){ k.x = Math.max(0, Math.min(1 - k.w, k.x + dx)); k.y = Math.max(0, Math.min(1 - k.h, k.y + dy)); }
+  else {
+    let x1 = k.x, y1 = k.y, x2 = k.x + k.w, y2 = k.y + k.h;
+    if (/kiri/.test(g.jenis)) x1 = Math.max(0, Math.min(x2 - min, x1 + dx)); else x2 = Math.min(1, Math.max(x1 + min, x2 + dx));
+    if (/atas/.test(g.jenis)) y1 = Math.max(0, Math.min(y2 - min, y1 + dy)); else y2 = Math.min(1, Math.max(y1 + min, y2 + dy));
+    if (FE.rasio !== "bebas"){
+      /* rasio tinggi/lebar dalam piksel → dalam satuan 0..1 */
+      const r = +FE.rasio * asp;
+      let w = x2 - x1, h = w * r;
+      if (/atas/.test(g.jenis)){ if (y2 - h < 0){ h = y2; w = h / r; } y1 = y2 - h; } else { if (y1 + h > 1){ h = 1 - y1; w = h / r; } y2 = y1 + h; }
+      if (/kiri/.test(g.jenis)) x1 = x2 - w; else x2 = x1 + w;
+    }
+    k.x = x1; k.y = y1; k.w = x2 - x1; k.h = y2 - y1;
+  }
+  f.crop = k;
+}
+function feTerapkanRasio(f){
+  if (FE.rasio === "bebas") return;
+  const b = feDiputar(f), r = +FE.rasio * b.width / b.height;
+  let w = 1, h = r; if (h > 1){ h = 1; w = 1 / r; }
+  f.crop = {x:(1 - w) / 2, y:(1 - h) / 2, w, h};
+}
+/* putar 90° searah jarum jam: semua lapisan ikut berpindah */
+function fePutar(f){
+  const ptk = (u, v) => [1 - v, u], kotak = k => ({x:1 - (k.y + k.h), y:k.x, w:k.h, h:k.w});
+  f.rot = (f.rot + 1) % 4; f.crop = kotak(f.crop);
+  f.lapis.forEach(l => {
+    if (l.jenis === "coret") l.titik = l.titik.map(p => ptk(p[0], p[1]));
+    else if (l.jenis === "sensor") Object.assign(l, kotak(l));
+    else { const p = ptk(l.x, l.y); l.x = p[0]; l.y = p[1]; }
+  });
+}
+
+async function feKirim(){
+  if (FE.kirim) return;
+  if (!obSiap()){ toast("Obrolan belum tersambung. Cek koneksi & sinkron awan."); return; }
+  FE.kirim = true;
+  const ket = (document.getElementById("fe-ket") || {}).value || "", semua = FE.foto.slice();
+  const tombol = document.querySelector(".fe-kirim");
+  const lapor = t => { if (tombol){ tombol.disabled = true; tombol.textContent = t; } };
+  let gagal = 0, ke = 0;
+  try {
+    for (const f of semua){
+      ke++; lapor(semua.length > 1 ? "Mengirim " + ke + "/" + semua.length + "..." : "Mengirim...");
+      await new Promise(r => setTimeout(r, 30));
+      try { await kirimFotoOb(feEkspor(f), ke === 1 ? ket.trim() : ""); }
+      catch(e){
+        gagal++;
+        if (e.status === 404 || e.status === 400){ toast("Tempat penyimpanan foto belum disiapkan. Jalankan dompet-kita-supabase-6.sql dulu."); break; }
+      }
+    }
+  } finally { FE.kirim = false; }
+  if (gagal && gagal === semua.length){ lapor("Coba lagi"); if (tombol) tombol.disabled = false; toast("Foto belum terkirim. Cek koneksi internet, lalu coba lagi."); return; }
+  if (gagal) toast(gagal + " foto belum terkirim. Cek koneksi internet.");
+  const t = document.getElementById("ob-teks"); if (t && ket && t.value === ket){ t.value = ""; S.obDraf = ""; }
+  feTutup();
+  obTampilkanUlang(true);
+}
+
+Object.assign(AKSI, {
+  "ob-foto-galeri": () => { tutupModal(); kameraMati(); pilihBerkasFoto(false); },
+  "ob-foto-kamera": () => { tutupModal(); kameraBuka(); },
+  "kam-tutup": () => kameraMati(),
+  "kam-jepret": () => kameraJepret(),
+  "kam-balik": () => { KAM.hadap = KAM.hadap === "user" ? "environment" : "user"; kameraNyala(); },
+  "fe-batal": () => {
+    const ubah = FE.foto.some(f => f.riwayat.length);
+    if (!ubah || confirmHalus()) feTutup();
+  },
+  "fe-undo": () => feUrungkan(),
+  "fe-alat": t => { FE.alat = t.dataset.alat; FE.pilih = null; feTampilAlat(); feGambar(); },
+  "fe-ke": t => { FE.aktif = +t.dataset.i; FE.pilih = null; feTampilAlat(); feStrip(); feGambar(); },
+  "fe-tambah": () => {
+    const i = document.createElement("input"); i.type = "file"; i.accept = "image/*"; i.multiple = true; i.style.display = "none";
+    i.addEventListener("change", async () => {
+      const sisa = FOTO_MAKS - FE.foto.length, files = [...(i.files || [])].slice(0, sisa); i.remove();
+      if ((i.files || []).length > sisa) toast("Maksimal " + FOTO_MAKS + " foto sekali kirim.");
+      for (const f of files){ try { FE.foto.push(feFotoBaru(await muatGambar(f))); } catch(e){} }
+      feStrip();
+    });
+    document.body.appendChild(i); i.click();
+  },
+  "fe-hapus-foto": () => { if (FE.foto.length < 2) return; FE.foto.splice(FE.aktif, 1); FE.aktif = Math.min(FE.aktif, FE.foto.length - 1); FE.pilih = null; feTampilAlat(); feStrip(); feGambar(); },
+  "fe-rasio": t => { feSimpanRiwayat(); FE.rasio = t.dataset.r; feTerapkanRasio(feKini()); feTampilAlat(); feGambar(); },
+  "fe-putar": () => { feSimpanRiwayat(); fePutar(feKini()); feTampilAlat(); feStrip(); feGambar(); },
+  "fe-reset-potong": () => { feSimpanRiwayat(); FE.rasio = "bebas"; feKini().crop = {x:0, y:0, w:1, h:1}; feTampilAlat(); feGambar(); },
+  "fe-filter": t => { feSimpanRiwayat(); feKini().filter = t.dataset.f; feTampilAlat(); feGambar(); },
+  "fe-warna": t => {
+    const f = feKini(), l = FE.pilih != null ? f.lapis[FE.pilih] : null;
+    if (FE.alat === "teks" && l){ feSimpanRiwayat(); l.warna = t.dataset.w; } else FE.warna = t.dataset.w;
+    feTampilAlat(); feGambar();
+  },
+  "fe-tebal": t => { FE.tebal = +t.dataset.t; feTampilAlat(); },
+  "fe-gaya": t => { FE.gaya = t.dataset.g; feTampilAlat(); },
+  "fe-sensor-hapus": () => { feSimpanRiwayat(); const f = feKini(); f.lapis = f.lapis.filter(l => l.jenis !== "sensor"); FE.pilih = null; feTampilAlat(); feGambar(); },
+  "fe-teks-baru": () => {
+    feSimpanRiwayat(); const f = feKini(), k = f.crop;
+    f.lapis.push({jenis:"teks", teks:"Teks", warna:FE.warna === "#2B1D14" ? "#2B1D14" : "#FFFFFF", latar:false, ukuran:feSisiPotong(f) * 0.09, x:k.x + k.w / 2, y:k.y + k.h / 2});
+    FE.pilih = f.lapis.length - 1; feTampilAlat(); feGambar();
+    const i = document.getElementById("fe-teks-isi"); if (i){ i.focus(); i.select(); }
+  },
+  "fe-teks-latar": () => { const l = feKini().lapis[FE.pilih]; if (!l) return; feSimpanRiwayat(); l.latar = !l.latar; feTampilAlat(); feGambar(); },
+  "fe-stiker": t => {
+    feSimpanRiwayat(); const f = feKini(), k = f.crop;
+    stikerGambar(t.dataset.m);
+    f.lapis.push({jenis:"stiker", m:t.dataset.m, ukuran:feSisiPotong(f) * 0.3, x:k.x + k.w / 2, y:k.y + k.h / 2});
+    FE.pilih = f.lapis.length - 1; feTampilAlat(); feGambar();
+  },
+  "fe-lapis-hapus": () => { if (FE.pilih == null) return; feSimpanRiwayat(); feKini().lapis.splice(FE.pilih, 1); FE.pilih = null; feTampilAlat(); feGambar(); },
+  "fe-kirim": () => feKirim()
+});
+/* sisi terpendek potongan, dalam satuan sisi terpendek foto penuh */
+function feSisiPotong(f){ const b = feDiputar(f), k = f.crop; return Math.min(k.w * b.width, k.h * b.height) / Math.min(b.width, b.height); }
+function confirmHalus(){ return window.confirm("Batalkan edit? Foto belum terkirim."); }
+document.addEventListener("keydown", e => {
+  if (!document.querySelector(".fe-layar")) return;
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && !/INPUT|TEXTAREA/.test((e.target || {}).tagName || "")){ e.preventDefault(); feUrungkan(); }
+  if ((e.key === "Delete" || e.key === "Backspace") && FE.pilih != null && !/INPUT|TEXTAREA/.test((e.target || {}).tagName || "")){ e.preventDefault(); AKSI["fe-lapis-hapus"](); }
+});
+addEventListener("resize", () => { if (document.querySelector(".fe-layar")) feGambar(); });
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-aksi]");
