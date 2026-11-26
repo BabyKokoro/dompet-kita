@@ -15,18 +15,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#F7EFE6; --surface:#FFFBF6; --surface2:#EFE2D3; --tint:#F3E6D8; --line:#E6D5C3;
-  --primary:#8B5E43; --primary-dark:#5C3D2E; --text:#4A3226; --muted:#6E5646;
-  --green:#3F6B3A; --green-bg:#E3EEDB; --red:#A6452F; --red-bg:#F8E1DA; --gold:#E3A857;
-  --r-lg:28px; --r-md:20px; --r-sm:14px;
-  --on-primary:#FFFFFF; --input:#FFFFFF; --chip-teks:#6E4A34; --hijau-teks:#2F4F2A; --merah-teks:#8A3A28;
-  --kuning-bg:#FBE7C6; --kuning-teks:#7A4A10; --garis-tipis:var(--garis-tipis);
-  --font-head:"Fredoka","Nunito",ui-rounded,system-ui,sans-serif;
-  --font-body:"Nunito",ui-rounded,system-ui,sans-serif;
-}
+:root{--bg:#F7EFE6;--surface:#FFFBF6;--surface2:#EFE2D3;--tint:#F3E6D8;--line:#E6D5C3;--primary:#8B5E43;--primary-dark:#5C3D2E;--text:#4A3226;--muted:#6E5646;--green:#3F6B3A;--green-bg:#E3EEDB;--red:#A6452F;--red-bg:#F8E1DA;--gold:#E3A857;--r-lg:28px;--r-md:20px;--r-sm:14px;--on-primary:#FFFFFF;--input:#FFFFFF;--chip-teks:#6E4A34;--hijau-teks:#2F4F2A;--merah-teks:#8A3A28;--kuning-bg:#FBE7C6;--kuning-teks:#7A4A10;--garis-tipis:var(--garis-tipis);--font-head:"Fredoka","Nunito",ui-rounded,system-ui,sans-serif;--font-body:"Nunito",ui-rounded,system-ui,sans-serif;--blob:#F1E4D6;--bayang:#E2D2C0;--riak:rgba(139,94,67,.42);--riak-isi:rgba(139,94,67,.06)}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior-y:contain}
 h1,h2,h3{font-family:var(--font-head);font-weight:600;margin:0;line-height:1.2;color:var(--text)}
 h1{font-size:30px} h2{font-size:21px} h3{font-size:18px}
 p{margin:0}
@@ -34,9 +25,8 @@ button,input,select{font:inherit;color:inherit}
 a{color:var(--primary)}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-.maskot{display:inline-flex;flex:0 0 auto}
+.maskot{display:inline-flex;flex:0 0 auto;--gerak:m-angguk;--dur:1.1s}
 .maskot svg{width:100%;height:100%;display:block}
-
 .card{background:var(--surface);border:2px solid var(--line);border-radius:var(--r-lg);padding:24px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:16px;border:2px solid transparent;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;transition:transform .1s, background .15s}
 .btn:active{transform:scale(.97)}
@@ -56,7 +46,6 @@ a{color:var(--primary)}
 .field input,.field select{height:50px;border-radius:var(--r-sm);border:2px solid var(--line);background:var(--input);padding:0 14px;font-weight:600;font-size:16px}
 .field input:focus,.field select:focus{border-color:var(--primary);outline:none}
 .row-btn{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
-
 /* layar tengah: sambutan, daftar */
 .center-screen{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:28px 16px}
 .welcome{max-width:640px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;padding:36px 28px}
@@ -72,7 +61,6 @@ legend{font-weight:800;font-size:15px;margin-bottom:8px;padding:0}
 .avatar-opt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border-radius:var(--r-md);border:3px solid var(--line);background:var(--input);cursor:pointer;font-weight:800;font-size:14px}
 .avatar-opt.on{border-color:var(--primary);background:var(--tint)}
 .pin-card{max-width:440px;align-items:center;text-align:center}
-
 /* pinpad */
 .pin{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
 .pin-dots{display:flex;gap:14px}
@@ -91,7 +79,6 @@ legend{font-weight:800;font-size:15px;margin-bottom:8px;padding:0}
 .pin.locked .pin-keys{opacity:.4;pointer-events:none}
 .pin.shake .pin-dots{animation:shake .35s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-
 /* login */
 .login-wrap{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative;overflow:hidden}
 .login-grid{width:100%;max-width:1120px;display:flex;flex-wrap:wrap;gap:28px;align-items:stretch;position:relative;z-index:1}
@@ -103,7 +90,6 @@ legend{font-weight:800;font-size:15px;margin-bottom:8px;padding:0}
 .profile{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 20px;min-width:128px;border-radius:24px;border:3px solid var(--line);background:var(--surface);cursor:pointer;font-weight:800;font-size:16px}
 .profile.on{border-color:var(--primary);background:var(--tint)}
 .pin-label{font-weight:800;color:var(--muted)}
-
 /* kerangka aplikasi */
 .shell{display:grid;grid-template-columns:264px minmax(0,1fr);gap:24px;padding:24px;min-height:100vh;min-height:100dvh;align-items:start}
 .sidebar{background:var(--surface2);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:16px;position:sticky;top:24px}
@@ -143,19 +129,16 @@ legend{font-weight:800;font-size:15px;margin-bottom:8px;padding:0}
 .geng-kartu{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:18px 12px}
 .geng-aks{font-size:13px;line-height:1.4}
 .geng-tugas{font-size:14px;font-weight:800;line-height:1.4;margin-top:2px}
-
 .bottomnav{display:none}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--primary-dark);color:#fff;padding:12px 20px;border-radius:16px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:calc(100% - 32px);text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 /* modal */
 .backdrop{position:fixed;inset:0;background:rgba(60,40,28,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
 .modal{max-width:460px;width:100%;max-height:calc(100dvh - 32px);overflow:auto;display:flex;flex-direction:column;gap:16px;position:relative}
 .modal-x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:14px;border:none;background:var(--tint);cursor:pointer;font-size:22px;color:var(--primary-dark)}
 .modal.center{align-items:center;text-align:center}
 .sheet-list{display:flex;flex-direction:column;gap:4px}
-
-/* langkah 4 */
+/* transaksi, dompet & kategori */
 .modal-lebar{max-width:900px}
 .seg-wrap{display:flex;gap:4px;background:var(--surface2);border-radius:18px;padding:5px;flex-wrap:wrap;align-self:flex-start}
 .seg{min-height:44px;padding:0 16px;border-radius:14px;border:none;background:transparent;font-weight:800;font-size:14px;color:var(--primary-dark);cursor:pointer}
@@ -211,7 +194,7 @@ legend{font-weight:800;font-size:15px;margin-bottom:8px;padding:0}
 .tx-teks span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tx-nom{font-weight:800;white-space:nowrap}
 .tx-mini{display:flex;flex-direction:column;margin:0 -10px}
-.naik{color:var(--green)} .turun{color:var(--red)} .netral{color:var(--primary-dark)}
+  .netral{color:var(--primary-dark)}
 .donut-wrap{display:flex;flex-wrap:wrap;gap:28px;align-items:center}
 .donut{width:210px;height:210px;border-radius:50%;flex:0 0 210px;display:flex;align-items:center;justify-content:center;margin:0 auto}
 .donut-hole{width:128px;height:128px;border-radius:50%;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -239,8 +222,7 @@ legend{font-weight:800;font-size:15px;margin-bottom:8px;padding:0}
 .warna-grid{display:flex;flex-wrap:wrap;gap:8px}
 .warna-opt{width:44px;height:44px;border-radius:12px;border:3px solid transparent;cursor:pointer}
 .warna-opt.on{border-color:var(--text);box-shadow:inset 0 0 0 3px #fff}
-
-/* langkah 5 */
+/* anggaran, tabungan, bersama, utang, tagihan rutin */
 .bar{height:12px;background:var(--tint);border-radius:999px;overflow:hidden}
 .bar > div{height:100%;border-radius:999px;transition:width .3s}
 .bar-wrap{position:relative}
@@ -281,8 +263,7 @@ input[type=range]{width:100%;accent-color:var(--primary);height:32px}
 .mini-baris{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
 .mini-baris > span:first-child{min-width:0}
 .mini-baris .maskot{vertical-align:middle}
-
-/* langkah 6 */
+/* laporan, lencana & level */
 .lv-kecil{display:block;font-size:12px;font-weight:800;color:#8B5E43}
 .stats-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 .stats-4 .val{font-size:25px}
@@ -356,15 +337,8 @@ details.card summary{cursor:pointer;min-height:32px;display:flex;align-items:cen
   .kal-sel{border:1px solid #eee}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
-
-/* langkah 7A: mode gelap & tambahan */
-html[data-tema=gelap]{
-  --bg:#1F1612; --surface:#2B201A; --surface2:#352720; --tint:#433126; --line:#4C392D;
-  --primary:#D9A77C; --primary-dark:#EBCFB2; --text:#F3E6D8; --muted:#C2AD9C;
-  --green:#94C98C; --green-bg:#22301E; --red:#EE937E; --red-bg:#3A231D; --gold:#E3B341;
-  --on-primary:#24170F; --input:#241A15; --chip-teks:#EBCFB2; --hijau-teks:#BFE3B5; --merah-teks:#F6BDAE;
-  --kuning-bg:#45361C; --kuning-teks:#F2D08A; --garis-tipis:#3A2C23; color-scheme:dark;
-}
+/* mode gelap & tambahan */
+html[data-tema=gelap]{--bg:#1F1612;--surface:#2B201A;--surface2:#352720;--tint:#433126;--line:#4C392D;--primary:#D9A77C;--primary-dark:#EBCFB2;--text:#F3E6D8;--muted:#C2AD9C;--green:#94C98C;--green-bg:#22301E;--red:#EE937E;--red-bg:#3A231D;--gold:#E3B341;--on-primary:#24170F;--input:#241A15;--chip-teks:#EBCFB2;--hijau-teks:#BFE3B5;--merah-teks:#F6BDAE;--kuning-bg:#45361C;--kuning-teks:#F2D08A;--garis-tipis:#3A2C23;color-scheme:dark;--blob:#2A1E18;--bayang:#120D0A;--riak:rgba(240,222,200,.46);--riak-isi:rgba(240,222,200,.04)}
 html[data-tema=gelap] .stat.utama{background:#5C3D2E;border-color:#6B4733}
 html[data-tema=gelap] .toast{background:#F3E6D8;color:#24170F}
 html[data-tema=gelap] .backdrop{background:rgba(0,0,0,.62)}
@@ -391,7 +365,6 @@ html[data-tema=gelap] .maskot svg{filter:drop-shadow(0 0 1px rgba(243,230,216,.3
 .sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:18px}
 .sub-grid h3{font-size:16px}
 details summary{cursor:pointer;min-height:32px}
-
 /* login B: lengkung senyum + hiasan */
 .dekor{position:absolute;inset:0;pointer-events:none;z-index:0}
 .blob{position:absolute;border-radius:50%;background:var(--blob)}
@@ -416,23 +389,18 @@ details summary{cursor:pointer;min-height:32px}
 .lk-maskot{position:absolute;aspect-ratio:1}
 .lk-maskot .maskot{width:100%!important;height:100%!important}
 .lk-bayang{position:absolute;height:5%;border-radius:50%;background:var(--bayang)}
-:root{--blob:#F1E4D6;--bayang:#E2D2C0}
-html[data-tema=gelap]{--blob:#2A1E18;--bayang:#120D0A}
+
 html[data-tema=gelap] .dk-hati path,html[data-tema=gelap] .dk-kilau path{fill:#FFE58A;opacity:.55}
 html[data-tema=gelap] .dk-koin{opacity:.6}
 html[data-tema=gelap] .lengkung-garis path{stroke:#6B4E3A}
-
 /* jam real time */
 .jam-hidup{display:flex;flex-direction:column;line-height:1.25}
 .jam-waktu{font-family:var(--font-head);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums;color:var(--text)}
 .jam-tanggal{font-size:13px;font-weight:700;color:var(--muted)}
 .jam-sidebar{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:var(--r-md);padding:8px 12px}
 .jam-login{background:var(--surface);border-radius:16px;padding:6px 14px;text-align:right}
-.jam-login .jam-waktu{font-size:18px}
 .jam-pojok{position:fixed;top:14px;right:14px;z-index:30;display:flex;align-items:center;gap:8px;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:6px 14px}
-.jam-pojok .jam-waktu{font-size:17px}
 .topbar-hp{display:none}
-
 .btn-sembunyi{display:flex;align-items:center;gap:8px;min-height:44px;padding:4px 12px 4px 6px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--primary-dark);font-weight:800;font-size:14px;cursor:pointer;width:100%}
 .btn-sembunyi:hover{border-color:var(--primary)}
 .btn-sembunyi.aktif{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
@@ -470,7 +438,7 @@ html[data-tema=gelap] .geng-fakta strong{color:var(--gold)}
 .fakta-titik i{width:6px;height:6px;border-radius:50%;background:var(--line)}
 .fakta-titik i.on{background:var(--primary)}
 @keyframes muncul{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-/* ---- langkah 8 ---- */
+/* ---- investasi, BPJS, aset ---- */
 [hidden]{display:none!important}
 .dua > .field{justify-content:flex-end}
 .dua > .field:not(:has(.uang-pratinjau))::after{content:"";min-height:18px}
@@ -499,7 +467,7 @@ html[data-tema=gelap] .geng-fakta strong{color:var(--gold)}
 .kekayaan-kartu{display:flex;flex-direction:column;gap:12px}
 .kk-angka{font-family:var(--font-head);font-weight:600;font-size:40px;color:var(--primary-dark);line-height:1.15}
 html[data-tema=gelap] .kk-angka{color:var(--gold)}
-/* ---- langkah 7B ---- */
+/* ---- fitur tambahan ---- */
 .sidebar{max-height:calc(100vh - 48px);overflow-y:auto;scrollbar-width:thin}
 .nav-item{min-height:42px}
 .fav-wrap{display:flex;flex-wrap:wrap;gap:8px}
@@ -577,7 +545,6 @@ html[data-tema=gelap] .roo-sel.isi{background:#557A4A;border-color:#557A4A}
   #in-nom{font-size:24px;height:56px}
   .donut{width:180px;height:180px;flex-basis:180px}
   .donut-hole{width:110px;height:110px}
-  .filter{flex:1 1 140px}
   .bulan-nav{flex:1 1 100%;justify-content:space-between}
   .seg-wrap{align-self:stretch;flex-wrap:nowrap}
   .seg{flex:1 1 0;padding:0 6px;font-size:13px}
@@ -617,9 +584,7 @@ html[data-tema=gelap] .roo-sel.isi{background:#557A4A;border-color:#557A4A}
   .kw-list li{flex-wrap:wrap}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-
-/* langkah 11 */
-html,body{overscroll-behavior-y:contain}
+/* segarkan, kunci cepat, panduan, simulasi utang, valas */
 .pilih-set{height:48px;border-radius:14px;border:2px solid var(--line);padding:0 12px;font-weight:700;background:var(--input);color:var(--text);font:inherit;font-weight:700}
 kbd{display:inline-block;min-width:26px;padding:2px 8px;border:2px solid var(--line);border-bottom-width:4px;border-radius:8px;background:var(--surface);font-family:inherit;font-weight:800;font-size:13px;text-align:center;line-height:1.4}
 .ptr{position:fixed;top:0;left:50%;z-index:45;display:flex;white-space:nowrap;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--surface);border:2px solid var(--line);box-shadow:0 6px 18px rgba(60,40,28,.2);font-weight:800;font-size:14px;color:var(--primary-dark);opacity:0;pointer-events:none;transform:translate(-50%,-60px);transition:opacity .15s}
@@ -627,8 +592,8 @@ kbd{display:inline-block;min-width:26px;padding:2px 8px;border:2px solid var(--l
 .ptr .maskot{transition:transform .05s}
 .ptr.muter .maskot{animation:ptr-putar 1s linear infinite}
 @keyframes ptr-putar{to{transform:rotate(360deg)}}
-.banner-versi{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:55;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 24px);padding:10px 14px;border-radius:18px;background:var(--surface);border:2px solid var(--primary);box-shadow:0 8px 24px rgba(60,40,28,.25);font-size:14px}
-.banner-versi > span:not(.maskot){flex:1 1 200px}.banner-versi{width:max-content;max-width:min(560px,calc(100% - 24px))}
+.banner-versi{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:55;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 14px;border-radius:18px;background:var(--surface);border:2px solid var(--primary);box-shadow:0 8px 24px rgba(60,40,28,.25);font-size:14px;width:max-content;max-width:min(560px,calc(100% - 24px))}
+.banner-versi > span:not(.maskot){flex:1 1 200px}
 .btn-kunci-hp{position:relative;display:flex;align-items:center;justify-content:center;min-width:40px;min-height:40px;padding:2px;border-radius:14px;border:2px solid var(--line);background:var(--surface);cursor:pointer}
 .btn-kunci-hp:hover{border-color:var(--primary)}
 .btn-kunci-hp .gembok{position:absolute;right:-5px;bottom:-5px;width:20px;height:20px;border-radius:50%;background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
@@ -684,7 +649,7 @@ html[data-tema=gelap] .valas-hasil{color:var(--gold)}
   .pa-tab .seg{font-size:12px}
 }
 @media print{.fab-bantu,.ptr,.banner-versi{display:none!important}}
-/* langkah 12 */
+/* pemulihan PIN, sidik jari, lokasi */
 .bendera{display:inline-block;vertical-align:-2px;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.18);flex:0 0 auto;line-height:0}
 .bendera svg{width:100%;height:100%;display:block}
 .bendera-emoji{display:inline-block;line-height:1;vertical-align:-2px}
@@ -724,7 +689,7 @@ html[data-tema=gelap] .valas-hasil{color:var(--gold)}
   body.mode-cetak-kode .cetak-kode{display:block!important}
   body.mode-cetak-kode .cetak-kode img{width:100%;max-width:700px}
 }
-/* langkah 13 */
+/* anggaran acara, bukti transfer, hapus beberapa */
 .acara-kartu{gap:8px}
 .acara-mini{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-top:1px solid var(--line)}
 .acara-mini:first-of-type{border-top:0}
@@ -756,7 +721,7 @@ html[data-tema=gelap] .snack{background:#F3E6D8;color:#24170F}
   .bar-pilih{bottom:calc(84px + env(safe-area-inset-bottom))}
   .snack{bottom:calc(100px + env(safe-area-inset-bottom))}
 }
-/* langkah 14 */
+/* undang pasangan & status aktif */
 .status-aktif{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted)}
 .status-aktif i{width:9px;height:9px;border-radius:50%;background:#9A8A7C;display:inline-block}
 .status-aktif.on{color:var(--green)}
@@ -765,7 +730,7 @@ html[data-tema=gelap] .snack{background:#F3E6D8;color:#24170F}
 .status-pasangan{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}
 .qr-hitung.ok{color:var(--green);font-weight:800}
 .modal-undang .qr-wadah,.modal-undang .qr-hitung{align-self:center;text-align:center}
-/* langkah 16: obrolan */
+/* obrolan */
 .ob-lencana{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#E0574B;color:#fff;font-size:12px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;line-height:1}
 .ob-lencana[hidden]{display:none}
 .btn-obrolan-hp .ob-lencana{position:absolute;top:-6px;right:-7px;margin:0;border:2px solid var(--bg)}
@@ -813,7 +778,7 @@ html[data-tema=gelap] .ob-centang.dibaca{color:#8EC5FF}
   .shell:has(.ob-tulis) .fab-bantu{display:none}
   .topbar-hp .brand{min-width:0}
 }
-/* 1.5.1: bilah bawah Obrolan + Lingling di kartu saldo + peran Boo */
+/* bilah bawah Obrolan + Lingling di kartu saldo */
 .lingling-kartu{display:none}
 @media (max-width:900px){
   .stat.utama{position:relative}
@@ -836,13 +801,13 @@ html[data-tema=gelap] .ob-centang.dibaca{color:#8EC5FF}
 .ob-baru{align-self:center;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 6px;border-radius:999px;border:2px solid var(--primary);background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .ob-baru[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){.bn-ob.ada .bn-ob-ikon .maskot,.ob-ketik-boo .maskot,.ob-titik i{animation:none}}
-/* langkah 17: kutipan & doa berganti */
+/* kutipan & doa berganti */
 [data-putar]{transition:opacity .32s ease,transform .32s ease}
 [data-putar].putar-keluar{opacity:0;transform:translateY(6px)}
 .maskot.angguk-sekali{animation:angguk-sekali .7s ease}
 @keyframes angguk-sekali{0%,100%{transform:none}30%{transform:rotate(-8deg) translateY(-2px)}60%{transform:rotate(5deg)}}
 @media (prefers-reduced-motion:reduce){[data-putar]{transition:none}.maskot.angguk-sekali{animation:none}}
-/* langkah 18: animasi maskot */
+/* animasi maskot */
 .maskot svg [class*="a-"]{transform-box:view-box}
 .maskot svg{transform-origin:50% 88%;overflow:visible}
 .maskot .a-koin{opacity:0}
@@ -851,7 +816,6 @@ html[data-tema=gelap] .ob-centang.dibaca{color:#8EC5FF}
 @keyframes m-napas{0%,100%{scale:1}50%{scale:1.022 1.034}}
 @keyframes m-kedip{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}97%{transform:scaleY(1)}}
 /* gerakan badan per maskot */
-.maskot{--gerak:m-angguk;--dur:1.1s}
 .maskot[data-m=alpha],.maskot[data-m=jamal],.maskot[data-m=kenzo],.maskot[data-m=lingling],.maskot[data-m=niko],.maskot[data-m=owi],.maskot[data-m=rubi]{--gerak:m-miring}
 .maskot[data-m=beebee],.maskot[data-m=ducky],.maskot[data-m=lumia],.maskot[data-m=octo]{--gerak:m-apung}
 .maskot[data-m=brownie],.maskot[data-m=kelo],.maskot[data-m=lupi],.maskot[data-m=snaily]{--gerak:m-goyang}
@@ -940,7 +904,7 @@ html[data-tema=gelap] .ob-centang.dibaca{color:#8EC5FF}
 .set-baris-anim{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:2px dashed var(--line)}
 html[data-animasi=mati] .maskot,html[data-animasi=mati] .maskot *{animation:none!important}
 @media (prefers-reduced-motion:reduce){.maskot,.maskot *,.konfeti i{animation:none!important}.panggung-maskot{transition:none}}
-/* langkah 19: latar login bergerak & penanda waktu */
+/* latar login & penanda waktu */
 .jam-baris{display:inline-flex;align-items:center;gap:6px}
 .ikon-waktu{display:inline-flex;width:1.05em;height:1.05em;flex:0 0 auto;vertical-align:-.12em}
 .ikon-waktu svg{width:100%;height:100%;overflow:visible}
@@ -989,8 +953,8 @@ html[data-tema=gelap] .langit[data-waktu=malam] .langit-warna{background:linear-
 .lg-bulan .lg-cahaya{fill:#FFF3C4;opacity:.18}
 .lg-bulan .lg-sabit{fill:#F6E7B0}
 .lg-bulan .lg-kawah{fill:#E3CF8B}
-.lg-awan{height:auto;animation:lg-awan 70s linear infinite}
-.lg-awan .aw-badan{fill:#FFFFFF}.lg-awan{opacity:.9}.lg-awan .aw-kilap{stroke:#FFFFFF;opacity:0}
+.lg-awan{height:auto;animation:lg-awan 70s linear infinite;opacity:.9}
+.lg-awan .aw-badan{fill:#FFFFFF}.lg-awan .aw-kilap{stroke:#FFFFFF;opacity:0}
 html[data-tema=gelap] .lg-awan .aw-badan{fill:#5E5048}html[data-tema=gelap] .lg-awan{opacity:.75}
 html[data-tema=gelap] .lg-awan .aw-kilap{stroke:#9C8B7E;opacity:.9}
 .langit[data-waktu=sore] .lg-awan .aw-badan{fill:#FFE1D2}
@@ -999,12 +963,11 @@ html[data-tema=gelap] .langit[data-waktu=siang] .lg-awan .aw-badan{fill:#4F5A60}
 .lg-awan.aw2{animation-duration:95s;animation-delay:-30s}.lg-awan.aw3{animation-duration:80s;animation-delay:-55s}
 @keyframes lg-awan{0%{transform:translateX(-30vw)}100%{transform:translateX(70vw)}}
 .lg-burung{width:26px;animation:lg-burung 26s linear infinite}
-.lg-burung path{fill:none;stroke:#8B5E43;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;animation:lg-kepak .9s ease-in-out infinite}
+.lg-burung path{fill:none;stroke:#8B5E43;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;animation:lg-kepak .9s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
 html[data-tema=gelap] .lg-burung path{stroke:#D9BFA6}
 .lg-burung.b2{width:20px;animation-delay:-4s}.lg-burung.b3{width:16px;animation-delay:-9s}
 @keyframes lg-burung{0%{transform:translate(-25vw,10px)}100%{transform:translate(85vw,-60px)}}
 @keyframes lg-kepak{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
-.lg-burung path{transform-box:fill-box;transform-origin:50% 50%}
 .lg-bintang{width:3px;height:3px;border-radius:50%;background:#FFF6D6;box-shadow:0 0 6px #FFF1B8;animation:lg-kelip 3s ease-in-out infinite}
 @keyframes lg-kelip{0%,100%{opacity:.25}50%{opacity:1}}
 .lg-kunang{width:6px;height:6px;border-radius:50%;background:#E9F59A;box-shadow:0 0 10px 3px rgba(222,240,120,.55);animation:lg-kunang 11s ease-in-out infinite}
@@ -1031,7 +994,6 @@ html[data-tema=gelap] .lg-burung path{stroke:#D9BFA6}
 @keyframes m-geleng{0%,100%{transform:rotate(0)}15%{transform:rotate(-12deg)}35%{transform:rotate(11deg)}55%{transform:rotate(-9deg)}75%{transform:rotate(6deg)}}
 html[data-animasi=mati] .dekor *,html[data-animasi=mati] .langit *,html[data-animasi=mati] .ikon-waktu *{animation:none!important}
 @media (prefers-reduced-motion:reduce){.dekor *,.langit *,.ikon-waktu *{animation:none!important}}
-
 /* langit di dalam kartu sambutan */
 .login-hero{position:relative;overflow:hidden;isolation:isolate}
 .login-hero > :not(.langit){position:relative;z-index:1}
@@ -1058,10 +1020,8 @@ html[data-tema=terang] .lg-bulan .lg-sabit{fill:#F2D97E}
   .langit-kartu .lg-awan.aw1{top:30%!important;width:96px!important}.langit-kartu .lg-awan.aw2{top:4%!important;width:72px!important}.langit-kartu .lg-awan.aw3{top:44%!important;width:60px!important}
   .langit-kartu .lg-burung{top:34%!important}.langit-kartu .lg-burung.b2{top:30%!important}.langit-kartu .lg-burung.b3{top:38%!important}
 }
-
 /* riak air */
-:root{--riak:rgba(139,94,67,.42);--riak-isi:rgba(139,94,67,.06)}
-html[data-tema=gelap]{--riak:rgba(240,222,200,.46);--riak-isi:rgba(240,222,200,.04)}
+
 .riak{position:absolute;width:74px;height:74px;margin:-37px 0 0 -37px;border-radius:50%;border:2px solid var(--riak);background:radial-gradient(circle,transparent 55%,var(--riak-isi) 70%,transparent 72%);pointer-events:none;z-index:0;transform:scale(.08);opacity:0;animation:riak 1.1s cubic-bezier(.2,.6,.3,1) forwards}
 .riak::after{content:"";position:absolute;inset:16px;border-radius:50%;border:1.5px solid var(--riak);opacity:.6}
 .riak-besar{width:170px;height:170px;margin:-85px 0 0 -85px;border-width:2.5px;animation-duration:1.5s}
@@ -1070,7 +1030,7 @@ html[data-tema=gelap]{--riak:rgba(240,222,200,.46);--riak-isi:rgba(240,222,200,.
 .riak-tetes{position:absolute;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--riak);pointer-events:none;z-index:0;animation:riak-tetes .75s ease-out forwards}
 @keyframes riak-tetes{0%{transform:translate(0,0) scale(1);opacity:1}70%{opacity:.8}100%{transform:translate(var(--tx),calc(var(--ty) + 22px)) scale(.4);opacity:0}}
 html[data-animasi=mati] .riak,html[data-animasi=mati] .riak-tetes{display:none}
-/* langkah 20: Gori & Jago */
+/* Gori & Jago */
 .titik.on.t3{background:#7CC6E8}
 .maskot[data-m=gori]{--gerak:m-berguncang}
 .maskot[data-m=jago]{--gerak:m-kokok;--dur:1.3s}
@@ -1090,7 +1050,7 @@ html[data-animasi=mati] .riak,html[data-animasi=mati] .riak-tetes{display:none}
 .jj-chip svg{width:15px;height:15px}
 .jj-perisai{opacity:.7}.jj-perisai.siap{opacity:1}
 .ikon-sebaris{width:16px;height:16px;vertical-align:-3px}
-/* langkah 21: Kilas Balik bersama King */
+/* Kilas Balik (King) */
 .maskot[data-m=king]{--gerak:m-aum;--dur:1.3s}
 @keyframes m-aum{0%,100%{transform:none}25%{transform:scale(1.06) translateY(-3px)}40%{transform:scale(1.12) rotate(-3deg) translateY(-5px)}55%{transform:scale(1.1) rotate(3deg) translateY(-5px)}75%{transform:scale(.97)}}
 html.kb-terbuka{overflow:hidden}
@@ -1190,8 +1150,7 @@ html[data-tema=gelap] .kb-tahun{background:radial-gradient(120% 90% at 0% 0%,#5A
 .kb-banner{background:linear-gradient(110deg,#FBE3B0,#F3C77E);color:#3B2418}
 html[data-tema=gelap] .kb-banner{background:linear-gradient(110deg,#5A3A1E,#3B2418);color:#FFE9B8}
 .kb-banner p{margin:4px 0 10px}
-
-/* 1.7.1: obrolan seperti aplikasi chat (kepala & kolom tulis diam, hanya kolom chat yang bergulir) */
+/* obrolan seperti aplikasi chat (kepala & kolom tulis diam, hanya kolom chat yang bergulir) */
 .shell:has(.ob-tulis){height:100vh;height:100dvh;min-height:0;align-items:stretch}
 .shell:has(.ob-tulis) .content{min-height:0;height:100%;padding-bottom:0;gap:10px;overflow:hidden}
 .content:has(.ob-tulis) > .ob-kepala{flex:none;margin:0}
@@ -1213,7 +1172,7 @@ html[data-tema=gelap] .kb-banner{background:linear-gradient(110deg,#5A3A1E,#3B24
   .content:has(.ob-tulis) > .ob-kepala h1{font-size:22px}
   .content:has(.ob-tulis) > .ob-kepala .maskot{width:38px!important;height:38px!important}
 }
-/* 1.7.2: Doli catat lewat suara */
+/* Doli: catat lewat suara */
 .maskot[data-m=doli]{--gerak:m-lompat}
 .doli-baris{display:flex;flex-direction:column;gap:8px;margin:2px 0 4px}
 .doli-tombol{display:flex;align-items:center;gap:10px;width:100%;padding:8px 14px 8px 8px;border-radius:16px;border:2px dashed #74B6E3;background:color-mix(in srgb,#74B6E3 12%,var(--surface));color:var(--text);font:inherit;text-align:left;cursor:pointer}
@@ -1235,15 +1194,14 @@ html[data-tema=gelap] .doli-mik{stroke:#9CCDEE}
 @keyframes doli-riak{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.25);opacity:0}}
 .doli-teks{min-height:48px;font-size:18px;font-weight:700}
 html[data-animasi=mati] .doli-gelombang i{animation:none;opacity:.4}
-/* 1.7.2: tombol panduan di kepala chat (HP) */
+/* tombol panduan di kepala chat (HP) */
 .ob-bantu-hp{display:none}
 @media (max-width:900px){
   .ob-kepala{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .ob-bantu-hp{display:flex;flex:0 0 auto;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:2.5px solid var(--primary);background:var(--surface);color:var(--primary-dark);font-size:19px;font-weight:900;line-height:1;cursor:pointer}
   html[data-tema=gelap] .ob-bantu-hp{color:var(--gold)}
 }
-
-/* 1.7.3: Croc, Kilat, Cantik, laporan Rubi */
+/* Croc, Kilat, Cantik, laporan Rubi */
 .maskot[data-m=croc]{--gerak:m-goyang}
 .maskot[data-m=kilat]{--gerak:m-lesat;--dur:.9s}
 .maskot[data-m=cantik]{--gerak:m-miring}
@@ -1259,7 +1217,7 @@ html[data-animasi=mati] .doli-gelombang i{animation:none;opacity:.4}
 .ob-laporan-isi .mini-baris{font-size:13px}
 .ob-laporan-judul{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:6px 0 0}
 .ob-laporan-kalimat{margin:4px 0 0;padding:8px 10px;border-radius:12px;background:var(--tint);font-size:13px;font-weight:700}
-/* 1.7.4: cuaca & suhu */
+/* cuaca & suhu */
 .maskot[data-m=wallz]{--gerak:m-berguncang}.maskot[data-m=yaya]{--gerak:m-angguk}.maskot[data-m=quoki]{--gerak:m-lompat}
 .maskot[data-m=iggy]{--gerak:m-miring}.maskot[data-m=xeri]{--gerak:m-goyang}.maskot[data-m=mika]{--gerak:m-lompat}
 .maskot[data-m=doma]{--gerak:m-apung}.maskot[data-m=embun]{--gerak:m-miring}.maskot[data-m=hipo]{--gerak:m-goyang}.maskot[data-m=volt]{--gerak:m-kaget}
@@ -1273,7 +1231,6 @@ span.cuaca-chip{cursor:default}
 .cuaca-chip.kecil{margin:0;padding:2px 7px 2px 4px;font-size:12.5px;gap:3px}
 .cuaca-chip.kecil .cuaca-ikon{width:16px;height:16px}
 
-.jam-login .cuaca-chip{background:color-mix(in srgb,var(--surface) 70%,transparent)}
 .cuaca-kartu .cuaca-utama{display:flex;align-items:center;gap:14px}
 .cuaca-duo{position:relative;flex:0 0 auto;padding-right:22px}
 .cuaca-duo-suhu{position:absolute;right:-4px;bottom:-6px}
@@ -1301,9 +1258,8 @@ span.cuaca-chip{cursor:default}
 .lg-hujan i{position:absolute;top:-12%;width:2px;height:24px;border-radius:2px;background:linear-gradient(transparent,rgba(90,130,175,.85));animation:lg-rintik .8s linear infinite}
 html[data-tema=gelap] .lg-hujan i{background:linear-gradient(transparent,rgba(190,215,240,.55))}
 @keyframes lg-rintik{to{transform:translate(-18px,115vh)}}
-.langit-kartu .lg-hujan i{height:16px}
+.langit-kartu .lg-hujan i{height:16px;animation-name:lg-rintik-kartu}
 @keyframes lg-rintik-kartu{to{transform:translate(-14px,700px)}}
-.langit-kartu .lg-hujan i{animation-name:lg-rintik-kartu}
 .lg-kilat{position:absolute;inset:0;background:#FFFFFF;opacity:0;animation:lg-kilat 6s linear infinite;pointer-events:none}
 @keyframes lg-kilat{0%,88%,100%{opacity:0}89%{opacity:.55}90%{opacity:.08}91.5%{opacity:.4}93%{opacity:0}}
 .lg-kabut{position:absolute;inset:0;pointer-events:none;overflow:hidden}
@@ -1325,13 +1281,12 @@ html[data-animasi=mati] .lg-hujan{display:none}
   .cuaca-suhu{font-size:34px}
   .cuaca-jam{gap:4px}.cuaca-jam > div{padding:6px 0}
 }
-/* 1.7.4: jam dengan zona sejajar */
+/* jam dengan zona sejajar */
 .jam-waktu{white-space:nowrap;display:inline-flex;align-items:baseline;gap:4px;font-size:20px}
 .jw-zona{font-family:var(--font-body,inherit);font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--muted)}
-.jam-login .jam-waktu{font-size:18px}
 .jam-pojok .jam-waktu{font-size:17px}
 @media (max-width:900px){.jam-kecil .jam-waktu{font-size:17px}.jam-kecil .jw-zona{font-size:10px}}
-/* 1.7.4: kartu hari jadi */
+/* kartu hari jadi */
 .hj-kartu{position:relative;overflow:hidden;background:linear-gradient(150deg,#FFF0F4 0%,var(--surface) 62%)}
 html[data-tema=gelap] .hj-kartu{background:linear-gradient(150deg,#3E2630 0%,var(--surface) 62%)}
 .hj-kartu::after{content:"";position:absolute;right:-4px;bottom:-14px;width:150px;height:110px;pointer-events:none;opacity:.35;
@@ -1359,7 +1314,7 @@ html[data-tema=gelap] .hj-chip.sudah{color:#F5A3BC}
 .hj-mundur.hari-h{background:linear-gradient(90deg,#FFD6E2,#FFE9B8)}
 html[data-tema=gelap] .hj-mundur.hari-h{background:linear-gradient(90deg,#5A2E3E,#5A4520)}
 @media (max-width:600px){.hj-lama{font-size:23px}.hj-angka strong{font-size:32px}.hj-angka{min-width:60px}}
-/* ===== 1.8.0: foto & voice note di Obrolan ===== */
+/* ===== foto & voice note di Obrolan ===== */
 .ob-gelembung.ob-g-foto{padding:4px 4px 6px;max-width:min(72%,340px)}
 .ob-gelembung.ob-g-foto .ob-teks-isi{padding:2px 8px 0}
 .ob-gelembung.ob-g-foto .ob-waktu{padding:0 8px}
@@ -1469,7 +1424,7 @@ body:has(.fe-layar,.kam-layar) .toast{bottom:auto;top:calc(70px + env(safe-area-
 .fe-kirim{height:48px;white-space:nowrap}
 .ob-meter{margin-top:14px;padding-top:14px;border-top:2px dashed var(--line);display:flex;flex-direction:column;gap:6px}
 @media (min-width:900px){.fe-panggung{padding:10px 40px}}
-/* ===== 1.8.1: jam login rapi & balon voice note ===== */
+/* ===== jam login & balon voice note ===== */
 .jam-login{display:grid;grid-template-columns:auto auto;grid-template-areas:"ikon waktu" "ikon tgl";column-gap:10px;row-gap:2px;align-items:center;text-align:left;padding:9px 14px;width:max-content;max-width:100%;box-sizing:border-box}
 .jam-login:has(.cuaca-chip:not([hidden])){grid-template-columns:auto auto auto;grid-template-areas:"ikon waktu cuaca" "ikon tgl cuaca"}
 .jam-login .jam-baris{display:contents}
@@ -1553,13 +1508,7 @@ const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString
 const FMT_RP = new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0});
 const rupiah = n => S.sembunyi && !S.bukaSembunyi ? "Rp •••••" : FMT_RP.format(n||0);
 const bulanIni = () => new Intl.DateTimeFormat("id-ID",{month:"long",year:"numeric"}).format(new Date());
-function sapaan(){
-  const h = new Date().getHours();
-  if (h < 11) return "Selamat pagi";
-  if (h < 15) return "Selamat siang";
-  if (h < 18) return "Selamat sore";
-  return "Selamat malam";
-}
+function sapaan(){ return {pagi:"Selamat pagi", siang:"Selamat siang", sore:"Selamat sore", malam:"Selamat malam"}[waktuHari()]; }
 let toastTimer;
 function toast(msg){
   const t = document.getElementById("toast");
@@ -1669,6 +1618,8 @@ async function simpanPribadi(){
   tulisIngat();
   tulisIngatInv();
   await pascaSimpan();
+  /* jadwal notifikasi diperbarui setiap data berubah (hanya kalau notifikasi aktif di perangkat ini) */
+  if (pushSaya().aktif) jadwalkanPush();
 }
 async function simpanBersama(){
   if (!S.sesi) return;
@@ -1688,6 +1639,7 @@ function catatGagal(id){
     b.sampai = Date.now() + Math.min(30000 * Math.pow(2, kelebihan), 15 * 60000);
   }
   tulisJson(kBlokir(id), b);
+  if (S.layar !== "app" && !String(id).startsWith("pulih.")) reaksiMaskot("niko", {teks:"PIN salah", gerak:"r-geleng", lama:1800});
   return b;
 }
 const resetGagal = id => localStorage.removeItem(kBlokir(id));
@@ -1956,6 +1908,13 @@ function layarLogin(){
 }
 let timerBlokir;
 async function masukDenganKunci(u, k){
+  /* PIN benar: barisan maskot melompat dulu sebentar */
+  const baris = [...document.querySelectorAll(".lk-maskot .maskot")];
+  if (baris.length && animasiNyala() && S.layar !== "app"){
+    baris.forEach((m, i) => setTimeout(() => mainkanMaskot(m, "r-lompat"), i * 70));
+    await new Promise(res => setTimeout(res, 750));
+  }
+  loginSudahLambai = false;
   resetGagal(u.id);
   const data = migrasi8(migrasi7b(migrasiKategori7(migrasiData5(migrasiData(await dekripsiJson(k.dek, bacaJson(kBrankas(u.id))))))));
   const bersama = migrasiBersama(await dekripsiJson(k.kunciBersama, bacaJson(K_BERSAMA)));
@@ -1976,7 +1935,9 @@ async function masukDenganKunci(u, k){
   cekPemberitahuanPulih(u);
   if (S.mintaKodeBaru){ S.mintaKodeBaru = false; setTimeout(() => modalKodeBaru(true), 500); }
   setTimeout(() => perbaruiLokasi(false), 1500);
+  setTimeout(reaksiJejak, 1300);
 }
+let loginSudahLambai = false;
 function setelahRenderLogin(){
   let u = S.meta.pengguna.find(x => x.id === S.loginId);
   if (awanTersambung() && Date.now() - (S.sinkronLogin || 0) > 15000){ S.sinkronLogin = Date.now(); setTimeout(() => sinkron("layar-login"), 50); }
@@ -2018,6 +1979,11 @@ function setelahRenderLogin(){
   cekBlokir();
   if (S.pesanLogin){ api.pesan(S.pesanLogin, true); S.pesanLogin = ""; }
   perbaruiTombolBio();
+  /* maskot barisan login melambai saat layar login muncul */
+  if (!loginSudahLambai){
+    loginSudahLambai = true;
+    document.querySelectorAll(".lk-maskot .maskot").forEach((m, i) => setTimeout(() => mainkanMaskot(m), 450 + i * 160));
+  }
 }
 function modalHapusProfilLupa(){
   const u = S.meta.pengguna.find(x => x.id === S.loginId);
@@ -2060,10 +2026,12 @@ setInterval(() => {
   if (Date.now() - aktivitasTerakhir > menit * 60000) kunciAplikasi("Dikunci otomatis karena lama tidak dipakai.");
 }, 10000);
 function kunciAplikasi(pesan){
+  mediaTutupSemua();
   if (typeof rtPutus === "function") rtPutus();
   const id = S.sesi ? S.sesi.user.id : S.loginId;
   S.sesi = null; tutupModal();
   S.loginId = id; S.pesanLogin = pesan || ""; S.layar = "login"; render();
+  setTimeout(() => reaksiMaskot("niko", {teks:"Zzz… aplikasi terkunci", gerak:"r-tidur", lama:2600}), 200);
 }
 
 /* ============ Kerangka aplikasi ============ */
@@ -2111,6 +2079,7 @@ function halaman(){
   if (S.halaman === "keinginan") return halKeinginan();
   if (S.halaman === "zakat") return halZakat();
   if (S.halaman === "aset") return halAset();
+  if (S.halaman === "kilas") return halKilas();
   const h = HALAMAN.find(x => x.id === S.halaman);
   return '<header class="page-head"><h1>'+h.label+'</h1></header>'+
     '<section class="card empty">'+maskot(h.maskot, 140)+
@@ -2284,7 +2253,7 @@ const AKSI = {
     tutupModal(); hapusSemua(); toast("Semua data sudah dihapus.");
   }
 };
-/* ============ Data keuangan (langkah 4) ============ */
+/* ============ Data keuangan ============ */
 const WARNA = ["#8B5E43","#C8614A","#E3A857","#6F8F5E","#5D6B8C","#D99AA6","#4E8C8C","#A86FA0","#BFA58E","#7A9E3E","#D98A2B","#8A7F74"];
 const JENIS_DOMPET = {tunai:"Tunai", bank:"Rekening bank", ewallet:"E-wallet", lainnya:"Lainnya"};
 const FILTER_AWAL = () => ({q:"", jenis:"semua", kategori:"semua", dompet:"semua"});
@@ -2481,7 +2450,7 @@ function halBeranda(){
     (ultahHariIni(profil().lahir) ? kartuUltah() : '')+
     (!profil().lahir && !d.pengaturan.tipProfilTutup ? '<section class="card bubble-card">'+maskot("alpha", 64)+'<div class="bubble"><strong>Alpha punya ide</strong><span>Isi tanggal lahirmu di Pengaturan supaya geng maskot bisa merayakan ulang tahunmu.</span>'+
       '<div class="row-btn" style="justify-content:flex-start;margin-top:8px">'+tombolAksi("nav", "Isi sekarang", "btn-primary btn-kecil", ' data-h="pengaturan"')+tombolAksi("tutup-tip-profil", "Nanti saja", "btn-ghost btn-kecil")+'</div></div></section>' : '')+
-    kartuPemulihan()+kartuAcaraBeranda()+kartuBeranda7b()+kartuBeranda8()+
+    kartuCuaca()+kartuPemulihan()+kartuAcaraBeranda()+kartuBeranda7b()+kartuBeranda8()+
     '<section class="card bubble-card">'+maskot("piggy", 84)+'<div class="bubble"><strong>Kata Piggy</strong><span>'+esc(pesanPiggy(r))+'</span></div></section>'+
     kartuBerandaLangkah6()+
     '<section class="card"><div class="page-head" style="margin-bottom:16px"><h2>Pembagian per kategori</h2><div class="seg-wrap">'+tab("keluar","Pengeluaran")+tab("masuk","Pemasukan")+tab("dompet","Saldo per dompet")+'</div></div>'+donut+'</section>'+
@@ -2671,6 +2640,7 @@ function tampilFormTx(pesanErr){
   }
   if (!f.baru || layarSentuh()) inNom.blur();
   pasangValas();
+  pasangDoliForm();
 }
 function perbaruiPratinjau(){
   const inp = document.getElementById("in-nom"), p = document.getElementById("nom-pratinjau");
@@ -2699,6 +2669,7 @@ function tekanKalk(k){
   document.getElementById("err-tx").textContent = "";
 }
 async function simpanTx(){
+  const croc0 = crocHariIni();
   bacaFormTx();
   const f = S.form, d = S.sesi.data, err = document.getElementById("err-tx");
   const nominal = hitung(f.ekspr);
@@ -2752,6 +2723,7 @@ async function simpanTx(){
     render();
     toast(f.baru ? "Transaksi tersimpan!" : "Perubahan tersimpan.");
     if (f.baru && rec.jenis === "masuk" && !saranGajiDova(rec)) tampilDoaMomen("rezeki", "rezeki");
+    crocCekLewat(croc0);
   } catch(e){
     console.error(e);
     err.textContent = "Gagal menyimpan. Coba lagi.";
@@ -2955,7 +2927,7 @@ async function hapusKat(){
   tutupModal(); render(); toast("Kategori dihapus.");
 }
 
-/* ---- aksi klik langkah 4 ---- */
+/* ---- aksi klik: transaksi, dompet, kategori ---- */
 Object.assign(AKSI, {
   "tx-baru": () => bukaFormTx(null),
   "ubah-tx": t => bukaFormTx(t.dataset.id),
@@ -3004,7 +2976,7 @@ Object.assign(AKSI, {
   "hapus-kat": () => hapusKat()
 });
 
-/* ============ Langkah 5: alat bantu bersama ============ */
+/* ============ Alat bantu bersama ============ */
 const BATAS_AWAS = 80;
 const KAT_BERSAMA = ["Belanja rumah", "Makan bersama", "Tagihan rumah", "Jalan-jalan", "Hadiah", "Lainnya"];
 const hariAntara = (a, b) => Math.round((new Date(b + "T00:00:00") - new Date(a + "T00:00:00")) / 864e5);
@@ -3055,7 +3027,7 @@ function modalTerkait(t){
     '<div class="row-btn">'+tombolAksi("tutup-modal", "Tutup")+tombolAksi("nav", "Buka halamannya", "btn-primary", ' data-h="'+tujuan+'"')+'</div>', "center");
 }
 
-/* migrasi data pribadi & bersama untuk langkah 5 */
+/* migrasi data pribadi & bersama: anggaran, tabungan, utang, rutin */
 function migrasiData5(d){
   d.anggaran = d.anggaran || [];
   d.tabungan = d.tabungan || [];
@@ -3290,6 +3262,7 @@ async function simpanDD(){
 
 /* ---- setor / ambil / pakai (tabungan, dana darurat, tabungan berdua, dompet bersama) ---- */
 function objekMutasi(target, id){
+  if (target === "kado"){ const k = kadoSaya(), p = S.meta.pengguna.find(x => x.id !== S.sesi.user.id) || {nama:"pasangan"}; return {nama:"Tabungan kado untuk " + p.nama, obj:k, saldo:totalSetoran(k), maskot:"cantik", bersama:false}; }
   if (target === "darurat") return {nama:"Dana darurat", obj:S.sesi.data.danaDarurat, saldo:totalSetoran(S.sesi.data.danaDarurat), maskot:"snowy", bersama:false};
   if (target === "tab"){ const t = S.sesi.data.tabungan.find(x => x.id === id); return {nama:"Tabungan " + t.nama, obj:t, saldo:totalSetoran(t), maskot:"piyik", bersama:false}; }
   if (target === "tabber"){ const t = S.sesi.bersama.tabungan.find(x => x.id === id); return {nama:"Tabungan berdua " + t.nama, obj:t, saldo:totalSetoran(t), maskot:"cici", bersama:true}; }
@@ -3334,6 +3307,7 @@ async function simpanMutasi(){
   tutupModal(); render();
   toast(f.mode === "setor" ? "Setoran tersimpan!" : f.mode === "ambil" ? "Pengambilan tersimpan." : "Belanja bersama tersimpan.");
   if (f.mode === "setor" && !tampilDoaMomen("setor", "berkah")) sorakEli();
+  if (f.mode === "setor" && !document.getElementById("in-mnom")) setTimeout(() => reaksiMaskot("piggy", {teks:"Masuk celengan!"}), 250);
 }
 async function hapusMutasi(target, id, eid){
   const bersama = target === "tabber" || target === "dber";
@@ -3392,7 +3366,7 @@ function halBersama(){
       '<button type="button" class="btn-ikon" data-aksi="ubah-bagi" data-id="'+x.id+'" aria-label="Ubah '+esc(x.judul)+'">'+ikon("ubah")+'</button></li>';
   };
   return '<header class="page-head"><div><h1>Bersama</h1><p>Bisa dibuka '+peng.map(p => esc(p.nama)).join(" dan ")+'. Data pribadi masing-masing tetap rahasia.</p>'+barisStatusPasangan()+'</div></header>'+
-    kartuBagiPasangan()+
+    kartuHariJadiBersama()+kartuBagiPasangan()+
     (!berdua ? '<section class="card bubble-card">'+maskot("cici", 80)+'<div class="bubble"><strong>Kata Cici</strong><span>Pasanganmu belum terdaftar. Dompet dan tabungan bersama sudah bisa dipakai, tapi bagi tagihan butuh dua orang.</span>'+
       '<div class="row-btn" style="justify-content:flex-start;margin-top:8px">'+tombolAksi("undang-pasangan", "Undang ke HP-nya", "btn-primary btn-kecil")+'<button type="button" class="btn btn-ghost btn-kecil" data-aksi="daftar-pasangan">Daftarkan di perangkat ini</button></div></div></section>' : '')+
     '<div class="page-head"><h2>Dompet bersama</h2>'+tombolAksi("tambah-dber", ikon("plus") + "Dompet bersama", "btn-ghost")+'</div>'+
@@ -3865,7 +3839,7 @@ setInterval(async () => {
   cekPengingat();
 }, 15 * 60000);
 
-/* ---- aksi klik langkah 5 ---- */
+/* ---- aksi klik: anggaran, tabungan, bersama, utang, rutin ---- */
 Object.assign(AKSI, {
   "tambah-anggaran": () => bukaFormAnggaran(null),
   "ubah-anggaran": t => bukaFormAnggaran(t.dataset.id),
@@ -3915,7 +3889,7 @@ Object.assign(AKSI, {
   "izin-notif": () => mintaIzinNotif()
 });
 
-/* ============ Langkah 6: periode laporan ============ */
+/* ============ Periode laporan ============ */
 const pad2 = n => String(n).padStart(2, "0");
 const awalPeriode = () => (S.sesi && S.sesi.data.pengaturan.awalPeriode) || 1;
 function periode(tgl){
@@ -4024,7 +3998,6 @@ const KUTIPAN = [
   ["Pengeluaran kecil yang sering lebih berbahaya daripada yang besar tapi jarang.", "Eli"],
   ["Rayakan setiap kemajuan, sekecil apa pun.", "Eli"]
 ];
-const hariKe = () => Math.floor(new Date(tglLokal() + "T00:00:00").getTime() / 864e5);
 function statistik(){
   const d = S.sesi.data;
   d.statistik = Object.assign({halaman:[], ekspor:0, backup:0, gantiPin:0, gantiAvatar:0, doa:0, quoteHari:[], doaMomen:{}}, d.statistik || {});
@@ -4393,7 +4366,6 @@ const LENCANA = [
   L("ultah", "Spesial", "Selamat Ulang Tahun", "ducky", [1, 3, 5], m => m.ultah, t => "Merayakan ulang tahun ke-" + t + " kali bersama Dompet Kita"),
   L("kolektor", "Spesial", "Kolektor Lencana", "ducky", [10, 30, 60], m => m.lencanaJumlah, t => "Kumpulkan " + t + " tingkat lencana")
 ];
-const TOTAL_TINGKAT = LENCANA.reduce((a, x) => a + x.tiers.length, 0);
 function lariTerpanjang(tanggal){
   const u = [...new Set(tanggal)].sort();
   let maks = 0, kini = 0, sebelum = null;
@@ -4464,18 +4436,17 @@ function hitungMetrik(){
     /* hari & akhir pekan tanpa pengeluaran, hanya di minggu yang aktif */
     const keluarHari = new Set(tx.filter(t => t.jenis === "keluar").map(t => t.tanggal));
     const mingguAktif = new Set(tx.map(t => indeksMinggu(t.tanggal)));
-    let tanpa = 0, weekend = 0;
+    let weekend = 0;
     const mulai = tx.reduce((a, t) => t.tanggal < a ? t.tanggal : a, hari);
     for (let t = mulai, i = 0; t < hari && i < 2000; t = tambahHari(t, 1), i++){
       if (!mingguAktif.has(indeksMinggu(t))) continue;
-      if (!keluarHari.has(t)) tanpa++;
       if (new Date(t + "T00:00:00").getDay() === 0){
         const sab = tambahHari(t, -1);
         if (sab >= mulai && !keluarHari.has(t) && !keluarHari.has(sab)) weekend++;
       }
     }
-    m.hariTanpaBelanja = tanpa; m.weekendHemat = weekend;
-  } else { m.hariTanpaBelanja = 0; m.weekendHemat = 0; }
+    m.weekendHemat = weekend;
+  } else m.weekendHemat = 0;
   /* minggu kalian berdua sama-sama aktif */
   const akt = b.aktif || {}, ids = S.meta.pengguna.map(p => p.id);
   if (ids.length >= 2){
@@ -4485,6 +4456,20 @@ function hitungMetrik(){
   metrik7b(m);
   metrik8(m);
   m.lencanaJumlah = Object.keys(d.lencana || {}).length + Object.keys(b.lencana || {}).length;
+  /* streak login (Jago) */
+  const j = jejakSaya();
+  m.streakHarian = j.harian.terbaik || 0; m.streakMingguan = j.mingguan.terbaik || 0; m.streakBulanan = j.bulanan.terbaik || 0;
+  m.streakTahunan = Math.floor((j.bulanan.terbaik || 0) / 12);
+  m.kilasDitonton = (statistik().kilas || []).length;
+  m.suara = d.transaksi.filter(t => t.suara).length;
+  m.crocTerbaik = crocHitung().terbaik;
+  m.kadoSetor = (kadoSaya().setoran || []).some(e => e.nominal > 0) ? 1 : 0;
+  m.cuacaLihat = (statistik().cuacaLihat || []).length;
+  /* hari tanpa belanja: hanya hari yang dicatat "tidak ada transaksi" dan memang tanpa pengeluaran */
+  const keluarTgl = new Set(d.transaksi.filter(t => t.jenis === "keluar" && !t.terkait && !t.otomatis).map(t => t.tanggal));
+  m.hariTanpaBelanja = tanpaCatatHari().filter(t => !keluarTgl.has(t) && t < tglLokal() || (t === tglLokal() && !keluarTgl.has(t))).length;
+  /* lencana mode gelap: cukup memakai aplikasi dalam mode gelap (bawaan atau dinyalakan dari layar login) */
+  if (temaGelapAktif()){ const st = statistik(); if (!st.modeGelap) st.modeGelap = 1; m.modeGelap = Math.max(m.modeGelap || 0, 1); }
   return m;
 }
 function evaluasiLencana(){
@@ -4524,7 +4509,7 @@ function infoLevel(){
   return {xp, lv, gelar:gelarDari(lv), pct:lv >= 100 ? 100 : (xp - a) / (z - a) * 100, sisa:lv >= 100 ? 0 : z - xp, butuh:lv >= 100 ? 0 : z - a, sudah:xp - a};
 }
 function medali(x, i, ukuran){
-  const warna = i < 0 ? "#D8CFC6" : x.tiers.length === 1 ? "#D99AA6" : ["#C98A5A", "#AEB6C2", "#E3B341"][i];
+  const warna = i < 0 ? "#D8CFC6" : x.tiers.length === 1 ? "#D99AA6" : ["#C98A5A", "#AEB6C2", "#E3B341", "#7CC6E8"][i];
   return '<span class="medali'+(i < 0 ? " terkunci" : "")+'" style="--w:'+warna+';width:'+ukuran+'px;height:'+ukuran+'px">'+maskot(x.maskot, Math.round(ukuran * 0.72))+'</span>';
 }
 function tingkatTertinggi(x){
@@ -4598,6 +4583,8 @@ function tampilkanPerayaan(){
     (p.baru.length > 6 ? '<p class="muted">dan '+(p.baru.length - 6)+' lencana lainnya</p>' : '')+
     '<p class="muted">Kata Ducky: kwek! Terus semangat ya!</p>'+
     '<div class="row-btn" style="justify-content:center">'+tombolAksi("nav", "Lihat koleksi", "btn-ghost", ' data-h="lencana"')+tombolAksi("tutup-modal", "Yay!", "btn-primary")+'</div>', "center perayaan");
+  const kepala = document.querySelector(".backdrop .perayaan-kepala");
+  if (kepala){ konfeti(kepala.closest(".modal") || kepala); setTimeout(() => mainkanMaskot(kepala.querySelector(".maskot")), 200); }
   kirimNotif("Ducky: " + (p.naik ? "Naik ke Level " + p.naik.lv : "Lencana baru"), p.baru.slice(0, 3).map(o => o.x.nama).join(", "));
 }
 /* dipanggil setiap kali data disimpan */
@@ -4624,15 +4611,18 @@ async function catatAktifBersama(){
   const b = S.sesi.bersama, me = S.sesi.user.id, hari = tglLokal();
   b.aktif = b.aktif || {};
   const l = b.aktif[me] = b.aktif[me] || [];
-  if (l.includes(hari)) return;
-  l.push(hari); if (l.length > 120) l.splice(0, l.length - 120);
-  await tulisBersama();
+  if (!l.includes(hari)){
+    l.push(hari); if (l.length > 120) l.splice(0, l.length - 120);
+    await tulisBersama();
+  }
+  /* streak login (Jago) */
+  const ev = langkahJejak(hari); if (ev) S.jejakEvent = ev;
 }
 
 /* ---- kartu Beranda: level, Eli, Jamal ---- */
 function kartuBerandaLangkah6(){
   const info = infoLevel();
-  return '<div class="grid2">'+
+  return kartuKilasBeranda() + kartuJejak() + kartuCrocCantik() + '<div class="grid2">'+
     '<section class="card"><div class="page-head" style="margin-bottom:10px"><div class="card-head" style="margin:0">'+maskot("ducky", 48)+'<h2>Level '+info.lv+'</h2></div><button type="button" class="link" data-aksi="nav" data-h="lencana">Lencana</button></div>'+
       '<p style="font-weight:800;margin-bottom:8px">'+info.gelar+'</p>'+bar(info.pct, "#E3A857")+
       '<p class="muted" style="font-size:14px;margin-top:6px">'+(info.lv < 100 ? info.sudah.toLocaleString("id-ID") + " / " + info.butuh.toLocaleString("id-ID") + " XP menuju Level " + (info.lv + 1) : "Level tertinggi!")+'</p></section>'+
@@ -4645,7 +4635,7 @@ function kartuBerandaLangkah6(){
       '<div data-putar="jamal">'+isiPutar("jamal")+'</div></section>';
 }
 
-/* ---- aksi klik langkah 6 ---- */
+/* ---- aksi klik: laporan & lencana ---- */
 Object.assign(AKSI, {
   "tab-lap": t => { S.tabLap = t.dataset.t; render(); },
   "tab-lap-donut": t => { S.tabLapDonut = t.dataset.t; render(); },
@@ -4666,12 +4656,18 @@ function isiJam(el){
   const d = new Date(), pendek = el.classList.contains("jam-kecil") || window.innerWidth < 600;
   el.querySelector(".jam-waktu").innerHTML = '<span class="jw-angka">'+(pendek ? fmtJam.format(d).slice(0, 5) : fmtJam.format(d))+'</span><span class="jw-zona">'+zonaWaktu(d)+'</span>';
   el.querySelector(".jam-tanggal").textContent = (pendek ? fmtTglPendek : fmtTglPanjang).format(d);
+  const w = waktuHari(), ik = el.querySelector(".ikon-waktu");
+  if (ik && ik.dataset.w !== w) ik.outerHTML = ikonWaktuHTML(w);
 }
-function jamHTML(kelas, ekstra){ return '<div class="jam-hidup '+(kelas || "")+'" role="timer" aria-label="Jam dan tanggal sekarang"><span class="jam-waktu"></span><span class="jam-tanggal"></span>'+(ekstra || "")+'</div>'; }
+function jamHTML(kelas, ekstra){
+  /* chip cuaca hanya di jam layar login; di dalam aplikasi cuaca tampil lewat kartu di Beranda */
+  if (/jam-login/.test(kelas || "")) ekstra = '<span class="cuaca-wadah">'+cuacaChipHTML(false)+'</span>' + (ekstra || "");
+  return '<div class="jam-hidup '+(kelas || "")+'" role="timer" aria-label="Jam dan tanggal sekarang"><span class="jam-baris">'+ikonWaktuHTML()+'<span class="jam-waktu"></span></span><span class="jam-tanggal"></span>'+(ekstra || "")+'</div>';
+}
 function perbaruiJam(){ document.querySelectorAll(".jam-hidup").forEach(isiJam); }
 setInterval(perbaruiJam, 1000);
 
-/* ============ Langkah 7A: mode gelap (Lumia) ============ */
+/* ============ Mode gelap (Lumia) ============ */
 const K_TEMA = PFX + "tema";
 const temaPilihan = () => localStorage.getItem(K_TEMA) || "gelap";
 const temaGelapAktif = () => document.documentElement.dataset.tema === "gelap";
@@ -4701,7 +4697,7 @@ function seksiTampilan(){
     '<p class="muted" style="font-size:14px">Lumia si kunang-kunang menjaga mata tetap nyaman di malam hari.</p>'+
     '<div class="seg-wrap">'+tb("terang", "Terang")+tb("gelap", "Gelap")+tb("sistem", "Ikuti perangkat")+'</div>'+
     '<div class="set-baris-anim"><div><strong>Animasi maskot</strong><p class="muted" style="font-size:14px;margin:2px 0 0">Maskot berkedip, bergerak saat diketuk atau disentuh kursor, dan bereaksi saat ada kejadian. Kalau HP memakai mode "kurangi gerakan", animasi tetap mati.</p></div>'+
-    '<div class="seg-wrap">'+["nyala", "mati"].map(v => { const on = (localStorage.getItem(K_ANIMASI) === "mati" ? "mati" : "nyala") === v; return '<button type="button" class="seg'+(on ? " on" : "")+'" data-aksi="animasi" data-v="'+v+'" aria-pressed="'+on+'">'+(v === "nyala" ? "Nyala" : "Mati")+'</button>'; }).join("")+'</div></div></section>';
+    '<div class="seg-wrap">'+["nyala", "mati"].map(v => { const on = (localStorage.getItem(K_ANIMASI) === "mati" ? "mati" : "nyala") === v; return '<button type="button" class="seg'+(on ? " on" : "")+'" data-aksi="animasi" data-v="'+v+'" aria-pressed="'+on+'">'+(v === "nyala" ? "Nyala" : "Mati")+'</button>'; }).join("")+'</div></div>'+barisCuacaSetelan()+'</section>';
 }
 
 /* ============ Backup & pulihkan (Lala) ============ */
@@ -4908,7 +4904,7 @@ function rincianSub(kb){
   }).join("")+'</div></section>';
 }
 
-/* ============ Langkah 7B: fitur tambahan ============ */
+/* ============ Fitur tambahan ============ */
 /* migrasi data untuk fitur 7B */
 function migrasi7b(d){
   d.favorit = d.favorit || [];
@@ -4963,6 +4959,7 @@ async function catatCepat(id){
   }
   S.sibukCepat = true;
   try {
+    const croc0 = crocHariIni();
     const sebelum = f.jenis === "keluar" ? terpakai(k.id, periode(hariIni())) : 0, now = new Date().toISOString();
     const rec = {id:uid(), jenis:f.jenis, nominal:f.nominal, kategoriId:k.id, sub:f.sub || "", dompetId:w.id, keDompetId:null,
       tanggal:hariIni(), catatan:f.catatan || "", fotoId:null, cepat:true, dibuat:now, diubah:now};
@@ -4971,6 +4968,7 @@ async function catatCepat(id){
     cekTeguranKenzo(sebelum, rec);
     render();
     toast("Tupi mencatat " + namaFavorit(f) + " " + rupiah(f.nominal) + ". Ketuk di daftar transaksi kalau mau diubah.");
+    if (!crocCekLewat(croc0)) setTimeout(() => reaksiMaskot("kilat", {teks:"Wuss! Tercatat", lama:1600}), 150);
   } finally { S.sibukCepat = false; }
 }
 function modalAturFavorit(){
@@ -5307,6 +5305,8 @@ async function setorSlotRoo(){
   await simpanPribadi(); tutupModal(); render();
   if (selesai){ toast("Roo: TANTANGAN SELESAI! " + rupiah(terkumpulTantangan(x)) + " terkumpul. +100 XP!"); kirimNotif("Roo: tantangan selesai!", (x.nama || "") + " " + rupiah(terkumpulTantangan(x))); }
   else toast("Roo: hop! " + rupiah(nominal) + " masuk. " + isiTantangan(x) + "/" + slotTantangan(x));
+  if (selesai) setTimeout(() => reaksiMaskot("roo", {teks:"Tantangan selesai!", gerak:"main r-lompat"}), 250);
+  else if (!document.querySelector(".backdrop")) setTimeout(() => reaksiMaskot("piggy", {teks:"Hop! Masuk celengan"}), 250);
 }
 async function batalSlotRoo(){
   const f = S.formSlot, d = S.sesi.data, x = d.tantangan.find(y => y.id === f.id);
@@ -5647,7 +5647,7 @@ function seksiPengingat(){
   return '<section class="card set-sec" aria-labelledby="set-ingat"><div class="card-head" style="margin:0">'+maskot("owi", 48)+'<h2 id="set-ingat">Pengingat &amp; ringkasan</h2></div>'+
     '<div class="set-row"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-ic-aktif"'+(ic.aktif ? " checked" : "")+'> <span><strong>Pengingat mencatat harian dari Owi</strong><br><span class="muted" style="font-size:14px;font-weight:600">Muncul kalau sampai jam ini belum ada catatan hari ini.</span></span></label>'+
       '<input type="time" id="in-ic-jam" value="'+esc(ic.jam)+'" aria-label="Jam pengingat" style="height:48px;border-radius:14px;border:2px solid var(--line);padding:0 12px;font-weight:700;background:var(--input)"></div>'+
-    barisIngatInv()+
+    barisOwiPush()+barisIngatInv()+
     '<div class="set-row"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-rm-aktif"'+(p.ringkasMinggu ? " checked" : "")+'> <span><strong>Ringkasan mingguan dari Rubi</strong><br><span class="muted" style="font-size:14px;font-weight:600">Muncul Minggu malam atau saat pertama membuka aplikasi di awal minggu.</span></span></label>'+
       tombolAksi("ringkas-minggu", "Lihat sekarang", "btn-ghost")+'</div>'+
     barisPush()+
@@ -5713,10 +5713,13 @@ Object.assign(AKSI, {
   "catat-zakat": () => catatZakat(),
   "ringkas-minggu": () => tampilMingguan(),
   "minggu-siap": async () => { const st = statistik(); st.ringkasMinggu = (st.ringkasMinggu || 0) + 1; tutupModal(); await simpanPribadi(); toast("Rubi: semangat untuk minggu ini!"); },
-  "tanpa-catat": async () => { S.sesi.data.pengaturan.tanpaCatat = hariIni(); await simpanPribadi(); render(); toast("Owi mencatat: hari ini tanpa transaksi. Hemat!"); }
+  "tanpa-catat": async () => {
+    const l = tanpaCatatHari(), h = hariIni();
+    if (!l.includes(h)){ l.push(h); if (l.length > 800) l.splice(0, l.length - 800); }
+    S.sesi.data.pengaturan.tanpaCatat = h; await simpanPribadi(); render(); toast("Owi mencatat: hari ini tanpa transaksi. Hemat!"); }
 });
 
-/* ============ Langkah 8: investasi (Garu), BPJS (Duri), aset & kekayaan bersih (Mang Kelo) ============ */
+/* ============ Investasi (Garu), BPJS (Duri), aset & kekayaan bersih (Mang Kelo) ============ */
 function migrasi8(d){
   d.investasi = d.investasi || [];
   d.bpjs = d.bpjs || [];
@@ -6565,7 +6568,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.8.1";
+const VERSI_APP = "1.9.0";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -6657,6 +6660,7 @@ Object.assign(AKSI, {
     const modal = document.querySelector(".backdrop");
     if (!modal) render(); else { tutupModal(); render(); }
     toast(S.sembunyi ? "Lingling menggulung diri: semua nominal disembunyikan." : "Lingling membuka gulungan: nominal tampil lagi.");
+    setTimeout(() => document.querySelectorAll(".btn-sembunyi .maskot").forEach(m => mainkanMaskot(m)), 60);
   },
   "pv-semua": async t => { const pv = privasi(), v = t.dataset.v === "1"; PRIVASI.forEach(x => { pv[x[0]] = v; }); await simpanPribadi(); render(); toast(v ? "Semua ringkasan dibagikan ke pasangan." : "Semua angka disembunyikan dari pasangan."); }
 });
@@ -7024,6 +7028,7 @@ async function sinkron(alasan){
     awanSibuk = false;
     if (awanLagi){ awanLagi = false; setTimeout(() => sinkron("ulang"), 300); }
   }
+  if (ok && alasan !== "rubi") setTimeout(() => rubiLaporanCek().then(() => {}), 1500);
   return ok;
 }
 setInterval(() => { if (document.visibilityState === "visible" && awanTersambung()) sinkron("berkala"); }, 30000);
@@ -7273,7 +7278,9 @@ function seksiAwan(){
       '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("tampil-qr", "Tampilkan QR untuk perangkat baru", "btn-primary")+tombolAksi("scan-qr", "Scan QR", "btn-ghost")+
         tombolAksi("daftar-perangkat", "Perangkat tersambung", "btn-ghost")+tombolAksi("putus-awan", "Putuskan perangkat ini", "btn-ghost")+'</div>';
   }
-  return '<section class="card set-sec" id="awan-box" aria-labelledby="set-awan"><div class="card-head" style="margin:0">'+maskot("zee", 48)+'<h2 id="set-awan">Sinkron antarperangkat</h2></div>'+isi+'</section>';
+  const meter = barisPenyimpananOb();
+  if (meter && (!MEDIA.pakai || Date.now() - MEDIA.pakai.waktu > 60000)) setTimeout(() => mediaPemakaian().then(() => { if (S.halaman === "pengaturan") render(); }), 50);
+  return '<section class="card set-sec" id="awan-box" aria-labelledby="set-awan"><div class="card-head" style="margin:0">'+maskot("zee", 48)+'<h2 id="set-awan">Sinkron antarperangkat</h2></div>'+isi+meter+'</section>';
 }
 Object.assign(AKSI, {
   "masuk-google": () => masukGoogle("sambung"),
@@ -7448,6 +7455,7 @@ const FAKTA = {
 };
 const urutanFakta = {};
 function tampilFakta(kartu, maju){
+  mainkanMaskot(kartu.querySelector(".maskot"));
   const k = kartu.dataset.k, list = FAKTA[k];
   if (!list) return;
   if (maju || urutanFakta[k] == null) urutanFakta[k] = urutanFakta[k] == null ? 0 : (urutanFakta[k] + 1) % list.length;
@@ -7481,7 +7489,7 @@ function pasangFaktaGeng(){
   });
 }
 
-/* ============ Langkah 11: segarkan, kunci cepat, pintasan, panduan Alpha, simulasi utang, valas ============ */
+/* ============ Segarkan, kunci cepat, pintasan, panduan Alpha, simulasi utang, valas ============ */
 
 /* ---------- Segarkan tanpa mengunci (Zee) ---------- */
 let ptrEl = null;
@@ -7910,7 +7918,7 @@ Object.assign(AKSI, {
   "versi-nanti": t => { S.versiDitunda = t.dataset.v; const b = document.querySelector(".banner-versi"); if (b) b.remove(); }
 });
 
-/* ============ Langkah 12 (v1.4.1): pemulihan PIN, sidik jari, lokasi perangkat, negara & bendera ============ */
+/* ============ Pemulihan PIN, sidik jari, lokasi perangkat, negara & bendera ============ */
 
 /* ---------- Bendera & negara ---------- */
 const BENDERA = {"ID": "<rect y=\"0.000\" width=\"30\" height=\"10.050\" fill=\"#CE1126\"/><rect y=\"10.000\" width=\"30\" height=\"10.050\" fill=\"#FFFFFF\"/>", "MY": "<rect y=\"0.000\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"1.429\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect y=\"2.857\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"4.286\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect y=\"5.714\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"7.143\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect y=\"8.571\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"10.000\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect y=\"11.429\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"12.857\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect y=\"14.286\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"15.714\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect y=\"17.143\" width=\"30\" height=\"1.479\" fill=\"#CC0001\"/><rect y=\"18.571\" width=\"30\" height=\"1.479\" fill=\"#FFFFFF\"/><rect width=\"15\" height=\"11.43\" fill=\"#010066\"/><circle cx=\"6.2\" cy=\"5.7\" r=\"3.8\" fill=\"#FFCC00\"/><circle cx=\"7.2\" cy=\"5.7\" r=\"3.2\" fill=\"#010066\"/><polygon points=\"11.20,3.30 11.44,4.65 12.24,3.54 11.87,4.86 13.08,4.20 12.17,5.23 13.54,5.17 12.28,5.70 13.54,6.23 12.17,6.17 13.08,7.20 11.87,6.54 12.24,7.86 11.44,6.75 11.20,8.10 10.96,6.75 10.16,7.86 10.53,6.54 9.32,7.20 10.23,6.17 8.86,6.23 10.12,5.70 8.86,5.17 10.23,5.23 9.32,4.20 10.53,4.86 10.16,3.54 10.96,4.65\" fill=\"#FFCC00\"/>", "SG": "<rect y=\"0.000\" width=\"30\" height=\"10.050\" fill=\"#EF3340\"/><rect y=\"10.000\" width=\"30\" height=\"10.050\" fill=\"#FFFFFF\"/><circle cx=\"5.6\" cy=\"5\" r=\"3.3\" fill=\"#FFFFFF\"/><circle cx=\"6.9\" cy=\"5\" r=\"3\" fill=\"#EF3340\"/><polygon points=\"9.60,2.55 9.77,3.07 10.31,3.07 9.87,3.39 10.04,3.91 9.60,3.58 9.16,3.91 9.33,3.39 8.89,3.07 9.43,3.07\" fill=\"#FFFFFF\"/><polygon points=\"11.22,3.72 11.38,4.24 11.93,4.24 11.49,4.56 11.66,5.08 11.22,4.76 10.78,5.08 10.95,4.56 10.50,4.24 11.05,4.24\" fill=\"#FFFFFF\"/><polygon points=\"10.60,5.63 10.77,6.14 11.31,6.14 10.87,6.46 11.04,6.98 10.60,6.66 10.16,6.98 10.33,6.46 9.89,6.14 10.43,6.14\" fill=\"#FFFFFF\"/><polygon points=\"8.60,5.63 8.77,6.14 9.31,6.14 8.87,6.46 9.04,6.98 8.60,6.66 8.16,6.98 8.33,6.46 7.89,6.14 8.43,6.14\" fill=\"#FFFFFF\"/><polygon points=\"7.98,3.72 8.15,4.24 8.70,4.24 8.25,4.56 8.42,5.08 7.98,4.76 7.54,5.08 7.71,4.56 7.27,4.24 7.82,4.24\" fill=\"#FFFFFF\"/>", "TH": "<rect width=\"30\" height=\"20\" fill=\"#A51931\"/><rect y=\"3.333\" width=\"30\" height=\"13.333\" fill=\"#F4F5F8\"/><rect y=\"6.667\" width=\"30\" height=\"6.667\" fill=\"#2D2A4A\"/>", "PH": "<rect y=\"0.000\" width=\"30\" height=\"10.050\" fill=\"#0038A8\"/><rect y=\"10.000\" width=\"30\" height=\"10.050\" fill=\"#CE1126\"/><polygon points=\"0,0 17.32,10 0,20\" fill=\"#FFFFFF\"/><g stroke=\"#FCD116\" stroke-width=\"0.6\"><line x1=\"7.70\" y1=\"10.00\" x2=\"9.00\" y2=\"10.00\"/><line x1=\"7.14\" y1=\"11.34\" x2=\"8.06\" y2=\"12.26\"/><line x1=\"5.80\" y1=\"11.90\" x2=\"5.80\" y2=\"13.20\"/><line x1=\"4.46\" y1=\"11.34\" x2=\"3.54\" y2=\"12.26\"/><line x1=\"3.90\" y1=\"10.00\" x2=\"2.60\" y2=\"10.00\"/><line x1=\"4.46\" y1=\"8.66\" x2=\"3.54\" y2=\"7.74\"/><line x1=\"5.80\" y1=\"8.10\" x2=\"5.80\" y2=\"6.80\"/><line x1=\"7.14\" y1=\"8.66\" x2=\"8.06\" y2=\"7.74\"/></g><circle cx=\"5.8\" cy=\"10\" r=\"1.8\" fill=\"#FCD116\"/><polygon points=\"1.90,1.80 2.12,2.49 2.85,2.49 2.26,2.92 2.49,3.61 1.90,3.18 1.31,3.61 1.54,2.92 0.95,2.49 1.68,2.49\" fill=\"#FCD116\"/><polygon points=\"1.90,16.20 2.12,16.89 2.85,16.89 2.26,17.32 2.49,18.01 1.90,17.58 1.31,18.01 1.54,17.32 0.95,16.89 1.68,16.89\" fill=\"#FCD116\"/><polygon points=\"14.40,9.00 14.62,9.69 15.35,9.69 14.76,10.12 14.99,10.81 14.40,10.38 13.81,10.81 14.04,10.12 13.45,9.69 14.18,9.69\" fill=\"#FCD116\"/>", "VN": "<rect width=\"30\" height=\"20\" fill=\"#DA251D\"/><polygon points=\"15.00,4.60 16.34,8.76 20.71,8.75 17.17,11.30 18.53,15.45 15.00,12.88 11.47,15.45 12.83,11.30 9.29,8.75 13.66,8.76\" fill=\"#FFFF00\"/>", "LA": "<rect width=\"30\" height=\"20\" fill=\"#CE1126\"/><rect y=\"5\" width=\"30\" height=\"10\" fill=\"#002868\"/><circle cx=\"15\" cy=\"10\" r=\"4\" fill=\"#FFFFFF\"/>", "MM": "<rect y=\"0.000\" width=\"30\" height=\"6.717\" fill=\"#FECB00\"/><rect y=\"6.667\" width=\"30\" height=\"6.717\" fill=\"#34B233\"/><rect y=\"13.333\" width=\"30\" height=\"6.717\" fill=\"#EA2839\"/><polygon points=\"15.00,4.30 16.47,8.87 21.28,8.86 17.39,11.68 18.88,16.24 15.00,13.41 11.12,16.24 12.61,11.68 8.72,8.86 13.53,8.87\" fill=\"#FFFFFF\"/>", "SA": "<rect width=\"30\" height=\"20\" fill=\"#006C35\"/><path d=\"M7 8.5 q1.5 -3 3 0 q1.5 3 3 0 q1.5 -3 3 0 q1.5 3 3 0 q1.5 -3 3 0 M9 5.5 v3 M14 5 v3.5 M19.5 5.5 v3\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"0.9\" stroke-linecap=\"round\"/><path d=\"M7.5 13.6 h14.5\" stroke=\"#FFFFFF\" stroke-width=\"1.1\" stroke-linecap=\"round\"/><path d=\"M20.5 12.4 v2.4\" stroke=\"#FFFFFF\" stroke-width=\"0.9\"/>", "AE": "<rect y=\"0.000\" width=\"30\" height=\"6.717\" fill=\"#00732F\"/><rect y=\"6.667\" width=\"30\" height=\"6.717\" fill=\"#FFFFFF\"/><rect y=\"13.333\" width=\"30\" height=\"6.717\" fill=\"#000000\"/><rect width=\"7.5\" height=\"20\" fill=\"#FF0000\"/>", "QA": "<rect width=\"30\" height=\"20\" fill=\"#8A1538\"/><polygon points=\"0,0 8,0.00 10.8,1.11 8,2.22 10.8,3.33 8,4.44 10.8,5.56 8,6.67 10.8,7.78 8,8.89 10.8,10.00 8,11.11 10.8,12.22 8,13.33 10.8,14.44 8,15.56 10.8,16.67 8,17.78 10.8,18.89 8,20 0,20\" fill=\"#FFFFFF\"/>", "TR": "<rect width=\"30\" height=\"20\" fill=\"#E30A17\"/><circle cx=\"10.6\" cy=\"10\" r=\"5\" fill=\"#FFFFFF\"/><circle cx=\"11.9\" cy=\"10\" r=\"4\" fill=\"#E30A17\"/><polygon points=\"14.70,10.00 16.43,9.44 16.43,7.62 17.49,9.10 19.22,8.53 18.15,10.00 19.22,11.47 17.49,10.90 16.43,12.38 16.43,10.56\" fill=\"#FFFFFF\"/>", "EG": "<rect y=\"0.000\" width=\"30\" height=\"6.717\" fill=\"#CE1126\"/><rect y=\"6.667\" width=\"30\" height=\"6.717\" fill=\"#FFFFFF\"/><rect y=\"13.333\" width=\"30\" height=\"6.717\" fill=\"#000000\"/><path d=\"M15 7.4 l1.5 1.1 l2.4 -0.6 l-1.6 2.2 v1.6 l-2.3 1.6 l-2.3 -1.6 v-1.6 l-1.6 -2.2 l2.4 0.6 z\" fill=\"#C09300\"/>", "JP": "<rect width=\"30\" height=\"20\" fill=\"#FFFFFF\"/><circle cx=\"15\" cy=\"10\" r=\"6\" fill=\"#BC002D\"/>", "KR": "<rect width=\"30\" height=\"20\" fill=\"#FFFFFF\"/><g transform=\"rotate(33.69 15 10)\"><path d=\"M10 10 a5 5 0 0 1 10 0 z\" fill=\"#CD2E3A\"/><path d=\"M10 10 a5 5 0 0 0 10 0 z\" fill=\"#0047A0\"/><circle cx=\"12.5\" cy=\"10\" r=\"2.5\" fill=\"#CD2E3A\"/><circle cx=\"17.5\" cy=\"10\" r=\"2.5\" fill=\"#0047A0\"/></g><g transform=\"rotate(56.31 7 4.7)\" stroke=\"#000000\" stroke-width=\"0.8\"><line x1=\"5.00\" y1=\"3.40\" x2=\"9.00\" y2=\"3.40\"/><line x1=\"5.00\" y1=\"4.70\" x2=\"9.00\" y2=\"4.70\"/><line x1=\"5.00\" y1=\"6.00\" x2=\"9.00\" y2=\"6.00\"/></g><g transform=\"rotate(56.31 23 15.3)\" stroke=\"#000000\" stroke-width=\"0.8\"><line x1=\"21.00\" y1=\"14.00\" x2=\"25.00\" y2=\"14.00\"/><line x1=\"21.00\" y1=\"15.30\" x2=\"25.00\" y2=\"15.30\"/><line x1=\"21.00\" y1=\"16.60\" x2=\"25.00\" y2=\"16.60\"/></g><g transform=\"rotate(-56.31 23 4.7)\" stroke=\"#000000\" stroke-width=\"0.8\"><line x1=\"21.00\" y1=\"3.40\" x2=\"25.00\" y2=\"3.40\"/><line x1=\"21.00\" y1=\"4.70\" x2=\"25.00\" y2=\"4.70\"/><line x1=\"21.00\" y1=\"6.00\" x2=\"25.00\" y2=\"6.00\"/></g><g transform=\"rotate(-56.31 7 15.3)\" stroke=\"#000000\" stroke-width=\"0.8\"><line x1=\"5.00\" y1=\"14.00\" x2=\"9.00\" y2=\"14.00\"/><line x1=\"5.00\" y1=\"15.30\" x2=\"9.00\" y2=\"15.30\"/><line x1=\"5.00\" y1=\"16.60\" x2=\"9.00\" y2=\"16.60\"/></g>", "CN": "<rect width=\"30\" height=\"20\" fill=\"#EE1C25\"/><polygon points=\"5.00,2.00 5.67,4.08 7.85,4.07 6.08,5.35 6.76,7.43 5.00,6.14 3.24,7.43 3.92,5.35 2.15,4.07 4.33,4.08\" fill=\"#FFFF00\"/><polygon points=\"10.50,1.13 10.35,1.85 10.98,2.21 10.25,2.28 10.10,2.99 9.81,2.33 9.09,2.41 9.63,1.92 9.33,1.26 9.96,1.62\" fill=\"#FFFF00\"/><polygon points=\"12.17,3.02 12.27,3.74 12.99,3.86 12.34,4.18 12.44,4.90 11.93,4.37 11.28,4.69 11.62,4.05 11.12,3.53 11.83,3.66\" fill=\"#FFFF00\"/><polygon points=\"11.83,6.02 12.17,6.66 12.88,6.53 12.38,7.05 12.72,7.69 12.07,7.37 11.56,7.90 11.66,7.18 11.01,6.86 11.73,6.74\" fill=\"#FFFF00\"/><polygon points=\"9.50,8.13 10.04,8.62 10.67,8.26 10.37,8.92 10.91,9.41 10.19,9.33 9.90,9.99 9.75,9.28 9.02,9.21 9.65,8.85\" fill=\"#FFFF00\"/>", "IN": "<rect y=\"0.000\" width=\"30\" height=\"6.717\" fill=\"#FF9933\"/><rect y=\"6.667\" width=\"30\" height=\"6.717\" fill=\"#FFFFFF\"/><rect y=\"13.333\" width=\"30\" height=\"6.717\" fill=\"#138808\"/><circle cx=\"15\" cy=\"10\" r=\"2.5\" fill=\"none\" stroke=\"#000080\" stroke-width=\"0.5\"/><g stroke=\"#000080\" stroke-width=\"0.25\"><line x1=\"15\" y1=\"10\" x2=\"17.50\" y2=\"10.00\"/><line x1=\"15\" y1=\"10\" x2=\"17.41\" y2=\"10.65\"/><line x1=\"15\" y1=\"10\" x2=\"17.17\" y2=\"11.25\"/><line x1=\"15\" y1=\"10\" x2=\"16.77\" y2=\"11.77\"/><line x1=\"15\" y1=\"10\" x2=\"16.25\" y2=\"12.17\"/><line x1=\"15\" y1=\"10\" x2=\"15.65\" y2=\"12.41\"/><line x1=\"15\" y1=\"10\" x2=\"15.00\" y2=\"12.50\"/><line x1=\"15\" y1=\"10\" x2=\"14.35\" y2=\"12.41\"/><line x1=\"15\" y1=\"10\" x2=\"13.75\" y2=\"12.17\"/><line x1=\"15\" y1=\"10\" x2=\"13.23\" y2=\"11.77\"/><line x1=\"15\" y1=\"10\" x2=\"12.83\" y2=\"11.25\"/><line x1=\"15\" y1=\"10\" x2=\"12.59\" y2=\"10.65\"/><line x1=\"15\" y1=\"10\" x2=\"12.50\" y2=\"10.00\"/><line x1=\"15\" y1=\"10\" x2=\"12.59\" y2=\"9.35\"/><line x1=\"15\" y1=\"10\" x2=\"12.83\" y2=\"8.75\"/><line x1=\"15\" y1=\"10\" x2=\"13.23\" y2=\"8.23\"/><line x1=\"15\" y1=\"10\" x2=\"13.75\" y2=\"7.83\"/><line x1=\"15\" y1=\"10\" x2=\"14.35\" y2=\"7.59\"/><line x1=\"15\" y1=\"10\" x2=\"15.00\" y2=\"7.50\"/><line x1=\"15\" y1=\"10\" x2=\"15.65\" y2=\"7.59\"/><line x1=\"15\" y1=\"10\" x2=\"16.25\" y2=\"7.83\"/><line x1=\"15\" y1=\"10\" x2=\"16.77\" y2=\"8.23\"/><line x1=\"15\" y1=\"10\" x2=\"17.17\" y2=\"8.75\"/><line x1=\"15\" y1=\"10\" x2=\"17.41\" y2=\"9.35\"/></g>", "PK": "<rect width=\"30\" height=\"20\" fill=\"#01411C\"/><rect width=\"7.5\" height=\"20\" fill=\"#FFFFFF\"/><circle cx=\"19.2\" cy=\"10.6\" r=\"5.4\" fill=\"#FFFFFF\"/><circle cx=\"20.8\" cy=\"9.3\" r=\"4.8\" fill=\"#01411C\"/><polygon points=\"23.49,6.04 23.08,7.36 24.22,8.16 22.83,8.18 22.43,9.50 21.99,8.19 20.60,8.22 21.71,7.39 21.26,6.08 22.39,6.88\" fill=\"#FFFFFF\"/>", "BD": "<rect width=\"30\" height=\"20\" fill=\"#006A4E\"/><circle cx=\"13.5\" cy=\"10\" r=\"6\" fill=\"#F42A41\"/>", "AU": "<rect width=\"30\" height=\"20\" fill=\"#012169\"/><svg width=\"15\" height=\"10\" viewBox=\"0 0 60 30\" preserveAspectRatio=\"none\"><rect width=\"60\" height=\"30\" fill=\"#012169\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#FFFFFF\" stroke-width=\"6\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#C8102E\" stroke-width=\"2\"/><path d=\"M30 0v30M0 15h60\" stroke=\"#FFFFFF\" stroke-width=\"10\"/><path d=\"M30 0v30M0 15h60\" stroke=\"#C8102E\" stroke-width=\"6\"/></svg><polygon points=\"7.50,12.60 7.97,14.03 9.38,13.50 8.55,14.76 9.84,15.53 8.34,15.67 8.54,17.16 7.50,16.08 6.46,17.16 6.66,15.67 5.16,15.53 6.45,14.76 5.62,13.50 7.03,14.03\" fill=\"#FFFFFF\"/><polygon points=\"22.50,15.60 22.73,16.31 23.44,16.05 23.03,16.68 23.67,17.07 22.92,17.14 23.02,17.88 22.50,17.34 21.98,17.88 22.08,17.14 21.33,17.07 21.97,16.68 21.56,16.05 22.27,16.31\" fill=\"#FFFFFF\"/><polygon points=\"18.30,8.10 18.53,8.81 19.24,8.55 18.83,9.18 19.47,9.57 18.72,9.64 18.82,10.38 18.30,9.84 17.78,10.38 17.88,9.64 17.13,9.57 17.77,9.18 17.36,8.55 18.07,8.81\" fill=\"#FFFFFF\"/><polygon points=\"22.50,2.40 22.73,3.11 23.44,2.85 23.03,3.48 23.67,3.87 22.92,3.94 23.02,4.68 22.50,4.14 21.98,4.68 22.08,3.94 21.33,3.87 21.97,3.48 21.56,2.85 22.27,3.11\" fill=\"#FFFFFF\"/><polygon points=\"26.40,7.10 26.63,7.81 27.34,7.55 26.93,8.18 27.57,8.57 26.82,8.64 26.92,9.38 26.40,8.84 25.88,9.38 25.98,8.64 25.23,8.57 25.87,8.18 25.46,7.55 26.17,7.81\" fill=\"#FFFFFF\"/><polygon points=\"24.30,10.70 24.49,11.15 24.97,11.18 24.60,11.50 24.71,11.97 24.30,11.71 23.89,11.97 24.00,11.50 23.63,11.18 24.11,11.15\" fill=\"#FFFFFF\"/>", "NZ": "<rect width=\"30\" height=\"20\" fill=\"#012169\"/><svg width=\"15\" height=\"10\" viewBox=\"0 0 60 30\" preserveAspectRatio=\"none\"><rect width=\"60\" height=\"30\" fill=\"#012169\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#FFFFFF\" stroke-width=\"6\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#C8102E\" stroke-width=\"2\"/><path d=\"M30 0v30M0 15h60\" stroke=\"#FFFFFF\" stroke-width=\"10\"/><path d=\"M30 0v30M0 15h60\" stroke=\"#C8102E\" stroke-width=\"6\"/></svg><polygon points=\"22.40,14.50 22.75,15.51 23.83,15.54 22.97,16.19 23.28,17.21 22.40,16.60 21.52,17.21 21.83,16.19 20.97,15.54 22.05,15.51\" fill=\"#C8102E\" stroke=\"#FFFFFF\" stroke-width=\"0.4\"/><polygon points=\"19.60,7.50 19.91,8.38 20.84,8.40 20.09,8.96 20.36,9.85 19.60,9.32 18.84,9.85 19.11,8.96 18.36,8.40 19.29,8.38\" fill=\"#C8102E\" stroke=\"#FFFFFF\" stroke-width=\"0.4\"/><polygon points=\"25.40,6.70 25.71,7.58 26.64,7.60 25.89,8.16 26.16,9.05 25.40,8.52 24.64,9.05 24.91,8.16 24.16,7.60 25.09,7.58\" fill=\"#C8102E\" stroke=\"#FFFFFF\" stroke-width=\"0.4\"/><polygon points=\"22.40,2.60 22.71,3.48 23.64,3.50 22.89,4.06 23.16,4.95 22.40,4.42 21.64,4.95 21.91,4.06 21.16,3.50 22.09,3.48\" fill=\"#C8102E\" stroke=\"#FFFFFF\" stroke-width=\"0.4\"/>", "GB": "<svg width=\"30\" height=\"20\" viewBox=\"0 0 60 30\" preserveAspectRatio=\"none\"><rect width=\"60\" height=\"30\" fill=\"#012169\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#FFFFFF\" stroke-width=\"6\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#C8102E\" stroke-width=\"2\"/><path d=\"M30 0v30M0 15h60\" stroke=\"#FFFFFF\" stroke-width=\"10\"/><path d=\"M30 0v30M0 15h60\" stroke=\"#C8102E\" stroke-width=\"6\"/></svg>", "NL": "<rect y=\"0.000\" width=\"30\" height=\"6.717\" fill=\"#AE1C28\"/><rect y=\"6.667\" width=\"30\" height=\"6.717\" fill=\"#FFFFFF\"/><rect y=\"13.333\" width=\"30\" height=\"6.717\" fill=\"#21468B\"/>", "DE": "<rect y=\"0.000\" width=\"30\" height=\"6.717\" fill=\"#000000\"/><rect y=\"6.667\" width=\"30\" height=\"6.717\" fill=\"#DD0000\"/><rect y=\"13.333\" width=\"30\" height=\"6.717\" fill=\"#FFCE00\"/>", "FR": "<rect x=\"0.000\" width=\"10.050\" height=\"20\" fill=\"#0055A4\"/><rect x=\"10.000\" width=\"10.050\" height=\"20\" fill=\"#FFFFFF\"/><rect x=\"20.000\" width=\"10.050\" height=\"20\" fill=\"#EF4135\"/>", "IT": "<rect x=\"0.000\" width=\"10.050\" height=\"20\" fill=\"#009246\"/><rect x=\"10.000\" width=\"10.050\" height=\"20\" fill=\"#FFFFFF\"/><rect x=\"20.000\" width=\"10.050\" height=\"20\" fill=\"#CE2B37\"/>", "ES": "<rect width=\"30\" height=\"20\" fill=\"#AA151B\"/><rect y=\"5\" width=\"30\" height=\"10\" fill=\"#F1BF00\"/><rect x=\"7\" y=\"7.6\" width=\"3.4\" height=\"4.8\" rx=\"1.2\" fill=\"#AD1519\" stroke=\"#7A5A1E\" stroke-width=\"0.4\"/>", "CH": "<rect width=\"30\" height=\"20\" fill=\"#DA291C\"/><rect x=\"13\" y=\"4\" width=\"4\" height=\"12\" fill=\"#FFFFFF\"/><rect x=\"9\" y=\"8\" width=\"12\" height=\"4\" fill=\"#FFFFFF\"/>", "US": "<rect y=\"0.000\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect y=\"1.538\" width=\"30\" height=\"1.588\" fill=\"#FFFFFF\"/><rect y=\"3.077\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect y=\"4.615\" width=\"30\" height=\"1.588\" fill=\"#FFFFFF\"/><rect y=\"6.154\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect y=\"7.692\" width=\"30\" height=\"1.588\" fill=\"#FFFFFF\"/><rect y=\"9.231\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect y=\"10.769\" width=\"30\" height=\"1.588\" fill=\"#FFFFFF\"/><rect y=\"12.308\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect y=\"13.846\" width=\"30\" height=\"1.588\" fill=\"#FFFFFF\"/><rect y=\"15.385\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect y=\"16.923\" width=\"30\" height=\"1.588\" fill=\"#FFFFFF\"/><rect y=\"18.462\" width=\"30\" height=\"1.588\" fill=\"#B22234\"/><rect width=\"12\" height=\"10.77\" fill=\"#3C3B6E\"/><circle cx=\"1.20\" cy=\"1.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"3.60\" cy=\"1.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"6.00\" cy=\"1.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"8.40\" cy=\"1.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"10.80\" cy=\"1.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"2.40\" cy=\"2.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"4.80\" cy=\"2.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"7.20\" cy=\"2.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"9.60\" cy=\"2.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"1.20\" cy=\"4.60\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"3.60\" cy=\"4.60\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"6.00\" cy=\"4.60\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"8.40\" cy=\"4.60\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"10.80\" cy=\"4.60\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"2.40\" cy=\"6.35\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"4.80\" cy=\"6.35\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"7.20\" cy=\"6.35\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"9.60\" cy=\"6.35\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"1.20\" cy=\"8.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"3.60\" cy=\"8.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"6.00\" cy=\"8.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"8.40\" cy=\"8.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"10.80\" cy=\"8.10\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"2.40\" cy=\"9.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"4.80\" cy=\"9.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"7.20\" cy=\"9.85\" r=\"0.42\" fill=\"#FFFFFF\"/><circle cx=\"9.60\" cy=\"9.85\" r=\"0.42\" fill=\"#FFFFFF\"/>", "CA": "<rect width=\"30\" height=\"20\" fill=\"#FFFFFF\"/><rect width=\"7.5\" height=\"20\" fill=\"#D52B1E\"/><rect x=\"22.5\" width=\"7.5\" height=\"20\" fill=\"#D52B1E\"/><polygon points=\"15.00,3.85 16.12,6.10 17.38,5.60 17.00,8.35 19.00,6.85 18.62,8.22 20.50,8.10 19.12,10.35 19.88,11.10 16.50,11.85 16.62,13.35 15.31,13.10 15.31,15.35 14.69,15.35 14.69,13.10 13.38,13.35 13.50,11.85 10.12,11.10 10.88,10.35 9.50,8.10 11.38,8.22 11.00,6.85 13.00,8.35 12.62,5.60 13.88,6.10\" fill=\"#D52B1E\"/>"};
@@ -8007,12 +8015,17 @@ async function ambilGeocode(qs){
   if (!r.ok) throw new Error("geocode " + r.status);
   const l = uraiGeocode(await r.json());
   if (!adaKota(l)) throw new Error("kosong");
+  /* koordinat dibulatkan (sekitar 1 km) untuk cuaca */
+  const m = /latitude=([-\d.]+)&longitude=([-\d.]+)/.exec(qs || "");
+  if (m){ l.lat = Math.round(+m[1] * 100) / 100; l.lon = Math.round(+m[2] * 100) / 100; }
   return l;
 }
 function simpanLokasi(l){
+  const lama = lokasiSaya();
   localStorage.setItem(K_LOKASI, JSON.stringify(l));
   perbaruiTampilLokasi();
   if (adaKota(l) && typeof awanTersambung === "function" && awanTersambung()) laporPerangkat("lokasi");
+  if (!lama || lama.kota !== l.kota || lama.lat !== l.lat){ localStorage.removeItem(K_CUACA); setTimeout(() => perbaruiCuaca(true), 300); }
 }
 let janjiLokasi = null;
 async function perbaruiLokasi(paksa){
@@ -8474,7 +8487,6 @@ Object.assign(AKSI, {
   "tanya-simpan": () => simpanTanya(),
   "tanya-mati": () => mintaPin("Matikan pertanyaan keamanan", () => { const u = penggunaSaya(); u.pulih = Object.assign({}, u.pulih); delete u.pulih.tanya; simpanMeta(); tutupModal(); render(); toast("Pertanyaan keamanan dimatikan."); }),
   "ke-pemulihan": () => { tutupModal(); S.halaman = "pengaturan"; render(); catatHalaman("pengaturan"); const s = document.getElementById("set-pulih"); if (s) s.scrollIntoView({block:"start"}); },
-  "lupa-pin": () => modalLupaPin(),
   "lupa-hapus": () => modalHapusProfilLupa(),
   "pulih-bio": () => pulihBio(),
   "pulih-kode": () => modalPulihKode(),
@@ -8489,7 +8501,7 @@ Object.assign(AKSI, {
   "lokasi-nyala": async () => { localStorage.setItem(K_LOKASI_AKTIF, "1"); render(); const l = await perbaruiLokasi(true); render(); toast(l ? "Lokasi: " + teksLokasiTampil(l) + "." : "Zee: " + (PESAN_LOKASI[S.lokasiGalat] || PESAN_LOKASI.jaringan)); }
 });
 
-/* ============ Langkah 13 (v1.4.2): anggaran acara, bagikan bukti transfer, hapus beberapa transaksi ============ */
+/* ============ Anggaran acara, bagikan bukti transfer, hapus beberapa transaksi ============ */
 
 /* ---------- Anggaran acara (Cici) ---------- */
 const acaraP = () => (S.sesi.data.acara = S.sesi.data.acara || []);
@@ -8783,7 +8795,7 @@ Object.assign(AKSI, {
 const navSebelum13 = AKSI.nav;
 AKSI.nav = t => { if (t.dataset.h !== "transaksi") S.pilihTx = null; navSebelum13(t); };
 
-/* ============ Langkah 14 (v1.4.2a): undang pasangan & status aktif pasangan ============ */
+/* ============ Undang pasangan & status aktif pasangan ============ */
 
 /* ---------- Undang pasangan (Cici) ---------- */
 const MENIT_UNDANGAN = 5;
@@ -8935,7 +8947,7 @@ Object.assign(AKSI, {
   "undang-unduh": () => unduhQRUndangan()
 });
 
-/* ============ Langkah 15 (v1.4.3): notifikasi tagihan saat aplikasi tertutup (Pipo) ============ */
+/* ============ Notifikasi saat aplikasi tertutup (Pipo) ============ */
 const K_PUSH = id => PFX + "push." + id;
 const pushDukung = () => DI_WEB && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
 const diIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -8982,7 +8994,8 @@ function hitungJadwalPush(){
     });
     out.push({waktu:waktu.toISOString(), judul:"Pipo: pengingat tagihan", isi:"Ada " + gabungKata(bagian) + ". Buka Dompet Kita untuk detailnya.", tag:"dompet-kita-tagihan"});
   });
-  return out.sort((a, b) => a.waktu.localeCompare(b.waktu)).slice(0, 150);
+  out.sort((a, b) => a.waktu.localeCompare(b.waktu)).splice(150);
+  return out.concat(jadwalOwi(), jadwalCantik()).sort((a, b) => a.waktu.localeCompare(b.waktu)).slice(0, 195);
 }
 async function langgananPush(paksaBaru){
   const reg = await navigator.serviceWorker.ready;
@@ -9048,7 +9061,8 @@ function barisPush(){
     awan:"Butuh sinkron awan. Sambungkan dulu perangkat ini di bagian Sinkron antarperangkat.",
     ditolak:"Izin notifikasi untuk situs ini ditolak di browser. Buka setelan situs, izinkan Notifikasi, lalu tekan Aktifkan.",
     mati:"Belum aktif di perangkat ini.",
-    aktif:"Aktif di perangkat ini. Pipo mengingatkan H-3, H-2, dan H-1 sebelum jatuh tempo, pukul " + jam + ", dan Boo memberi tahu kalau ada pesan baru dari pasangan." + (info.jumlah != null ? " Ada " + info.jumlah + " pengingat terjadwal." : "")
+    aktif:"Aktif di perangkat ini. Pipo mengingatkan H-3, H-2, dan H-1 sebelum jatuh tempo, pukul " + jam +
+      (owiPushAktif() ? ", Owi mengingatkan mencatat pukul " + S.sesi.data.pengaturan.ingatCatat.jam + " kalau belum ada catatan" : "") + ", dan Boo memberi tahu kalau ada pesan baru dari pasangan." + (info.jumlah != null ? " Ada " + info.jumlah + " pengingat terjadwal." : "")
   }[st];
   const jamOpsi = Array.from({length:17}, (_, i) => String(i + 5).padStart(2, "0") + ":00").map(j => '<option'+(j === jam ? " selected" : "")+'>'+j+'</option>').join("");
   const tombol = st === "aktif"
@@ -9066,9 +9080,6 @@ document.addEventListener("change", async e => {
   await kirimJadwalPush(true);
   toast("Pipo akan mengingatkan pukul " + e.target.value + ".");
 });
-/* setiap data berubah, jadwal pengingat diperbarui (hanya kalau notifikasi aktif di perangkat ini) */
-const simpanPribadiSebelum15 = simpanPribadi;
-simpanPribadi = async function(){ const h = await simpanPribadiSebelum15.apply(this, arguments); if (S.sesi && pushSaya().aktif) jadwalkanPush(); return h; };
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.sesi && pushSaya().aktif) kirimJadwalPush(false); });
 
 Object.assign(AKSI, {
@@ -9077,7 +9088,7 @@ Object.assign(AKSI, {
   "push-tes": () => tesPush()
 });
 
-/* ============ Langkah 16 (v1.5.0): Obrolan dengan pasangan (Boo) ============ */
+/* ============ Obrolan dengan pasangan (Boo) ============ */
 const K_OBROLAN = PFX + "obrolan";
 const OB = {rows:new Map(), kursor:"", bacaLain:{}, bacaSaya:"", antre:[], cache:new Map(), muat:false, ketik:0, sql:true};
 function obMuatLokal(){
@@ -9139,6 +9150,8 @@ async function obAmbil(){
     obSimpanLokal();
     if (baru) obTampilkanUlang();
     obPerbaruiLencana();
+    OB.muat = false;
+    if (await mediaAmbilStatus() && !baru) obTampilkanUlang();
     return baru;
   } catch(e){
     if (e.status === 404) OB.sql = false;
@@ -9167,12 +9180,15 @@ async function obKirim(isi){
   obSimpanLokal(); obTampilkanUlang(true);
   await obKirimAntre();
   obTampilkanUlang(true);
+  reaksiMaskot("boo", {gerak:"r-terbang", ukuran:60, lama:1500});
 }
 async function obHapus(id){
   const r = OB.rows.get(id);
   if (!r || r.dari !== S.sesi.user.id) return;
+  const v = OB.cache.get(id) || {}, media = [v.foto && v.foto.id, v.suara && v.suara.id].filter(Boolean);
   try {
     await awanFetch("/rest/v1/obrolan?id=eq." + encodeURIComponent(id), {method:"PATCH", headers:{Prefer:"return=minimal"}, body:JSON.stringify({dihapus:true, isi:{}})});
+    if (media.length) mediaHapusPaksa(media);
     r.dihapus = true; OB.cache.delete(id); obSimpanLokal(); obTampilkanUlang(); siarkanOb("pesan", {dari:S.sesi.user.id});
     await obAmbil();
   } catch(e){ toast("Boo: pesan belum bisa dihapus. Cek koneksi internet."); }
@@ -9274,6 +9290,7 @@ function kartuDariTx(id){
 }
 function kartuHTML(k){
   if (!k) return "";
+  if (k.tipe === "laporan") return kartuLaporanHTML(k);
   if (k.tipe === "tagihan"){
     const x = S.sesi.bersama.bagiTagihan.find(b => b.id === k.id);
     if (!x) return '<div class="ob-kartu"><span class="eyebrow">Bagi tagihan</span><strong>'+esc(k.judul)+'</strong><span class="muted">Tagihan ini sudah dihapus.</span></div>';
@@ -9340,7 +9357,7 @@ function halObrolan(){
   const lain = obPasangan();
   const kepala = '<header class="page-head ob-kepala"><div class="ob-judul">'+(lain ? maskot(lain.avatar, 44) : maskot("boo", 44))+
     '<div><h1>'+(lain ? esc(lain.nama) + ' ' + benderaPengguna(lain, 13) : "Obrolan")+'</h1>'+
-    (lain ? '<p class="ob-status">'+statusAktifHTML(lain.id)+'</p>' : '<p>Ngobrol berdua soal keuangan, dibantu Boo.</p>')+'</div></div></header>';
+    (lain ? '<p class="ob-status">'+statusAktifHTML(lain.id)+'</p>' : '<p>Ngobrol berdua soal keuangan, dibantu Boo.</p>')+'</div></div><button type="button" class="ob-bantu-hp" data-aksi="panduan-alpha" aria-label="Panduan Alpha" title="Panduan">?</button></header>';
   if (!lain) return kepala + kosongKartu("boo", "Belum ada pasangan", "Undang pasanganmu dulu supaya kalian bisa mengobrol di sini.", tombolAksi("undang-pasangan", "Undang pasangan", "btn-primary"));
   if (!DI_WEB || !awanTersambung()) return kepala + kosongKartu("boo", "Sambungkan sinkron awan dulu", "Obrolan butuh sinkron awan supaya pesan sampai ke HP pasanganmu. Sambungkan di Pengaturan → Sinkron antarperangkat.", tombolAksi("nav", "Buka Pengaturan", "btn-primary", ' data-h="pengaturan"'));
   if (!OB.sql) return kepala + kosongKartu("boo", "Server obrolan belum disiapkan", "Jalankan dompet-kita-supabase-5.sql di Supabase (SQL Editor), lalu buka halaman ini lagi.", "");
@@ -9352,9 +9369,11 @@ function halObrolan(){
       '<button type="button" class="ob-baru" id="ob-baru" data-aksi="ob-ke-bawah" hidden>'+maskot("boo", 26)+'<span></span></button>'+
       '<div id="ob-ketik" class="ob-ketik-boo" hidden>'+maskot("boo", 30)+'<span>'+esc(lain.nama)+' sedang mengetik</span><span class="ob-titik"><i></i><i></i><i></i></span></div>'+
       '<div id="ob-lampiran" class="ob-lampiran-wadah"></div>'+
+      '<div class="ob-rekam" id="ob-rekam"><button type="button" class="btn-ikon rk-batal" data-aksi="rk-batal" aria-label="Batalkan rekaman">🗑</button><span class="rk-titik" aria-hidden="true"></span><span class="rk-waktu">0:00</span><div class="rk-gelombang" aria-hidden="true"></div><span class="muted rk-batas">maks 2:00</span><button type="button" class="btn btn-primary rk-kirim" data-aksi="rk-kirim">Kirim</button></div>'+
       '<div class="ob-tulis-baris">'+
-        '<button type="button" class="btn-ikon ob-plus" data-aksi="ob-kartu" aria-label="Kirim kartu keuangan" title="Kirim kartu keuangan">'+ikon("plus")+'</button>'+
+        '<button type="button" class="btn-ikon ob-plus" data-aksi="ob-tambah" aria-label="Kirim foto, kartu, atau lainnya" title="Kirim foto, kartu, atau lainnya">'+ikon("plus")+'</button>'+
         '<textarea id="ob-teks" rows="1" maxlength="2000" placeholder="Tulis pesan..." aria-label="Tulis pesan"></textarea>'+
+        '<button type="button" class="btn-ikon ob-mik" data-aksi="ob-rekam" aria-label="Rekam voice note" title="Rekam voice note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></button>'+
         '<button type="button" class="btn btn-primary ob-kirim" data-aksi="ob-kirim" aria-label="Kirim">Kirim</button>'+
       '</div></div>';
 }
@@ -9364,6 +9383,7 @@ async function obTampilkanUlang(keBawah){
   obPerbaruiLencana();
   const lamp = document.getElementById("ob-lampiran");
   if (lamp) lamp.innerHTML = S.obLampiran ? '<div class="ob-lampiran">'+kartuHTML(S.obLampiran)+'<button type="button" class="x-kecil" data-aksi="ob-lepas" aria-label="Batalkan lampiran">&times;</button></div>' : "";
+  obPerbaruiTombolTulis();
   if (!wadah || !S.sesi) return;
   const ke = ++obRenderKe, me = S.sesi.user.id;
   const dekatBawah = obDekatBawah();
@@ -9392,6 +9412,7 @@ async function obTampilkanUlang(keBawah){
   if (keBawah || dekatBawah || !wadah.dataset.siap){ wadah.dataset.siap = "1"; S.obTerlihat = terakhir; requestAnimationFrame(() => obKeBawah(false)); }
   obPenunjukBaru(semua);
   obTandaiDibaca(); obTampilKetik();
+  await fotoTempelJernih(wadah); suaraSegarkan();
 }
 function obPenunjukBaru(semua){
   const el = document.getElementById("ob-baru");
@@ -9447,9 +9468,6 @@ async function obKirimDariForm(){
   if (t){ t.value = ""; t.style.height = "auto"; t.focus(); }
   await obKirim(isi);
 }
-function tombolObrolanHP(){
-  return '<button type="button" class="btn-kunci-hp btn-obrolan-hp" data-aksi="nav" data-h="obrolan" aria-label="Obrolan" title="Obrolan">'+maskot("boo", 30)+'<span class="ob-lencana" hidden></span></button>';
-}
 
 Object.assign(AKSI, {
   "ob-kirim": () => obKirimDariForm(),
@@ -9465,7 +9483,7 @@ Object.assign(AKSI, {
   "ob-kirim-tx": () => { const id = S.form && S.form.id; tutupModal(); obLampirkan(kartuDariTx(id)); }
 });
 
-/* ============ langkah 17: kutipan Eli & doa Jamal berganti sendiri, diacak ============ */
+/* ============ Kutipan Eli & doa Jamal berganti sendiri ============ */
 const PUTAR_MS = {eli:15000, jamal:30000};
 const PUTAR = {eli:{idx:null, sejak:0}, jamal:{idx:null, sejak:0}};
 const putarJumlah = j => j === "eli" ? KUTIPAN.length : DOA_HARIAN.length;
@@ -9529,7 +9547,7 @@ Object.assign(AKSI, {
   "doa-lain": () => putarMaju("jamal")
 });
 
-/* ============ langkah 18: animasi maskot (berkedip, bernapas, gerakan khas, reaksi) ============ */
+/* ============ Animasi maskot (berkedip, bernapas, gerakan khas, reaksi) ============ */
 const K_ANIMASI = PFX + "animasi";
 const animasiNyala = () => localStorage.getItem(K_ANIMASI) !== "mati" && !matchMedia("(prefers-reduced-motion: reduce)").matches;
 function terapkanAnimasi(){ document.documentElement.dataset.animasi = localStorage.getItem(K_ANIMASI) === "mati" ? "mati" : "nyala"; }
@@ -9558,8 +9576,6 @@ document.addEventListener("pointerdown", e => {
   const m = e.target.closest(".maskot.hidup");
   if (m && !m.closest(".geng-kartu, .panggung-maskot")) mainkanMaskot(m);
 });
-const _tampilFakta = tampilFakta;
-tampilFakta = function(kartu, ...sisa){ mainkanMaskot(kartu.querySelector(".maskot")); return _tampilFakta.call(this, kartu, ...sisa); };
 
 /* panggung reaksi: maskot muncul sebentar di atas layar saat ada kejadian */
 function reaksiMaskot(m, opsi){
@@ -9589,44 +9605,7 @@ function konfeti(wadah){
 }
 
 /* ---- kaitan ke kejadian aplikasi ---- */
-const _simpanMutasi = simpanMutasi;
-simpanMutasi = async function(...a){
-  const mode = S.formMut && S.formMut.mode;
-  const r = await _simpanMutasi.apply(this, a);
-  if (mode === "setor" && !document.getElementById("in-mnom")) setTimeout(() => reaksiMaskot("piggy", {teks:"Masuk celengan!"}), 250);
-  return r;
-};
-const _setorSlotRoo = setorSlotRoo;
-setorSlotRoo = async function(...a){
-  const f = S.formSlot, x = f && S.sesi.data.tantangan.find(y => y.id === f.id), sudah = x && x.selesaiTgl;
-  const r = await _setorSlotRoo.apply(this, a);
-  const kini = x && S.sesi.data.tantangan.find(y => y.id === x.id);
-  if (kini && kini.selesaiTgl && !sudah) setTimeout(() => reaksiMaskot("roo", {teks:"Tantangan selesai!", gerak:"main r-lompat"}), 250);
-  else if (kini && !document.querySelector(".backdrop")) setTimeout(() => reaksiMaskot("piggy", {teks:"Hop! Masuk celengan"}), 250);
-  return r;
-};
-const _tampilkanPerayaan = tampilkanPerayaan;
-tampilkanPerayaan = function(...a){
-  const r = _tampilkanPerayaan.apply(this, a);
-  const kepala = document.querySelector(".backdrop .perayaan-kepala");
-  if (kepala){ konfeti(kepala.closest(".modal") || kepala); setTimeout(() => mainkanMaskot(kepala.querySelector(".maskot")), 200); }
-  return r;
-};
-const _kunciAplikasi = kunciAplikasi;
-kunciAplikasi = function(...a){
-  const r = _kunciAplikasi.apply(this, a);
-  setTimeout(() => reaksiMaskot("niko", {teks:"Zzz… aplikasi terkunci", gerak:"r-tidur", lama:2600}), 200);
-  return r;
-};
-const _obKirim = obKirim;
-obKirim = async function(...a){
-  const r = await _obKirim.apply(this, a);
-  reaksiMaskot("boo", {gerak:"r-terbang", ukuran:60, lama:1500});
-  return r;
-};
-const _aksiSembunyi = AKSI.sembunyi;
 Object.assign(AKSI, {
-  "sembunyi": (...a) => { _aksiSembunyi(...a); setTimeout(() => document.querySelectorAll(".btn-sembunyi .maskot").forEach(m => mainkanMaskot(m)), 60); },
   "animasi": t => {
     localStorage.setItem(K_ANIMASI, t.dataset.v === "mati" ? "mati" : "nyala");
     terapkanAnimasi(); render();
@@ -9634,13 +9613,12 @@ Object.assign(AKSI, {
   }
 });
 
-/* ============ langkah 19: latar login bergerak, penanda waktu, reaksi PIN ============ */
+/* ============ Latar login, penanda waktu, riak kursor ============ */
 /* pagi 04.00–10.59 · siang 11.00–14.59 · sore 15.00–17.59 · malam 18.00–03.59 */
 function waktuHari(h){
   if (h === undefined) h = new Date().getHours();
   return h >= 4 && h < 11 ? "pagi" : h >= 11 && h < 15 ? "siang" : h >= 15 && h < 18 ? "sore" : "malam";
 }
-sapaan = function(){ return {pagi:"Selamat pagi", siang:"Selamat siang", sore:"Selamat sore", malam:"Selamat malam"}[waktuHari()]; };
 const IKON_WAKTU = {
   pagi:'<svg viewBox="0 0 24 24" aria-hidden="true"><g class="iw-sinar" stroke="#F0A64A" stroke-width="1.8" stroke-linecap="round"><path d="M12 5.5V3.5M5.6 9.4 4.2 8M18.4 9.4 19.8 8M3.5 14.5h1.6M18.9 14.5h1.6"/></g><path d="M6.5 17.5a5.5 5.5 0 0 1 11 0z" fill="#F7B955" stroke="#D9862F" stroke-width="1.2"/><path d="M3.5 18.5h17" stroke="#D9862F" stroke-width="1.8" stroke-linecap="round"/><path d="M8.6 14.2a3.6 3.6 0 0 1 2.6-2" stroke="#FFF3D6" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>',
   siang:'<svg viewBox="0 0 24 24" aria-hidden="true"><g class="iw-sinar" stroke="#F2B630" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/></g><circle cx="12" cy="12" r="4.6" fill="#FFD24D" stroke="#E0A21F" stroke-width="1.2"/><path d="M9.8 10.4a2.6 2.6 0 0 1 1.8-1.3" stroke="#FFF6D8" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>',
@@ -9648,16 +9626,6 @@ const IKON_WAKTU = {
   malam:'<svg viewBox="0 0 24 24" aria-hidden="true"><path class="iw-bulan" d="M15.5 3.6a8.4 8.4 0 1 0 5 13.4A7 7 0 0 1 15.5 3.6z" fill="#F4E4A6" stroke="#C9AE5C" stroke-width="1.2"/><path class="iw-kelip" d="M18.5 4.2l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z" fill="#FFE9A0"/></svg>'
 };
 const ikonWaktuHTML = (w, kelas) => '<span class="ikon-waktu '+(kelas || "")+'" data-w="'+(w || waktuHari())+'" title="'+{pagi:"Pagi", siang:"Siang", sore:"Sore", malam:"Malam"}[w || waktuHari()]+'">'+IKON_WAKTU[w || waktuHari()]+'</span>';
-/* jam: ikon waktu di sebelah jam */
-jamHTML = function(kelas, ekstra){
-  return '<div class="jam-hidup '+(kelas || "")+'" role="timer" aria-label="Jam dan tanggal sekarang"><span class="jam-baris">'+ikonWaktuHTML()+'<span class="jam-waktu"></span></span><span class="jam-tanggal"></span>'+(ekstra || "")+'</div>';
-};
-const _isiJam = isiJam;
-isiJam = function(el){
-  _isiJam(el);
-  const w = waktuHari(), ik = el.querySelector(".ikon-waktu");
-  if (ik && ik.dataset.w !== w) ik.outerHTML = ikonWaktuHTML(w);
-};
 /* langit login */
 function langitHTML(lapis){
   const w = waktuHari(), kartu = lapis === "kartu";
@@ -9667,13 +9635,14 @@ function langitHTML(lapis){
   const awan = (c, x, y, s) => '<svg class="lg-awan '+c+'" style="left:'+x+';top:'+y+';width:'+s+'px" viewBox="0 0 120 56" aria-hidden="true"><g class="aw-badan"><circle cx="40" cy="30" r="17"/><circle cx="64" cy="22" r="21"/><circle cx="88" cy="33" r="13"/><circle cx="24" cy="38" r="10"/><rect x="14" y="32" width="92" height="17" rx="8.5"/></g><path class="aw-kilap" d="M50 14a18 18 0 0 1 22-6" fill="none" stroke-width="3" stroke-linecap="round"/></svg>';
   const burung = (c, x, y) => '<svg class="lg-burung '+c+'" style="left:'+x+';top:'+y+'" viewBox="0 0 40 16" aria-hidden="true"><path d="M2 10q8-8 18 2q10-10 18-2"/></svg>';
   const sinar = '<g class="lg-sinar">'+[0,30,60,90,120,150,180,210,240,270,300,330].map(a => '<rect x="48" y="2" width="4" height="13" rx="2" transform="rotate('+a+' 50 50)"/>').join("")+'</g>';
-  if (!kartu) return '<div class="langit langit-latar" data-waktu="'+w+'" aria-hidden="true"><div class="langit-warna"></div>'+bintangKecil+kunang+'</div>';
-  return '<div class="langit langit-kartu" data-waktu="'+w+'" aria-hidden="true"><div class="langit-warna"></div>'+
+  const c = cuacaAktif() ? cuacaKini() : null, kl = c ? c.kelas : "", efek = efekCuacaHTML(kl, kartu);
+  if (!kartu) return '<div data-cuaca="'+kl+'" class="langit langit-latar" data-waktu="'+w+'" aria-hidden="true"><div class="langit-warna"></div>'+bintangKecil+kunang+efek+'</div>';
+  return '<div data-cuaca="'+kl+'" class="langit langit-kartu" data-waktu="'+w+'" aria-hidden="true"><div class="langit-warna"></div>'+
     '<svg class="lg-matahari" viewBox="0 0 100 100">'+sinar+'<circle class="lg-cahaya" cx="50" cy="50" r="30"/><circle class="lg-bola" cx="50" cy="50" r="22"/><ellipse cx="42" cy="41" rx="8" ry="5" fill="#FFF" opacity=".55"/></svg>'+
     '<svg class="lg-bulan" viewBox="0 0 100 100"><circle class="lg-cahaya" cx="50" cy="50" r="34"/><path class="lg-sabit" d="M58 18a32 32 0 1 0 24 50A27 27 0 0 1 58 18z"/><circle cx="44" cy="58" r="3.5" class="lg-kawah"/><circle cx="36" cy="44" r="2.4" class="lg-kawah"/></svg>'+
     awan("aw1", "6%", "9%", 150) + awan("aw2", "58%", "4%", 110) + awan("aw3", "30%", "20%", 90) +
     burung("b1", "18%", "14%") + burung("b2", "26%", "10%") + burung("b3", "22%", "19%") +
-    bintangKecil + kunang + '</div>';
+    bintangKecil + kunang + efek + '</div>';
 }
 /* riak air mengikuti kursor di latar (laptop saja; tidak di atas kartu) */
 const RIAK_JARAK = 26, RIAK_MAKS = 28;
@@ -9729,37 +9698,8 @@ setInterval(() => {
     const s = document.querySelector(".login-wrap .sapa"); if (s) s.textContent = sapaan() + "!";
   }
 }, 30000);
-/* maskot barisan login: melambai saat layar login muncul */
-let loginSudahLambai = false;
-const _setelahRenderLogin = setelahRenderLogin;
-setelahRenderLogin = function(...a){
-  const r = _setelahRenderLogin.apply(this, a);
-  if (!loginSudahLambai){
-    loginSudahLambai = true;
-    document.querySelectorAll(".lk-maskot .maskot").forEach((m, i) => setTimeout(() => mainkanMaskot(m), 450 + i * 160));
-  }
-  return r;
-};
-/* PIN benar: barisan maskot melompat dulu sebentar */
-const _masukDenganKunci = masukDenganKunci;
-masukDenganKunci = async function(...a){
-  const baris = [...document.querySelectorAll(".lk-maskot .maskot")];
-  if (baris.length && animasiNyala() && S.layar !== "app"){
-    baris.forEach((m, i) => setTimeout(() => mainkanMaskot(m, "r-lompat"), i * 70));
-    await new Promise(res => setTimeout(res, 750));
-  }
-  loginSudahLambai = false;
-  return _masukDenganKunci.apply(this, a);
-};
-/* PIN salah: Niko menggeleng */
-const _catatGagal = catatGagal;
-catatGagal = function(...a){
-  const r = _catatGagal.apply(this, a);
-  if (S.layar !== "app" && !String(a[0]).startsWith("pulih.")) reaksiMaskot("niko", {teks:"PIN salah", gerak:"r-geleng", lama:1800});
-  return r;
-};
 
-/* ============ langkah 20 (1.6.2): lama akun bersama Gori, streak login bersama Jago ============ */
+/* ============ Lama akun (Gori) & streak buka aplikasi (Jago) ============ */
 /* streak dihitung dari hari membuka aplikasi (masuk dengan PIN/biometrik atau aplikasi terbuka di hari itu).
    Perisai: satu kali per bulan kalender, menutup hari yang terlewat supaya streak harian tidak putus. */
 const hariNo = t => Math.round(Date.UTC(+t.slice(0, 4), +t.slice(5, 7) - 1, +t.slice(8, 10)) / 864e5);
@@ -9817,7 +9757,10 @@ function langkahJejak(tgl){
     o.terakhir = k; o.terbaik = Math.max(o.terbaik || 0, o.n);
   };
   maju(j.mingguan, indeksMinggu(tgl)); maju(j.bulanan, bulanNo(tgl));
-  if (ev) ev.n = h.n;
+  if (ev){
+    ev.n = h.n;
+    j.hariBuka = j.hariBuka || {}; const y = tgl.slice(0, 4); j.hariBuka[y] = (j.hariBuka[y] || 0) + 1;
+  }
   return ev;
 }
 const umurAkunHari = () => Math.max(0, hariAntara(tglLokal(new Date(S.sesi.user.dibuat)), tglLokal()));
@@ -9830,13 +9773,6 @@ function streakTampil(){
   if (sela === 2 && perisaiSiap(j, dariHariNo(hariNo(kini) - 1))) return h.n;
   return 0;
 }
-/* hubungkan ke alur masuk: catatAktifBersama dipanggil saat masuk, sebelum data disimpan */
-const _catatAktifBersama = catatAktifBersama;
-catatAktifBersama = async function(...a){
-  const r = await _catatAktifBersama.apply(this, a);
-  if (S.sesi){ const ev = langkahJejak(tglLokal()); if (ev) S.jejakEvent = ev; }
-  return r;
-};
 function reaksiJejak(){
   const ev = S.jejakEvent; S.jejakEvent = null;
   if (!ev || !S.sesi) return;
@@ -9844,12 +9780,6 @@ function reaksiJejak(){
   else if (ev.jenis === "naik") reaksiMaskot("jago", {teks:"Kukuruyuk! " + ev.n + " hari beruntun", lama:2600});
   else if (ev.jenis === "putus" && ev.lama >= 3) reaksiMaskot("jago", {teks:"Streak mulai lagi dari 1. Semangat!", lama:2800});
 }
-const _masukDenganKunci162 = masukDenganKunci;
-masukDenganKunci = async function(...a){
-  const r = await _masukDenganKunci162.apply(this, a);
-  setTimeout(reaksiJejak, 1300);
-  return r;
-};
 /* aplikasi dibiarkan terbuka melewati tengah malam: hari baru tetap tercatat */
 setInterval(async () => {
   if (!S.sesi || S.layar !== "app" || document.visibilityState !== "visible") return;
@@ -9870,18 +9800,6 @@ LENCANA.push(
   L("streakbulanan", "Jejak & streak", "Kokok Bulanan", "jago", [3, 6, 12, 24], m => m.streakBulanan, t => "Membuka Dompet Kita " + t + " bulan berturut-turut"),
   L("streaktahunan", "Jejak & streak", "Kokok Tahunan", "jago", [1, 2, 3, 5], m => m.streakTahunan, t => t + " tahun berturut-turut (setiap bulan tanpa absen)")
 );
-const _hitungMetrik162 = hitungMetrik;
-hitungMetrik = function(...a){
-  const m = _hitungMetrik162.apply(this, a), j = jejakSaya();
-  m.streakHarian = j.harian.terbaik || 0; m.streakMingguan = j.mingguan.terbaik || 0; m.streakBulanan = j.bulanan.terbaik || 0;
-  m.streakTahunan = Math.floor((j.bulanan.terbaik || 0) / 12);
-  return m;
-};
-const _medali162 = medali;
-medali = function(x, i, ukuran){
-  if (i === 3 && x.tiers.length === 4) return _medali162.call(this, x, 2, ukuran).replace("--w:#E3B341", "--w:#7CC6E8");
-  return _medali162.apply(this, arguments);
-};
 
 /* ---- kartu Beranda ---- */
 function stripJejak(){
@@ -9918,8 +9836,6 @@ function kartuJejak(){
       '<span class="jj-perisai'+(siap ? " siap" : "")+'">'+IKON_PERISAI+(siap ? "Perisai bulan ini siap" : "Perisai terpakai " + new Date(dipakai[dipakai.length - 1] + "T00:00:00").toLocaleDateString("id-ID", {day:"numeric", month:"short"}))+'</span></div>'+
     '</section></div>';
 }
-const _kartuBerandaLangkah6 = kartuBerandaLangkah6;
-kartuBerandaLangkah6 = function(...a){ return kartuJejak() + _kartuBerandaLangkah6.apply(this, a); };
 Object.assign(AKSI, {
   "info-streak": () => {
     const j = jejakSaya(), siap = perisaiSiap(j);
@@ -9936,7 +9852,7 @@ Object.assign(AKSI, {
   }
 });
 
-/* ============ langkah 21 (1.7.0): Kilas Balik tahunan bersama King ============ */
+/* ============ Kilas Balik tahunan (King) ============ */
 /* Kilas Balik tahun Y dibuka setiap 1 Desember tahun itu (data 1 Jan sampai hari ini),
    lalu tetap bisa ditonton ulang selamanya sebagai arsip (data lengkap 1 Jan–31 Des). */
 IKON.kilas = "M4 12a8 8 0 1 0 2.4-5.7M4 4.5v4h4M12 8v4.2l3 1.8";
@@ -9954,12 +9870,6 @@ function kbDaftarTahun(){
 }
 function kbStatistik(){ const st = statistik(); st.kilas = st.kilas || []; return st; }
 /* hitung hari buka aplikasi per tahun (mulai 1.7.0; tahun sebelumnya diambil dari riwayat aktif) */
-const _langkahJejak170 = langkahJejak;
-langkahJejak = function(tgl){
-  const ev = _langkahJejak170.apply(this, arguments);
-  if (ev){ const j = jejakSaya(); j.hariBuka = j.hariBuka || {}; const y = tgl.slice(0, 4); j.hariBuka[y] = (j.hariBuka[y] || 0) + 1; }
-  return ev;
-};
 
 function kbData(Y){
   const d = S.sesi.data, b = S.sesi.bersama, me = S.sesi.user.id, ys = String(Y);
@@ -10304,8 +10214,6 @@ function halKilas(){
     (daftar.length ? '<div class="kb-daftar">'+daftar.map(kartuTahun).join("")+'</div>' : (k.des ? '' : ''))+
     '<p class="muted" style="font-size:13px;margin-top:6px">Kilas Balik setiap tahun dibuka 1 Desember dan tetap tersimpan di sini untuk ditonton kapan saja. Semua dihitung di perangkatmu dari data yang terenkripsi.</p>';
 }
-const _halaman170 = halaman;
-halaman = function(){ return S.halaman === "kilas" ? halKilas() : _halaman170.apply(this, arguments); };
 function kbBannerTahun(){
   const n = new Date(), m = n.getMonth();
   if (m === 11) return n.getFullYear();
@@ -10321,8 +10229,6 @@ function kartuKilasBeranda(){
     '<p>King sudah merangkum setahunmu. Tonton sebentar, yuk!</p>'+
     '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("kb-tonton", "Tonton sekarang", "btn-primary btn-kecil", ' data-y="'+y+'"')+tombolAksi("kb-nanti", "Nanti", "btn-ghost btn-kecil", ' data-y="'+y+'"')+'</div></div></section>';
 }
-const _kartuJejak170 = kartuJejak;
-kartuJejak = function(){ return kartuKilasBeranda() + _kartuJejak170.apply(this, arguments); };
 Object.assign(AKSI, {
   "kb-tonton": t => kbBuka(+t.dataset.y, false),
   "kb-intip": t => kbBuka(+t.dataset.y, true),
@@ -10336,10 +10242,8 @@ Object.assign(AKSI, {
 });
 /* lencana */
 LENCANA.push(L("kilasbalik", "Spesial", "Menengok ke Belakang", "king", [1, 3, 5], m => m.kilasDitonton, t => "Tonton Kilas Balik " + t + " tahun berbeda"));
-const _hitungMetrik170 = hitungMetrik;
-hitungMetrik = function(){ const m = _hitungMetrik170.apply(this, arguments); m.kilasDitonton = (statistik().kilas || []).length; return m; };
 
-/* ============ langkah 22 (1.7.1): Owi mengingatkan mencatat lewat notifikasi, walau aplikasi tertutup ============ */
+/* ============ Pengingat mencatat lewat notifikasi (Owi) ============ */
 /* Jadwal 14 hari ke depan pada jam pilihan (bawaan 21:00). Hari ini dilewati kalau sudah ada catatan
    atau sudah ditandai "tidak ada transaksi". Setiap kali data disimpan, jadwal dihitung ulang. */
 const OWI_HARI = 14;
@@ -10364,28 +10268,13 @@ function jadwalOwi(){
   }
   return out;
 }
-const _hitungJadwalPush171 = hitungJadwalPush;
-hitungJadwalPush = function(){
-  const tagihan = _hitungJadwalPush171.apply(this, arguments);
-  return tagihan.slice(0, 180).concat(jadwalOwi()).sort((a, b) => a.waktu.localeCompare(b.waktu));
-};
 /* "Hari ini tidak ada transaksi" juga membatalkan notifikasi malam ini */
-const _tanpaCatat171 = AKSI["tanpa-catat"];
-AKSI["tanpa-catat"] = async function(...a){ const r = await _tanpaCatat171.apply(this, a); if (pushSaya().aktif) jadwalkanPush(); return r; };
 /* pengaturan: kirim lewat notifikasi */
-const _seksiPengingat171 = seksiPengingat;
-seksiPengingat = function(){
-  const h = _seksiPengingat171.apply(this, arguments), ic = S.sesi.data.pengaturan.ingatCatat, aktif = statusPush() === "aktif";
-  const baris = '<div class="set-row owi-push"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-ic-push"'+(ic.push !== false ? " checked" : "")+(ic.aktif ? "" : " disabled")+'> <span><strong>Kirim juga lewat notifikasi</strong><br>'+
+function barisOwiPush(){
+  const ic = S.sesi.data.pengaturan.ingatCatat, aktif = statusPush() === "aktif";
+  return '<div class="set-row owi-push"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-ic-push"'+(ic.push !== false ? " checked" : "")+(ic.aktif ? "" : " disabled")+'> <span><strong>Kirim juga lewat notifikasi</strong><br>'+
     '<span class="muted" style="font-size:14px;font-weight:600">'+(aktif ? "Owi tetap mengingatkan walau aplikasi tertutup. Kalau hari itu sudah ada catatan, Owi diam." : "Aktifkan dulu notifikasi di bawah supaya Owi bisa mengingatkan walau aplikasi tertutup.")+'</span></span></label></div>';
-  const tanda = barisIngatInv();
-  return h.includes(tanda) ? h.replace(tanda, baris + tanda) : h;
-};
-const _barisPush171 = barisPush;
-barisPush = function(){
-  const h = _barisPush171.apply(this, arguments), ic = S.sesi.data.pengaturan.ingatCatat;
-  return owiPushAktif() ? h.replace(", dan Boo memberi tahu", ", Owi mengingatkan mencatat pukul " + ic.jam + " kalau belum ada catatan, dan Boo memberi tahu") : h;
-};
+}
 document.addEventListener("change", async e => {
   if (!S.sesi) return;
   if (e.target.id === "in-ic-push"){
@@ -10395,7 +10284,7 @@ document.addEventListener("change", async e => {
   }
 });
 
-/* ============ langkah 23 (1.7.2): catat lewat suara bersama Doli ============ */
+/* ============ Catat lewat suara (Doli) ============ */
 /* Suara diubah jadi teks oleh pengenal suara bawaan browser (di Chrome: layanan Google).
    Doli hanya membaca teksnya, lalu mengisi form. Pengguna tetap memeriksa dan menekan Simpan sendiri. */
 const DoliSR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -10433,7 +10322,6 @@ function doliCariAngka(token){
   return hasil;
 }
 const DOLI_MASUK = ["gaji", "gajian", "terima", "nerima", "diterima", "dapat", "dapet", "pemasukan", "bonus", "thr", "jual", "jualan", "terjual", "hadiah", "angpao", "angpau", "transferan", "kiriman", "cashback", "refund", "untung", "honor", "upah", "komisi", "dikasih"];
-const DOLI_KELUAR = ["beli", "bayar", "belanja", "jajan", "pengeluaran", "isi", "top", "keluar", "buat", "makan"];
 const DOLI_KUNCI = [
   ["sedekah", ["sedekah", "zakat", "infak", "infaq", "donasi", "amal", "wakaf"]],
   ["asuransi", ["asuransi", "bpjs"]],
@@ -10584,10 +10472,9 @@ function doliTerapkan(h){
   setTimeout(() => toast(kurang.length ? "Doli belum menangkap " + kurang.join(" dan ") + ". Lengkapi dulu, ya." : "Doli sudah mengisi form. Cek sebentar, lalu Simpan."), 200);
 }
 /* ---------- tombol di form & ringkasan hasil ---------- */
-const _tampilFormTx172 = tampilFormTx;
-tampilFormTx = function(...a){
-  const r = _tampilFormTx172.apply(this, a), f = S.form;
-  const m = document.querySelector(".modal"); if (!m || !f || !f.baru) return r;
+/* tombol "Catat dengan suara" di form transaksi baru, plus ringkasan yang ditangkap Doli */
+function pasangDoliForm(){
+  const f = S.form, m = document.querySelector(".modal"); if (!m || !f || !f.baru) return;
   const seg = m.querySelector(".seg-wrap");
   if (doliDukung() && seg && !m.querySelector(".doli-tombol")){
     const b = document.createElement("div"); b.className = "doli-baris";
@@ -10605,8 +10492,7 @@ tampilFormTx = function(...a){
       b.appendChild(c);
     }
   }
-  return r;
-};
+}
 Object.assign(AKSI, {
   "doli-bicara": () => doliMulai(),
   "doli-setuju": async () => { S.sesi.data.pengaturan.doliSetuju = true; await simpanPribadi(); doliDengar(); },
@@ -10615,37 +10501,21 @@ Object.assign(AKSI, {
 });
 /* lencana Doli & panduan */
 LENCANA.push(L("suaradoli", "Rajin mencatat", "Suara Doli", "doli", [1, 10, 50], m => m.suara, t => "Catat " + t + " transaksi dengan suara bersama Doli"));
-const _hitungMetrik172 = hitungMetrik;
-hitungMetrik = function(){ const m = _hitungMetrik172.apply(this, arguments); m.suara = S.sesi.data.transaksi.filter(t => t.suara).length; return m; };
 if (BANTUAN.transaksi && Array.isArray(BANTUAN.transaksi[2])) BANTUAN.transaksi[2].push("Ketuk \"Catat dengan suara\" di form, lalu ucapkan misalnya \"beli bakso 25 ribu pakai GoPay\". Doli mengisi form-nya.");
 
-/* ---------- 1.7.2: perbaikan Obrolan di HP ---------- */
+/* ---------- Obrolan di HP ---------- */
 /* tarik-untuk-menyegarkan di halaman Obrolan hanya dari kepala chat (nama, status, foto) */
 addEventListener("touchstart", e => {
   if (!ptr || !e.target.closest) return;
   if (e.target.closest(".kb-layar, .doli-layar")){ ptr = null; return; }
   if (document.querySelector(".content .ob-tulis") && !e.target.closest(".ob-kepala, .topbar-hp")) ptr = null;
 }, {passive:true});
-const _halObrolan172 = halObrolan;
-halObrolan = function(){
-  const h = _halObrolan172.apply(this, arguments);
-  return h.replace('</div></div></header>', '</div></div><button type="button" class="ob-bantu-hp" data-aksi="panduan-alpha" aria-label="Panduan Alpha" title="Panduan">?</button></header>');
-};
 
-/* ============ langkah 24 (1.7.3): Croc (hari hemat), Kilat (catat cepat), Cantik (hari jadi & kado rahasia), laporan Rubi berdua ============ */
+/* ============ Croc (hari hemat), Cantik (hari jadi & kado rahasia), laporan bulanan Rubi ============ */
 
 /* ---------- Kilat: penjaga catat cepat ---------- */
 (LENCANA.find(x => x.id === "kilat") || {}).maskot = "kilat";
 (LENCANA.find(x => x.id === "tanpabelanja") || {}).maskot = "croc";
-const _catatCepat173 = catatCepat;
-catatCepat = async function(...a){
-  const n0 = S.sesi.data.transaksi.length, croc0 = crocHariIni();
-  const r = await _catatCepat173.apply(this, a);
-  if (S.sesi.data.transaksi.length > n0){
-    if (!crocCekLewat(croc0)) setTimeout(() => reaksiMaskot("kilat", {teks:"Wuss! Tercatat", lama:1600}), 150);
-  }
-  return r;
-};
 if (BANTUAN.beranda && typeof BANTUAN.beranda[2] === "object") BANTUAN.beranda[2] = BANTUAN.beranda[2].map(x => x.replace("Catat cepat dari Tupi", "Catat cepat dari Kilat"));
 
 /* ---------- Croc: hari hemat dengan batas harian ---------- */
@@ -10672,19 +10542,23 @@ function crocSaran(){
 const crocBatas = () => crocCfg().batas || crocSaran();
 const crocHariIni = () => crocBelanja().get(tglLokal()) || 0;
 function crocHitung(){
-  const m = crocBelanja(), a = crocAktif(), batas = crocBatas(), hari = tglLokal(), cfg = crocCfg();
-  const hemat = t => a.has(t) && (m.get(t) || 0) <= batas;
+  const m = crocBelanja(), konf = new Set(tanpaCatatHari()), batas = crocBatas(), hari = tglLokal(), cfg = crocCfg();
+  const status = t => { const v = m.get(t) || 0; if (v > 0) return v <= batas ? "hemat" : "lewat"; return konf.has(t) ? "nol" : "kosong"; };
+  const ok = t => { const s = status(t); return s === "hemat" || s === "nol"; };
   let n = 0;
-  for (let t = tambahHari(hari, -1); n < 400 && hemat(t); t = tambahHari(t, -1)) n++;
+  for (let t = tambahHari(hari, -1); n < 800 && ok(t); t = tambahHari(t, -1)) n++;
   let terbaik = 0, kini = 0;
-  for (let k = 400; k >= 1; k--){ const t = tambahHari(hari, -k); if (hemat(t)){ kini++; terbaik = Math.max(terbaik, kini); } else kini = 0; }
-  const hariIni = m.get(hari) || 0, amanHariIni = hariIni <= batas;
-  if (amanHariIni && a.has(hari)) terbaik = Math.max(terbaik, n + 1);
+  for (let k = 800; k >= 1; k--){ const t = tambahHari(hari, -k); if (ok(t)){ kini++; terbaik = Math.max(terbaik, kini); } else kini = 0; }
+  const sHari = status(hari);
+  if (sHari === "hemat" || sHari === "nol") terbaik = Math.max(terbaik, n + 1);
+  /* rekor dihitung ulang dengan aturan baru (rekor lama yang terhitung dari hari kosong tidak dipakai) */
+  if (!cfg.aturanJujur){ cfg.aturanJujur = true; cfg.terbaik = 0; }
   if (terbaik > (cfg.terbaik || 0)) cfg.terbaik = terbaik;
   const bulan = hari.slice(0, 7);
   let bulanIni = 0, nol = 0;
-  for (let t = bulan + "-01"; t < hari; t = tambahHari(t, 1)){ if (hemat(t)) bulanIni++; if (a.has(t) && !(m.get(t))) nol++; }
-  return {n, terbaik:cfg.terbaik, batas, saran:!cfg.batas, hariIni, amanHariIni, bulanIni, nol};
+  for (let t = bulan + "-01"; t < hari; t = tambahHari(t, 1)){ const s = status(t); if (s === "hemat" || s === "nol") bulanIni++; if (s === "nol") nol++; }
+  const hariIniV = m.get(hari) || 0;
+  return {n, terbaik:cfg.terbaik, batas, saran:!cfg.batas, hariIni:hariIniV, amanHariIni:hariIniV <= batas, statusHariIni:sHari, bulanIni, nol};
 }
 /* reaksi saat belanja hari ini melewati batas */
 function crocCekLewat(sebelum){
@@ -10695,18 +10569,20 @@ function crocCekLewat(sebelum){
   }
   return false;
 }
-const _simpanTx173 = simpanTx;
-simpanTx = async function(...a){ const s0 = crocHariIni(); const r = await _simpanTx173.apply(this, a); crocCekLewat(s0); return r; };
 function kartuCroc(){
   const c = crocHitung(), pct = Math.min(100, c.hariIni / c.batas * 100);
+  let ket;
+  if (c.statusHariIni === "lewat") ket = "Hari ini lewat " + rupiah(c.hariIni - c.batas) + ". Streak mulai lagi besok, tetap semangat!";
+  else if (c.statusHariIni === "hemat") ket = "Hari ini " + rupiah(c.hariIni) + " dari " + rupiah(c.batas) + ". " + (pct >= 80 ? "Hampir sampai batas, tahan dulu ya." : "Masih aman!");
+  else if (c.statusHariIni === "nol") ket = "Hari ini tanpa belanja. Croc bangga!";
+  else ket = "Belum ada catatan hari ini. Hari tanpa catatan memutus streak, jadi catat belanjamu atau tandai kalau memang tidak belanja.";
   return '<section class="card croc-kartu"><div class="page-head" style="margin-bottom:6px"><div class="card-head" style="margin:0">'+maskot("croc", 52)+
       '<div><h2>Hari hemat Croc</h2><p class="muted" style="font-size:13px">Batas harian '+rupiah(c.batas)+(c.saran ? " (saran Croc)" : "")+'</p></div></div>'+
       '<button type="button" class="link" data-aksi="croc-atur">Ubah batas</button></div>'+
     '<p class="jj-angka">'+c.n+' <span>hari hemat beruntun</span></p>'+
-    bar(pct, c.amanHariIni ? (pct >= 80 ? "#E3A857" : "#6FAE5E") : "#C4574B")+
-    '<p class="muted" style="font-size:13px;margin:6px 0 10px">'+(c.amanHariIni
-      ? "Hari ini " + rupiah(c.hariIni) + " dari " + rupiah(c.batas) + ". " + (c.hariIni ? (pct >= 80 ? "Hampir sampai batas, tahan dulu ya." : "Masih aman!") : "Belum ada belanja hari ini.")
-      : "Hari ini lewat " + rupiah(c.hariIni - c.batas) + ". Streak mulai lagi besok, tetap semangat!")+'</p>'+
+    bar(pct, c.statusHariIni === "lewat" ? "#C4574B" : pct >= 80 ? "#E3A857" : "#6FAE5E")+
+    '<p class="muted" style="font-size:13px;margin:6px 0 10px">'+ket+'</p>'+
+    (c.statusHariIni === "kosong" ? '<div class="row-btn" style="justify-content:flex-start;margin-bottom:10px">'+tombolAksi("tanpa-catat", "Hari ini memang tidak belanja", "btn-ghost btn-kecil")+'</div>' : '')+
     '<div class="jj-chip"><span>Rekor '+c.terbaik+' hari</span><span>'+c.bulanIni+' hari hemat bulan ini</span>'+(c.nol ? '<span>'+c.nol+' hari tanpa belanja</span>' : '')+'</div></section>';
 }
 function modalCroc(){
@@ -10714,6 +10590,7 @@ function modalCroc(){
   bukaModal('<div class="card-head" style="margin:0">'+maskot("croc", 64)+'<div><h2 id="judul-modal">Batas belanja harian</h2><p class="muted" style="font-size:14px">Hari dengan belanja di bawah batas ini dihitung sebagai hari hemat.</p></div></div>'+
     '<label class="field">Batas per hari'+inUang("in-croc", String(cfg.batas || saran), "0")+'</label>'+
     '<p class="note" style="font-size:14px">Saran Croc: <strong>'+rupiah(saran)+'</strong>, sedikit di bawah rata-rata belanja harianmu 30 hari terakhir. Tagihan rutin otomatis, setoran tabungan, bayar utang, dan pindah dompet tidak dihitung.</p>'+
+    '<p class="note" style="font-size:14px">Hari dihitung dari catatanmu: ada pengeluaran di bawah batas, atau kamu menandai "Hari ini tidak ada transaksi". Hari tanpa catatan sama sekali memutus streak.</p>'+
     '<p class="err" id="err-croc" role="alert"></p>'+
     '<div class="row-btn">'+tombolAksi("croc-saran", "Pakai saran Croc")+tombolAksi("croc-simpan", "Simpan", "btn-primary")+'</div>');
 }
@@ -10735,30 +10612,22 @@ function cantikDaftar(){
 const kadoSaya = () => (S.sesi.data.kado = Object.assign({target:0, saldoAwal:0, setoran:[]}, S.sesi.data.kado || {}));
 function kartuCantik(){
   const peng = S.meta.pengguna; if (peng.length < 2) return "";
-  const p = peng.find(x => x.id !== S.sesi.user.id), daftar = cantikDaftar(), k = kadoSaya(), total = totalSetoran(k);
-  let isi;
-  if (!daftar.length) isi = '<p class="muted" style="font-size:14px;margin-bottom:10px">Kapan kalian jadian? Isi tanggalnya supaya Cantik bisa menghitung mundur dan mengingatkan kalian berdua.</p>'+tombolAksi("cantik-atur", "Isi tanggal", "btn-primary btn-kecil");
-  else {
-    const u = daftar[0];
-    isi = (u.sisa === 0 ? '<p class="jj-angka cantik-hari">Hari ini! <span>'+u.nama+' ke-'+u.ke+'</span></p>'
-        : '<p class="jj-angka">'+u.sisa+' <span>hari lagi menuju '+u.nama+' ke-'+u.ke+'</span></p>')+
-      '<p class="muted" style="font-size:13px;margin-bottom:8px">'+new Date(u.tgl + "T00:00:00").toLocaleDateString("id-ID", {weekday:"long", day:"numeric", month:"long", year:"numeric"})+
-      (daftar[1] ? ' · '+daftar[1].nama.charAt(0).toUpperCase() + daftar[1].nama.slice(1)+' ke-'+daftar[1].ke+' dalam '+daftar[1].sisa+' hari' : '')+'</p>';
-  }
-  const kado = '<div class="kado-rahasia"><div class="mini-baris"><span>🔒 Tabungan kado untuk '+esc(p.nama)+'</span><strong>'+rupiah(total)+(k.target ? ' <span class="muted" style="font-weight:600">/ '+rupiah(k.target)+'</span>' : '')+'</strong></div>'+
+  const p = peng.find(x => x.id !== S.sesi.user.id), k = kadoSaya(), total = totalSetoran(k), isi = blokHariJadi(true);
+  const kado = '<div class="kado-rahasia"><div class="mini-baris"><span>🔒 Kado untuk '+esc(p.nama)+'</span><strong>'+rupiah(total)+(k.target ? ' <span class="muted" style="font-weight:600">/ '+rupiah(k.target)+'</span>' : '')+'</strong></div>'+
     (k.target ? bar(Math.min(100, total / k.target * 100), "#F28CA5") : '')+
     '<p class="muted" style="font-size:12px;margin:4px 0 8px">Rahasia: hanya kamu yang bisa melihat tabungan ini.</p>'+
     '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("mutasi", "Setor", "btn-primary btn-kecil", ' data-t="kado" data-id="kado" data-m="setor"')+
       (total > 0 ? tombolAksi("mutasi", "Ambil", "btn-ghost btn-kecil", ' data-t="kado" data-id="kado" data-m="ambil"') : '')+
       tombolAksi("kado-target", k.target ? "Ubah target" : "Atur target", "btn-ghost btn-kecil")+'</div></div>';
-  return '<section class="card cantik-kartu"><div class="page-head" style="margin-bottom:6px"><div class="card-head" style="margin:0">'+maskot("cantik", 52)+
-      '<div><h2>Hari jadi kita</h2><p class="muted" style="font-size:13px">Bersama Cantik, pasangan Kenzo</p></div></div>'+
-      (daftar.length ? '<button type="button" class="link" data-aksi="cantik-atur">Ubah</button>' : '')+'</div>'+isi+kado+'</section>';
+  return '<section class="card cantik-kartu hj-kartu"><div class="hj-kepala"><div class="card-head" style="margin:0">'+maskot("cantik", 48)+'<div><h2>Hari jadi kita</h2>'+
+      (isi ? '<p class="muted" style="font-size:13px">Bersama '+lamaBersama(S.sesi.bersama.hariJadi.jadian).teks+'</p>' : '')+'</div></div>'+
+      (isi ? '<button type="button" class="link" data-aksi="cantik-atur">Ubah</button>' : '')+'</div>'+
+    (isi || '<p class="muted" style="font-size:14px;margin-bottom:10px">Kapan kalian mulai bersama? Isi tanggalnya supaya Cantik bisa menghitung mundur dan mengingatkan kalian berdua.</p>'+tombolAksi("cantik-atur", "Isi tanggal", "btn-primary btn-kecil"))+kado+'</section>';
 }
 function modalCantik(){
   const h = S.sesi.bersama.hariJadi || {};
   bukaModal('<div class="card-head" style="margin:0">'+maskot("cantik", 64)+'<div><h2 id="judul-modal">Hari jadi kita</h2><p class="muted" style="font-size:14px">Tanggal ini terlihat oleh kalian berdua. Cantik akan mengingatkan H-30, H-7, dan H-1.</p></div></div>'+
-    '<label class="field">Tanggal jadian<input type="date" id="in-jadian" max="'+tglLokal()+'" value="'+esc(h.jadian || "")+'"></label>'+
+    '<label class="field">Bersama sejak (tanggal jadian)<input type="date" id="in-jadian" max="'+tglLokal()+'" value="'+esc(h.jadian || "")+'"></label>'+
     '<label class="field">Tanggal menikah (opsional)<input type="date" id="in-menikah" max="'+tglLokal()+'" value="'+esc(h.menikah || "")+'"></label>'+
     '<p class="err" id="err-cantik" role="alert"></p>'+
     '<div class="row-btn">'+tombolAksi("tutup-modal", "Batal")+tombolAksi("cantik-simpan", "Simpan", "btn-primary")+'</div>');
@@ -10770,11 +10639,6 @@ function modalKadoTarget(){
     '<p class="err" id="err-kado" role="alert"></p>'+
     '<div class="row-btn">'+tombolAksi("tutup-modal", "Batal")+tombolAksi("kado-simpan", "Simpan", "btn-primary")+'</div>');
 }
-const _objekMutasi173 = objekMutasi;
-objekMutasi = function(target, id){
-  if (target === "kado"){ const k = kadoSaya(), p = S.meta.pengguna.find(x => x.id !== S.sesi.user.id) || {nama:"pasangan"}; return {nama:"Tabungan kado untuk " + p.nama, obj:k, saldo:totalSetoran(k), maskot:"cantik", bersama:false}; }
-  return _objekMutasi173.apply(this, arguments);
-};
 /* perayaan di hari jadi */
 function cantikRayakan(){
   const u = cantikDaftar()[0]; if (!u || u.sisa !== 0) return;
@@ -10784,9 +10648,8 @@ function cantikRayakan(){
   setTimeout(() => { reaksiMaskot("cantik", {teks:"Selamat " + u.nama + " ke-" + u.ke + "!", gerak:"main r-lompat", lama:3200}); konfeti(document.querySelector(".cantik-kartu")); }, 900);
 }
 /* notifikasi H-30, H-7, H-1, dan hari H */
-const _hitungJadwalPush173 = hitungJadwalPush;
-hitungJadwalPush = function(){
-  const out = _hitungJadwalPush173.apply(this, arguments);
+function jadwalCantik(){
+  const out = [];
   if (!S.sesi || S.meta.pengguna.length < 2) return out;
   const jam = pushJam();
   cantikDaftar().forEach(u => [[30, "sebulan lagi. Mulai siapkan kejutan, yuk!"], [7, "tinggal 7 hari lagi. Kadonya sudah siap?"], [1, "besok! Jangan lupa ya."], [0, "hari ini! Selamat untuk kalian berdua."]].forEach(([o, teks]) => {
@@ -10794,31 +10657,16 @@ hitungJadwalPush = function(){
     if (waktu.getTime() < Date.now() + 60000) return;
     out.push({waktu:waktu.toISOString(), judul:"Cantik: " + u.nama + " kalian", isi:(u.nama.charAt(0).toUpperCase() + u.nama.slice(1)) + " ke-" + u.ke + " " + teks, tag:"dompet-kita-cantik"});
   }));
-  return out.sort((a, b) => a.waktu.localeCompare(b.waktu)).slice(0, 195);
-};
+  return out;
+}
 LENCANA.push(L("kadorahasia", "Kompak berdua", "Kado Rahasia", "cantik", [1], m => m.kadoSetor, () => "Mulai menabung kado rahasia untuk pasangan"));
 
 /* ---------- Beranda & halaman Bersama ---------- */
-const _kartuJejak173 = kartuJejak;
-kartuJejak = function(){
+function kartuCrocCantik(){
   const c = kartuCantik();
   setTimeout(cantikRayakan, 0);
-  return _kartuJejak173.apply(this, arguments) + (c ? '<div class="grid2">'+kartuCroc()+c+'</div>' : kartuCroc());
-};
-const _halBersama173 = halBersama;
-halBersama = function(){
-  const h = _halBersama173.apply(this, arguments);
-  if (S.meta.pengguna.length < 2) return h;
-  const daftar = cantikDaftar(), hj = S.sesi.bersama.hariJadi || {};
-  const tgl = t => new Date(t + "T00:00:00").toLocaleDateString("id-ID", {day:"numeric", month:"long", year:"numeric"});
-  const kartu = '<section class="card cantik-bersama"><div class="page-head" style="margin-bottom:6px"><div class="card-head" style="margin:0">'+maskot("cantik", 48)+'<h2>Hari jadi kita</h2></div>'+
-      tombolAksi("cantik-atur", hj.jadian ? "Ubah" : "Isi tanggal", hj.jadian ? "btn-ghost btn-kecil" : "btn-primary btn-kecil")+'</div>'+
-    (hj.jadian ? '<div class="mini-list"><div class="mini-baris"><span>Jadian</span><strong>'+tgl(hj.jadian)+'</strong></div>'+(hj.menikah ? '<div class="mini-baris"><span>Menikah</span><strong>'+tgl(hj.menikah)+'</strong></div>' : '')+
-      daftar.map(u => '<div class="mini-baris"><span>'+(u.nama.charAt(0).toUpperCase() + u.nama.slice(1))+' ke-'+u.ke+'</span><strong>'+(u.sisa ? u.sisa + " hari lagi" : "Hari ini!")+'</strong></div>').join("")+'</div>'
-      : '<p class="muted" style="font-size:14px">Isi tanggal jadian supaya Cantik bisa menghitung mundur hari jadi kalian.</p>')+'</section>';
-  const i = h.indexOf("</header>");
-  return i < 0 ? kartu + h : h.slice(0, i + 9) + kartu + h.slice(i + 9);
-};
+  return c ? '<div class="grid2">'+kartuCroc()+c+'</div>' : kartuCroc();
+}
 Object.assign(AKSI, {
   "croc-atur": () => modalCroc(),
   "croc-saran": async () => { crocCfg().batas = 0; await simpanPribadi(); tutupModal(); render(); toast("Croc memakai saran batas harian: " + rupiah(crocSaran()) + "."); },
@@ -10881,8 +10729,6 @@ function kartuLaporanHTML(k){
       '<p class="ob-laporan-judul">Masing-masing (yang dibagikan)</p>'+k.orang.map(o => o.sembunyi ? baris(esc(o.nama), '<span class="muted">Disembunyikan</span>') : baris(esc(o.nama), '<span class="naik">+' + ringkas(o.masuk) + '</span> · <span class="turun">−' + ringkas(o.keluar) + '</span>')).join("")+
     '</div><p class="ob-laporan-kalimat">Kata Rubi: '+esc(k.kalimat)+'</p></div>';
 }
-const _kartuHTML173 = kartuHTML;
-kartuHTML = function(k){ return k && k.tipe === "laporan" ? kartuLaporanHTML(k) : _kartuHTML173.apply(this, arguments); };
 async function rubiLaporanCek(){
   if (!S.sesi || S.rubiSedang || S.meta.pengguna.length < 2 || !awanTersambung() || !obSiap()) return;
   const kb = geserBulan(tglLokal().slice(0, 7), -1), b = S.sesi.bersama;
@@ -10898,21 +10744,8 @@ async function rubiLaporanCek(){
   } catch(e){ console.warn("Laporan Rubi gagal:", e); }
   finally { S.rubiSedang = false; }
 }
-const _sinkron173 = sinkron;
-sinkron = async function(...a){
-  const ok = await _sinkron173.apply(this, a);
-  if (ok && a[0] !== "rubi") setTimeout(() => rubiLaporanCek().then(() => {}), 1500);
-  return ok;
-};
-const _hitungMetrik173 = hitungMetrik;
-hitungMetrik = function(){
-  const m = _hitungMetrik173.apply(this, arguments);
-  m.crocTerbaik = crocHitung().terbaik;
-  m.kadoSetor = (kadoSaya().setoran || []).some(e => e.nominal > 0) ? 1 : 0;
-  return m;
-};
 
-/* ============ langkah 25 (1.7.4): suhu & cuaca real time (Open-Meteo) ============ */
+/* ============ Suhu & cuaca real time (Open-Meteo) ============ */
 /* Data dari Open-Meteo (gratis, tanpa kunci API). Yang dikirim hanya koordinat yang dibulatkan (sekitar 1 km). */
 const K_CUACA = PFX + "cuaca", K_CUACA_AKTIF = PFX + "cuacaAktif";
 const cuacaAktif = () => localStorage.getItem(K_CUACA_AKTIF) !== "0" && lokasiAktif();
@@ -11005,20 +10838,6 @@ async function perbaruiCuaca(paksa){
   return janjiCuaca;
 }
 /* lokasi GPS menyimpan koordinat yang dibulatkan, supaya cuaca tidak perlu bertanya lagi */
-const _ambilGeocode174 = ambilGeocode;
-ambilGeocode = async function(qs){
-  const l = await _ambilGeocode174.apply(this, arguments);
-  const m = /latitude=([-\d.]+)&longitude=([-\d.]+)/.exec(qs || "");
-  if (m){ l.lat = Math.round(+m[1] * 100) / 100; l.lon = Math.round(+m[2] * 100) / 100; }
-  return l;
-};
-const _simpanLokasi174 = simpanLokasi;
-simpanLokasi = function(l){
-  const lama = lokasiSaya();
-  const r = _simpanLokasi174.apply(this, arguments);
-  if (!lama || lama.kota !== l.kota || lama.lat !== l.lat){ localStorage.removeItem(K_CUACA); setTimeout(() => perbaruiCuaca(true), 300); }
-  return r;
-};
 
 /* ---------- tampilan ---------- */
 function cuacaChipHTML(kecil){
@@ -11028,12 +10847,6 @@ function cuacaChipHTML(kecil){
   return S.sesi ? '<button type="button" class="cuaca-chip'+(kecil ? " kecil" : "")+'" data-aksi="cuaca-detail" title="'+esc(c.label + " · " + c.suhu + "°C" + (c.tempat ? " · " + c.tempat : ""))+'">'+isi+'</button>'
     : '<span class="cuaca-chip'+(kecil ? " kecil" : "")+'" title="'+esc(c.label + " · " + c.suhu + "°C")+'">'+isi+'</span>';
 }
-const _jamHTML174 = jamHTML;
-jamHTML = function(kelas, ekstra){
-  /* chip cuaca hanya di jam layar login; di dalam aplikasi cuaca tampil lewat kartu di Beranda */
-  if (!/jam-login/.test(kelas || "")) return _jamHTML174.apply(this, arguments);
-  return _jamHTML174.call(this, kelas, '<span class="cuaca-wadah">'+cuacaChipHTML(false)+'</span>' + (ekstra || ""));
-};
 function jamPendekCuaca(t){ return t.slice(11, 13) + "." + t.slice(14, 16); }
 function cuacaIsiHTML(c, besar){
   const kataC = pilihKata(KATA_CUACA[c.mCuaca]), kataS = pilihKata(KATA_SUHU[c.mSuhu], 1);
@@ -11054,8 +10867,6 @@ function kartuCuaca(){
   return '<section class="card cuaca-kartu" data-kelas="'+c.kelas+'"><div class="page-head" style="margin-bottom:8px"><h2>Cuaca sekarang</h2>'+
     '<span class="muted" style="font-size:13px">'+esc(c.tempat)+' · '+new Date(c.waktu).toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit"})+'</span></div>'+cuacaIsiHTML(c, false)+'</section>';
 }
-const _kartuPemulihan174 = kartuPemulihan;
-kartuPemulihan = function(){ return (S.halaman === "beranda" ? kartuCuaca() : "") + _kartuPemulihan174.apply(this, arguments); };
 function modalCuaca(){
   const c = cuacaKini();
   if (!c){ toast("Data cuaca belum ada. Pastikan lokasi aktif dan internet menyala."); perbaruiCuaca(true); return; }
@@ -11071,25 +10882,19 @@ function perbaruiTampilCuaca(){
   if (l){ const c = cuacaKini(), kl = c ? c.kelas : ""; if (l.dataset.cuaca !== kl){ l.outerHTML = langitHTML(); const lk = document.querySelector(".login-hero .langit-kartu"); if (lk) lk.outerHTML = langitHTML("kartu"); } }
 }
 /* langit login ikut cuaca: hujan, petir, kabut, awan tebal */
-const _langitHTML174 = langitHTML;
-langitHTML = function(lapis){
-  const c = cuacaAktif() ? cuacaKini() : null, kl = c ? c.kelas : "";
-  let h = _langitHTML174.apply(this, arguments);
-  h = h.replace('<div class="langit ', '<div data-cuaca="'+kl+'" class="langit ');
+/* lapisan cuaca di langit login */
+function efekCuacaHTML(kl, kartu){
   if (kl === "hujan" || kl === "badai"){
-    const tetes = Array.from({length:lapis === "kartu" ? 26 : 44}, (_, i) => '<i style="left:'+((i * 37 + 11) % 100)+'%;animation-delay:-'+((i * 0.173) % 1.2).toFixed(2)+'s;animation-duration:'+(0.7 + (i % 5) * 0.08).toFixed(2)+'s"></i>').join("");
-    h = h.replace(/<\/div>$/, '<div class="lg-hujan">'+tetes+'</div>'+(kl === "badai" ? '<div class="lg-kilat"></div>' : '')+'</div>');
-  } else if (kl === "kabut") h = h.replace(/<\/div>$/, '<div class="lg-kabut"><i></i><i></i><i></i></div></div>');
-  return h;
-};
+    const tetes = Array.from({length:kartu ? 26 : 44}, (_, i) => '<i style="left:'+((i * 37 + 11) % 100)+'%;animation-delay:-'+((i * 0.173) % 1.2).toFixed(2)+'s;animation-duration:'+(0.7 + (i % 5) * 0.08).toFixed(2)+'s"></i>').join("");
+    return '<div class="lg-hujan">'+tetes+'</div>'+(kl === "badai" ? '<div class="lg-kilat"></div>' : '');
+  }
+  return kl === "kabut" ? '<div class="lg-kabut"><i></i><i></i><i></i></div>' : '';
+}
 /* pengaturan tampilan */
-const _seksiTampilan174 = seksiTampilan;
-seksiTampilan = function(){
-  const h = _seksiTampilan174.apply(this, arguments);
-  const baris = '<div class="set-row"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-cuaca"'+(localStorage.getItem(K_CUACA_AKTIF) !== "0" ? " checked" : "")+'> <span><strong>Cuaca &amp; suhu real time</strong><br>'+
+function barisCuacaSetelan(){
+  return '<div class="set-row"><label class="pilih-cek" style="flex:1"><input type="checkbox" id="in-cuaca"'+(localStorage.getItem(K_CUACA_AKTIF) !== "0" ? " checked" : "")+'> <span><strong>Cuaca &amp; suhu real time</strong><br>'+
     '<span class="muted" style="font-size:14px;font-weight:600">Mika, Hipo, Quoki, dan kawan-kawan melaporkan cuaca di kotamu. Butuh lokasi aktif. Hanya koordinat yang dibulatkan (sekitar 1 km) yang dikirim ke Open-Meteo.</span></span></label></div>';
-  return h.replace(/<\/section>\s*$/, baris + "</section>");
-};
+}
 document.addEventListener("change", e => {
   if (e.target.id !== "in-cuaca") return;
   localStorage.setItem(K_CUACA_AKTIF, e.target.checked ? "1" : "0");
@@ -11104,10 +10909,8 @@ setInterval(() => { if (document.visibilityState === "visible") perbaruiCuaca(fa
 setTimeout(() => perbaruiCuaca(false), 2500);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") perbaruiCuaca(false); });
 LENCANA.push(L("pawangcuaca", "Spesial", "Pengamat Cuaca", "mika", [3, 5], m => m.cuacaLihat, t => "Melihat " + t + " jenis cuaca berbeda bersama Dompet Kita"));
-const _hitungMetrik174 = hitungMetrik;
-hitungMetrik = function(){ const m = _hitungMetrik174.apply(this, arguments); m.cuacaLihat = (statistik().cuacaLihat || []).length; return m; };
 
-/* ============ langkah 26 (1.7.4): perbaikan 1.7.3 — Croc jujur, kartu hari jadi baru, lencana mode gelap, sidebar tidak melompat ============ */
+/* ============ Croc: hitungan hari jujur · kartu hari jadi ============ */
 /* Croc: hari dihitung hanya dari catatan. Ada pengeluaran ≤ batas = hemat; konfirmasi "tidak ada transaksi" = tanpa belanja;
    tidak ada catatan sama sekali = hari kosong, memutus streak. */
 function tanpaCatatHari(){
@@ -11116,76 +10919,7 @@ function tanpaCatatHari(){
   if (p.tanpaCatat && !p.tanpaCatatHari.includes(p.tanpaCatat)) p.tanpaCatatHari.push(p.tanpaCatat);
   return p.tanpaCatatHari;
 }
-const _tanpaCatat174 = AKSI["tanpa-catat"];
-AKSI["tanpa-catat"] = async function(...a){
-  const l = tanpaCatatHari(), h = hariIni();
-  if (!l.includes(h)){ l.push(h); if (l.length > 800) l.splice(0, l.length - 800); }
-  return _tanpaCatat174.apply(this, a);
-};
-crocHitung = function(){
-  const m = crocBelanja(), konf = new Set(tanpaCatatHari()), batas = crocBatas(), hari = tglLokal(), cfg = crocCfg();
-  const status = t => { const v = m.get(t) || 0; if (v > 0) return v <= batas ? "hemat" : "lewat"; return konf.has(t) ? "nol" : "kosong"; };
-  const ok = t => { const s = status(t); return s === "hemat" || s === "nol"; };
-  let n = 0;
-  for (let t = tambahHari(hari, -1); n < 800 && ok(t); t = tambahHari(t, -1)) n++;
-  let terbaik = 0, kini = 0;
-  for (let k = 800; k >= 1; k--){ const t = tambahHari(hari, -k); if (ok(t)){ kini++; terbaik = Math.max(terbaik, kini); } else kini = 0; }
-  const sHari = status(hari);
-  if (sHari === "hemat" || sHari === "nol") terbaik = Math.max(terbaik, n + 1);
-  /* rekor dihitung ulang dengan aturan baru (rekor lama yang terhitung dari hari kosong tidak dipakai) */
-  if (!cfg.aturanJujur){ cfg.aturanJujur = true; cfg.terbaik = 0; }
-  if (terbaik > (cfg.terbaik || 0)) cfg.terbaik = terbaik;
-  const bulan = hari.slice(0, 7);
-  let bulanIni = 0, nol = 0;
-  for (let t = bulan + "-01"; t < hari; t = tambahHari(t, 1)){ const s = status(t); if (s === "hemat" || s === "nol") bulanIni++; if (s === "nol") nol++; }
-  const hariIniV = m.get(hari) || 0;
-  return {n, terbaik:cfg.terbaik, batas, saran:!cfg.batas, hariIni:hariIniV, amanHariIni:hariIniV <= batas, statusHariIni:sHari, bulanIni, nol};
-};
-kartuCroc = function(){
-  const c = crocHitung(), pct = Math.min(100, c.hariIni / c.batas * 100);
-  let ket;
-  if (c.statusHariIni === "lewat") ket = "Hari ini lewat " + rupiah(c.hariIni - c.batas) + ". Streak mulai lagi besok, tetap semangat!";
-  else if (c.statusHariIni === "hemat") ket = "Hari ini " + rupiah(c.hariIni) + " dari " + rupiah(c.batas) + ". " + (pct >= 80 ? "Hampir sampai batas, tahan dulu ya." : "Masih aman!");
-  else if (c.statusHariIni === "nol") ket = "Hari ini tanpa belanja. Croc bangga!";
-  else ket = "Belum ada catatan hari ini. Hari tanpa catatan memutus streak, jadi catat belanjamu atau tandai kalau memang tidak belanja.";
-  return '<section class="card croc-kartu"><div class="page-head" style="margin-bottom:6px"><div class="card-head" style="margin:0">'+maskot("croc", 52)+
-      '<div><h2>Hari hemat Croc</h2><p class="muted" style="font-size:13px">Batas harian '+rupiah(c.batas)+(c.saran ? " (saran Croc)" : "")+'</p></div></div>'+
-      '<button type="button" class="link" data-aksi="croc-atur">Ubah batas</button></div>'+
-    '<p class="jj-angka">'+c.n+' <span>hari hemat beruntun</span></p>'+
-    bar(pct, c.statusHariIni === "lewat" ? "#C4574B" : pct >= 80 ? "#E3A857" : "#6FAE5E")+
-    '<p class="muted" style="font-size:13px;margin:6px 0 10px">'+ket+'</p>'+
-    (c.statusHariIni === "kosong" ? '<div class="row-btn" style="justify-content:flex-start;margin-bottom:10px">'+tombolAksi("tanpa-catat", "Hari ini memang tidak belanja", "btn-ghost btn-kecil")+'</div>' : '')+
-    '<div class="jj-chip"><span>Rekor '+c.terbaik+' hari</span><span>'+c.bulanIni+' hari hemat bulan ini</span>'+(c.nol ? '<span>'+c.nol+' hari tanpa belanja</span>' : '')+'</div></section>';
-};
-const _modalCroc174 = modalCroc;
-modalCroc = function(){
-  _modalCroc174.apply(this, arguments);
-  const n = document.querySelector(".modal .note");
-  if (n) n.insertAdjacentHTML("afterend", '<p class="note" style="font-size:14px">Hari dihitung dari catatanmu: ada pengeluaran di bawah batas, atau kamu menandai "Hari ini tidak ada transaksi". Hari tanpa catatan sama sekali memutus streak.</p>');
-};
 /* lencana Hari Tanpa Belanja: hanya hari yang dikonfirmasi tanpa transaksi dan memang tidak ada pengeluaran */
-const _hitungMetrik174b = hitungMetrik;
-hitungMetrik = function(){
-  const m = _hitungMetrik174b.apply(this, arguments);
-  const keluar = new Set(S.sesi.data.transaksi.filter(t => t.jenis === "keluar" && !t.terkait && !t.otomatis).map(t => t.tanggal));
-  m.hariTanpaBelanja = tanpaCatatHari().filter(t => !keluar.has(t) && t < tglLokal() || (t === tglLokal() && !keluar.has(t))).length;
-  /* lencana mode gelap: cukup memakai aplikasi dalam mode gelap (bawaan atau dinyalakan dari layar login) */
-  if (temaGelapAktif()){ const st = statistik(); if (!st.modeGelap) st.modeGelap = 1; m.modeGelap = Math.max(m.modeGelap || 0, 1); }
-  return m;
-};
-/* sidebar laptop & menu tidak kembali ke atas setiap pindah halaman */
-const _render174 = render;
-render = function(...a){
-  const sb = document.querySelector(".sidebar"), y = sb ? sb.scrollTop : null;
-  const r = _render174.apply(this, a);
-  const sb2 = document.querySelector(".sidebar");
-  if (sb2 && y != null){
-    sb2.scrollTop = y;
-    const aktif = sb2.querySelector(".nav-item.on, .nav-item[aria-current=page]");
-    if (aktif){ const ra = aktif.getBoundingClientRect(), rs = sb2.getBoundingClientRect(); if (ra.top < rs.top || ra.bottom > rs.bottom) aktif.scrollIntoView({block:"nearest"}); }
-  }
-  return r;
-};
 
 /* ---------- kartu "Hari jadi kita" baru ---------- */
 function lamaBersama(awal){
@@ -11223,38 +10957,16 @@ function blokHariJadi(ringkas){
     (hj.menikah ? '<span class="hj-chip nikah">💍 Menikah sejak '+tglSedang(hj.menikah)+(nikah ? ' · ke-'+nikah.ke+' dalam '+nikah.sisa+' hari' : '')+'</span>' : '')+'</div>';
   return '<div class="hj-atas"><span class="eyebrow">Sudah bersama</span><p class="hj-lama">'+lama.teks+'</p><p class="muted hj-sejak">sejak '+tglPanjang(hj.jadian)+' · '+lama.total.toLocaleString("id-ID")+' hari</p></div>'+mundur+jalan+momen;
 }
-halBersama = function(){
-  const h = _halBersama173.apply(this, arguments);
-  if (S.meta.pengguna.length < 2) return h;
+function kartuHariJadiBersama(){
+  if (S.meta.pengguna.length < 2) return "";
   const isi = blokHariJadi(false);
-  const kartu = '<section class="card hj-kartu"><div class="hj-kepala"><div class="card-head" style="margin:0">'+maskot("cantik", 56)+'<div><h2>Hari jadi kita</h2><p class="muted" style="font-size:13px">Dijaga Cantik, pasangan Kenzo</p></div></div>'+
+  return '<section class="card hj-kartu"><div class="hj-kepala"><div class="card-head" style="margin:0">'+maskot("cantik", 56)+'<div><h2>Hari jadi kita</h2><p class="muted" style="font-size:13px">Dijaga Cantik, pasangan Kenzo</p></div></div>'+
       tombolAksi("cantik-atur", isi ? "Ubah" : "Isi tanggal", isi ? "btn-ghost btn-kecil" : "btn-primary btn-kecil")+'</div>'+
     (isi || '<p class="muted" style="font-size:14px">Isi tanggal kalian mulai bersama supaya Cantik bisa menghitung lama kebersamaan dan mundur menuju hari jadi.</p>')+'</section>';
-  const i = h.indexOf("</header>");
-  return i < 0 ? kartu + h : h.slice(0, i + 9) + kartu + h.slice(i + 9);
-};
-kartuCantik = function(){
-  const peng = S.meta.pengguna; if (peng.length < 2) return "";
-  const p = peng.find(x => x.id !== S.sesi.user.id), k = kadoSaya(), total = totalSetoran(k), isi = blokHariJadi(true);
-  const kado = '<div class="kado-rahasia"><div class="mini-baris"><span>🔒 Kado untuk '+esc(p.nama)+'</span><strong>'+rupiah(total)+(k.target ? ' <span class="muted" style="font-weight:600">/ '+rupiah(k.target)+'</span>' : '')+'</strong></div>'+
-    (k.target ? bar(Math.min(100, total / k.target * 100), "#F28CA5") : '')+
-    '<p class="muted" style="font-size:12px;margin:4px 0 8px">Rahasia: hanya kamu yang bisa melihat tabungan ini.</p>'+
-    '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("mutasi", "Setor", "btn-primary btn-kecil", ' data-t="kado" data-id="kado" data-m="setor"')+
-      (total > 0 ? tombolAksi("mutasi", "Ambil", "btn-ghost btn-kecil", ' data-t="kado" data-id="kado" data-m="ambil"') : '')+
-      tombolAksi("kado-target", k.target ? "Ubah target" : "Atur target", "btn-ghost btn-kecil")+'</div></div>';
-  return '<section class="card cantik-kartu hj-kartu"><div class="hj-kepala"><div class="card-head" style="margin:0">'+maskot("cantik", 48)+'<div><h2>Hari jadi kita</h2>'+
-      (isi ? '<p class="muted" style="font-size:13px">Bersama '+lamaBersama(S.sesi.bersama.hariJadi.jadian).teks+'</p>' : '')+'</div></div>'+
-      (isi ? '<button type="button" class="link" data-aksi="cantik-atur">Ubah</button>' : '')+'</div>'+
-    (isi || '<p class="muted" style="font-size:14px;margin-bottom:10px">Kapan kalian mulai bersama? Isi tanggalnya supaya Cantik bisa menghitung mundur dan mengingatkan kalian berdua.</p>'+tombolAksi("cantik-atur", "Isi tanggal", "btn-primary btn-kecil"))+kado+'</section>';
-};
+}
 /* label di modal: "Jadian" jadi "Bersama sejak" */
-const _modalCantik174 = modalCantik;
-modalCantik = function(){
-  _modalCantik174.apply(this, arguments);
-  const l = document.getElementById("in-jadian"); if (l && l.parentElement) l.parentElement.firstChild.textContent = "Bersama sejak (tanggal jadian)";
-};
 
-/* ============ langkah 27 (1.8.0): foto & voice note di Obrolan — inti media ============ */
+/* ============ Obrolan: foto & voice note (inti media) ============ */
 /* Berkas dikunci (AES-GCM, kunci Bersama) sebelum diunggah ke Storage "obrolan/<rumah>/<id>".
    Pratinjau kecil (±8 KB) ikut di dalam pesan terenkripsi, jadi tetap terlihat walau berkas sudah kedaluwarsa.
    Foto: 3 bulan; setelah disimpan ke galeri: 15 hari. Voice note: selamanya. */
@@ -11395,21 +11107,7 @@ async function mediaPemakaian(){
   return MEDIA.pakai;
 }
 /* sinkron status media ikut alur obrolan */
-const _obAmbil180 = obAmbil;
-obAmbil = async function(...a){
-  const r = await _obAmbil180.apply(this, a);
-  const m = await mediaAmbilStatus();
-  if (m && !r) obTampilkanUlang();
-  return r;
-};
 /* hapus pesan berisi media: berkasnya ikut dihapus dari server */
-const _obHapus180 = obHapus;
-obHapus = async function(id){
-  const v = OB.cache.get(id) || {};
-  const ids = [v.foto && v.foto.id, v.suara && v.suara.id].filter(Boolean);
-  await _obHapus180.apply(this, arguments);
-  if (ids.length && OB.rows.get(id) && OB.rows.get(id).dihapus) mediaHapusPaksa(ids);
-};
 
 /* ---------- gambar: kompres & pratinjau ---------- */
 function kanvasKeBlob(c, kualitas){ return new Promise(res => c.toBlob(res, "image/jpeg", kualitas)); }
@@ -11605,14 +11303,6 @@ function suaraSegarkan(){
 }
 
 /* ---------- pasang ke gelembung obrolan ---------- */
-const _obTampilkanUlang180 = obTampilkanUlang;
-obTampilkanUlang = async function(...a){
-  const r = await _obTampilkanUlang180.apply(this, a);
-  const w = document.getElementById("ob-daftar");
-  if (w){ await fotoTempelJernih(w); suaraSegarkan(); }
-  obPerbaruiTombolTulis();
-  return r;
-};
 function obPerbaruiTombolTulis(){
   const t = document.getElementById("ob-teks"), w = document.getElementById("ob-tulis");
   if (!t || !w) return;
@@ -11628,14 +11318,6 @@ function modalTambahOb(){
       '<button type="button" class="ob-tambah-opsi" data-aksi="ob-kartu"><span class="ob-tambah-ikon">💳</span><strong>Kartu keuangan</strong><span class="muted">Tagihan, acara, transaksi</span></button>'+
     '</div>', "modal-pulih");
 }
-const _halObrolan180 = halObrolan;
-halObrolan = function(){
-  let h = _halObrolan180.apply(this, arguments);
-  h = h.replace('class="btn-ikon ob-plus" data-aksi="ob-kartu" aria-label="Kirim kartu keuangan" title="Kirim kartu keuangan"', 'class="btn-ikon ob-plus" data-aksi="ob-tambah" aria-label="Kirim foto, kartu, atau lainnya" title="Kirim foto, kartu, atau lainnya"');
-  h = h.replace('<button type="button" class="btn btn-primary ob-kirim"', '<button type="button" class="btn-ikon ob-mik" data-aksi="ob-rekam" aria-label="Rekam voice note" title="Rekam voice note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></button><button type="button" class="btn btn-primary ob-kirim"');
-  h = h.replace('<div class="ob-tulis-baris">', '<div class="ob-rekam" id="ob-rekam"><button type="button" class="btn-ikon rk-batal" data-aksi="rk-batal" aria-label="Batalkan rekaman">🗑</button><span class="rk-titik" aria-hidden="true"></span><span class="rk-waktu">0:00</span><div class="rk-gelombang" aria-hidden="true"></div><span class="muted rk-batas">maks 2:00</span><button type="button" class="btn btn-primary rk-kirim" data-aksi="rk-kirim">Kirim</button></div><div class="ob-tulis-baris">');
-  return h;
-};
 /* pakai tampilan jernih untuk pesan foto/suara */
 function badanMediaOb(r, v){ return (v.foto ? fotoHTML(r, v.foto) : '') + (v.suara ? suaraHTML(r, v.suara) : ''); }
 Object.assign(AKSI, {
@@ -11658,8 +11340,8 @@ Object.assign(AKSI, {
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && document.querySelector(".foto-layar")) tutupPenampilFoto(); });
 
-const _kunciAplikasi180 = kunciAplikasi;
-kunciAplikasi = function(...a){
+/* saat aplikasi dikunci: tutup editor/kamera/penampil, hentikan rekaman & audio, lepas foto yang terbuka di memori */
+function mediaTutupSemua(){
   try {
     if (REKAM.aktif) rekamBerhenti(true);
     if (PUTAR_SR.audio){ PUTAR_SR.audio.pause(); PUTAR_SR.audio = null; PUTAR_SR.id = null; }
@@ -11669,8 +11351,7 @@ kunciAplikasi = function(...a){
     [...MEDIA.url.keys()].forEach(mediaLepasURL);
     if (!document.querySelector(".kb-layar")) document.documentElement.classList.remove("kb-terbuka");
   } catch(e){}
-  return _kunciAplikasi180.apply(this, a);
-};
+}
 /* ---------- meteran penyimpanan (Pengaturan) & peringatan Boo ---------- */
 const fmtByte = b => b >= 1073741824 ? (b / 1073741824).toFixed(2) + " GB" : b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.round(b / 1024) + " KB";
 function barisPenyimpananOb(){
@@ -11683,13 +11364,6 @@ function barisPenyimpananOb(){
     (pct >= 80 ? '<p class="note" style="font-size:13px">Boo: penyimpanan hampir penuh. Simpan foto penting ke galeri supaya cepat dibersihkan.</p>' : '')+
     '<div class="row-btn" style="justify-content:flex-start">'+tombolAksi("ob-meter-segar", "Perbarui", "btn-ghost btn-kecil")+tombolAksi("ob-cache-hapus", "Hapus salinan di perangkat ini", "btn-ghost btn-kecil")+'</div></div>';
 }
-const _seksiAwan180 = seksiAwan;
-seksiAwan = function(){
-  const h = _seksiAwan180.apply(this, arguments), x = barisPenyimpananOb();
-  if (!x) return h;
-  if (!MEDIA.pakai || Date.now() - MEDIA.pakai.waktu > 60000) setTimeout(() => mediaPemakaian().then(() => { if (S.halaman === "pengaturan") render(); }), 50);
-  return h.replace(/<\/section>\s*$/, x + "</section>");
-};
 function obPeringatanPenuh(){
   const p = MEDIA.pakai; if (!p || p.byte / MEDIA_KUOTA < 0.8) return;
   if (localStorage.getItem(PFX + "obPenuh") === tglLokal()) return;
@@ -11706,7 +11380,7 @@ Object.assign(AKSI, {
 });
 
 
-/* ============ langkah 28 (1.8.0): pilih foto, potret langsung & editor foto ============ */
+/* ============ Obrolan: pilih foto, potret langsung & editor foto ============ */
 const FOTO_MAKS = 10, FE_SISI = 2560;
 /* ---------- warna: matriks seperti filter CSS (jalan sama di semua browser) ---------- */
 const MX_I = [1,0,0,0, 0,1,0,0, 0,0,1,0];
@@ -12235,7 +11909,7 @@ document.addEventListener("keydown", e => {
 });
 addEventListener("resize", () => { if (document.querySelector(".fe-layar")) feGambar(); });
 
-/* ============ langkah 29 (1.8.1): tombol back HP ============ */
+/* ============ Tombol back HP ============ */
 /* Riwayat browser dibuat mengikuti lapisan aplikasi:
    dasar → jaga (selalu ada) → halaman selain Beranda → jendela yang terbuka (modal, foto, editor, kamera, Kilas Balik).
    Back menutup lapisan paling atas. Di Beranda/login, back pertama memberi peringatan, back kedua keluar. */
@@ -12292,8 +11966,6 @@ function navMulai(){
 document.addEventListener("pointerdown", navMulai, true);
 document.addEventListener("keydown", navMulai, true);
 new MutationObserver(() => { if (NAV.aktif) queueMicrotask(navSelaraskan); }).observe(document.body, {childList:true});
-const _render181 = render;
-render = function(...a){ const r = _render181.apply(this, a); if (NAV.aktif) queueMicrotask(navSelaraskan); return r; };
 /* sentuhan baru membatalkan "sekali lagi" dan memasang penjaga back lagi */
 function navLanjut(){ if (NAV.tunggu){ NAV.tunggu = false; navSelaraskan(); } }
 document.addEventListener("pointerdown", navLanjut, true);
@@ -12309,6 +11981,7 @@ document.addEventListener("click", e => {
 /* ============ Render ============ */
 function render(){
   const app = document.getElementById("app");
+  const sb = document.querySelector(".sidebar"), sbY = sb ? sb.scrollTop : null;
   pinAktif = null;
   if (S.layar === "sambutan"){ app.innerHTML = layarSambutan(); }
   else if (S.layar === "daftar"){ app.innerHTML = layarDaftar(); setelahRenderDaftar(); }
@@ -12318,6 +11991,14 @@ function render(){
   else { S.layar = "login"; render(); }
   if (["sambutan", "daftar", "tanya-pasangan"].includes(S.layar)) app.insertAdjacentHTML("afterbegin", '<div class="jam-pojok">'+maskot("owi", 32)+jamHTML()+'</div>');
   perbaruiJam();
+  /* sidebar laptop & menu tidak kembali ke atas setiap pindah halaman */
+  const sb2 = document.querySelector(".sidebar");
+  if (sb2 && sbY != null){
+    sb2.scrollTop = sbY;
+    const aktif = sb2.querySelector(".nav-item.on, .nav-item[aria-current=page]");
+    if (aktif){ const ra = aktif.getBoundingClientRect(), rs = sb2.getBoundingClientRect(); if (ra.top < rs.top || ra.bottom > rs.bottom) aktif.scrollIntoView({block:"nearest"}); }
+  }
+  if (NAV.aktif) queueMicrotask(navSelaraskan);
 }
 function mulai(){
   if (!window.crypto || !crypto.subtle){
