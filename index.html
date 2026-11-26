@@ -1469,6 +1469,30 @@ body:has(.fe-layar,.kam-layar) .toast{bottom:auto;top:calc(70px + env(safe-area-
 .fe-kirim{height:48px;white-space:nowrap}
 .ob-meter{margin-top:14px;padding-top:14px;border-top:2px dashed var(--line);display:flex;flex-direction:column;gap:6px}
 @media (min-width:900px){.fe-panggung{padding:10px 40px}}
+/* ===== 1.8.1: jam login rapi & balon voice note ===== */
+.jam-login{display:grid;grid-template-columns:auto auto;grid-template-areas:"ikon waktu" "ikon tgl";column-gap:10px;row-gap:2px;align-items:center;text-align:left;padding:9px 14px;width:max-content;max-width:100%;box-sizing:border-box}
+.jam-login:has(.cuaca-chip:not([hidden])){grid-template-columns:auto auto auto;grid-template-areas:"ikon waktu cuaca" "ikon tgl cuaca"}
+.jam-login .jam-baris{display:contents}
+.jam-login .ikon-waktu{grid-area:ikon;width:30px;height:30px;align-self:center}
+.jam-login .jam-waktu{grid-area:waktu;font-size:19px;line-height:1.1}
+.jam-login .jam-tanggal{grid-area:tgl;font-size:12.5px;line-height:1.2;white-space:nowrap}
+.jam-login .cuaca-wadah{grid-area:cuaca;align-self:stretch;display:flex;align-items:center;margin-left:4px;padding-left:12px;border-left:1.5px solid var(--line)}
+.jam-login .cuaca-wadah:has(.cuaca-chip[hidden]){display:none}
+.jam-login .cuaca-chip{display:grid;grid-template-columns:auto auto;grid-template-areas:"ik suhu" "ik label";column-gap:8px;row-gap:2px;align-items:center;margin:0;padding:0;border:0;background:none;text-align:left;font-size:12.5px}
+.jam-login .cuaca-chip .cuaca-ikon{grid-area:ik;width:30px;height:30px}
+.jam-login .cuaca-chip strong{grid-area:suhu;font-family:var(--font-head);font-size:19px;font-weight:600;line-height:1.1}
+.jam-login .cuaca-chip .cuaca-label{grid-area:label;line-height:1.2;white-space:nowrap}
+@media (max-width:600px){
+  .login-hero .hero-atas{row-gap:10px}
+  .login-hero .jam-login{width:100%;grid-template-columns:auto 1fr}
+  .login-hero .jam-login:has(.cuaca-chip:not([hidden])){grid-template-columns:auto 1fr auto}
+}
+.ob-gelembung.ob-g-suara{width:min(270px,76vw);max-width:86%;box-sizing:border-box}
+.ob-suara{min-width:0;width:100%;gap:8px}
+.ob-suara .sr-main{flex:0 0 36px;height:36px}
+.ob-suara .sr-gel{min-width:0;gap:1.5px;overflow:hidden}
+.ob-suara .sr-gel i{flex:1 1 0;min-width:0}
+.ob-suara .sr-waktu{min-width:30px}
 </style>
 </head>
 <body>
@@ -6541,7 +6565,7 @@ function seksiInstall(){
 Object.assign(AKSI, {"install-app": () => installSekarang()});
 
 /* ============ Privasi (Lingling): yang dibagikan ke pasangan + sembunyi kilat ============ */
-const VERSI_APP = "1.8.0";
+const VERSI_APP = "1.8.1";
 const PRIVASI = [
   ["ringkasan", "Ringkasan bulanan", "Total pemasukan dan pengeluaran per periode"],
   ["saldo", "Total saldo dompet", "Jumlah uang di semua dompetmu"],
@@ -12210,6 +12234,70 @@ document.addEventListener("keydown", e => {
   if ((e.key === "Delete" || e.key === "Backspace") && FE.pilih != null && !/INPUT|TEXTAREA/.test((e.target || {}).tagName || "")){ e.preventDefault(); AKSI["fe-lapis-hapus"](); }
 });
 addEventListener("resize", () => { if (document.querySelector(".fe-layar")) feGambar(); });
+
+/* ============ langkah 29 (1.8.1): tombol back HP ============ */
+/* Riwayat browser dibuat mengikuti lapisan aplikasi:
+   dasar → jaga (selalu ada) → halaman selain Beranda → jendela yang terbuka (modal, foto, editor, kamera, Kilas Balik).
+   Back menutup lapisan paling atas. Di Beranda/login, back pertama memberi peringatan, back kedua keluar. */
+const NAV = {d:0, abaikan:0, peringatan:0, aktif:false, tunggu:false};
+const NAV_LAPIS = ".backdrop, .foto-layar, .fe-layar, .kam-layar, .kb-layar";
+const navBisaKeluarGanda = () => kbDiHP() || matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+function navLapisTerbuka(){ return [...document.querySelectorAll(NAV_LAPIS)]; }
+function navTarget(){
+  const hal = S.layar === "app" && S.sesi && S.halaman && S.halaman !== "beranda" ? 1 : 0;
+  return 1 + hal + navLapisTerbuka().length;
+}
+function navSelaraskan(){
+  if (!NAV.aktif || NAV.tunggu) return;
+  const t = navTarget();
+  if (t > NAV.d){ for (let i = NAV.d; i < t; i++) history.pushState({dk:"lapis", n:i + 1}, ""); NAV.d = t; }
+  else if (t < NAV.d){ NAV.abaikan++; const n = NAV.d - t; NAV.d = t; history.go(-n); }
+}
+function navTutupTeratas(){
+  if (typeof REKAM !== "undefined" && REKAM.aktif){ rekamBerhenti(true); return true; }
+  const l = navLapisTerbuka(), atas = l[l.length - 1];
+  if (!atas) return false;
+  if (atas.classList.contains("backdrop")) tutupModal();
+  else if (atas.classList.contains("foto-layar")) tutupPenampilFoto();
+  else if (atas.classList.contains("fe-layar")){ const ubah = FE.foto.some(f => f.riwayat.length); if (!ubah || confirmHalus()) feTutup(); }
+  else if (atas.classList.contains("kam-layar")) kameraMati();
+  else if (atas.classList.contains("kb-layar")) kbTutup();
+  else atas.remove();
+  return true;
+}
+addEventListener("popstate", () => {
+  if (!NAV.aktif) return;
+  if (NAV.abaikan > 0){ NAV.abaikan--; return; }
+  NAV.d = Math.max(0, NAV.d - 1);
+  if (REKAM.aktif || navLapisTerbuka().length){ navTutupTeratas(); }
+  else if (S.layar === "app" && S.sesi && S.halaman !== "beranda"){
+    S.halaman = "beranda"; S.avatarSet = null; render(); scrollTo(0, 0); catatHalaman("beranda");
+  } else {
+    /* sudah di dasar: ketuk sekali lagi untuk keluar */
+    /* riwayat dibiarkan di dasar: back berikutnya langsung keluar. Sentuhan apa pun memasang penjaga lagi. */
+    if (!navBisaKeluarGanda()) return;
+    NAV.tunggu = true; NAV.peringatan = Date.now();
+    toast("Ketuk sekali lagi untuk keluar aplikasi");
+    return;
+  }
+  setTimeout(navSelaraskan, 0);
+});
+/* riwayat hanya boleh ditambah setelah ada sentuhan (aturan Chrome), jadi mulai di sentuhan pertama */
+function navMulai(){
+  if (NAV.aktif) return;
+  NAV.aktif = true;
+  try { history.replaceState({dk:"dasar"}, ""); } catch(e){}
+  navSelaraskan();
+}
+document.addEventListener("pointerdown", navMulai, true);
+document.addEventListener("keydown", navMulai, true);
+new MutationObserver(() => { if (NAV.aktif) queueMicrotask(navSelaraskan); }).observe(document.body, {childList:true});
+const _render181 = render;
+render = function(...a){ const r = _render181.apply(this, a); if (NAV.aktif) queueMicrotask(navSelaraskan); return r; };
+/* sentuhan baru membatalkan "sekali lagi" dan memasang penjaga back lagi */
+function navLanjut(){ if (NAV.tunggu){ NAV.tunggu = false; navSelaraskan(); } }
+document.addEventListener("pointerdown", navLanjut, true);
+document.addEventListener("keydown", navLanjut, true);
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-aksi]");
